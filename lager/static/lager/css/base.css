@@ -1,0 +1,11 @@
+body{
+  position: relative;
+}
+main{
+  margin-bottom: 220px;
+}
+
+footer {
+  background: #F7FFA8;
+  height: 100px;
+}
