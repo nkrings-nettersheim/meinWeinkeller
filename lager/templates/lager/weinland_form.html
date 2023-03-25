@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Weinland erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <p></p>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h4>Weinland ändern oder Neues anlegen:</h4>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.land.id_for_label }}" class="col-sm-2 control-label">Name:</label>
+            <div class="col-sm-6">
+                 {{ form.land }}
+                <div class="text-danger">{{ form.land.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.kontinent.id_for_label }}" class="col-sm-2 control-label">Kontinant:</label>
+            <div class="col-sm-6">
+                 {{ form.kontinent }}
+                <div class="text-danger">{{ form.kontinent.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</content>
+{% endblock %}
+
+

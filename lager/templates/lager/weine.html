@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Weine
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-extended">
+    <p></p>
+        <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+                <a href="{% url 'lager:add_wein' %}" class="btn btn-secondary">Neuen Wein anlegen</a>
+            </div>
+        </div>
+    <p></p>
+    <h2>Liste der Weine</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Weinland</th>
+        <th>Region</th>
+        <th>Jahrgang</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+          <tbody>
+            {% for wein in weine_list %}
+              <tr>
+                <td>{{wein.weinland}}</td>
+                <td>{{wein.region}}</td>
+                <td>{{wein.jahrgang}}er</td>
+                <td><a href="{% url 'lager:edit_wein' wein.id %}" class="link-secondary">{{wein.name}}</a></td>
+              </tr>
+            {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

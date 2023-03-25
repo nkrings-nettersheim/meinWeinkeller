@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-secondary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="javascript:void(0)">mein Weinkeller</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">erfassen</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">einlagern</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">auslagern</a>
+        </li>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Basisdaten</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'lager:list_weinlands' %}">Weinländer</a></li>
+            <li><a class="dropdown-item" href="{% url 'lager:list_regionen' %}">Regionen</a></li>
+            <li><a class="dropdown-item" href="{% url 'lager:list_rebsorten' %}">Rebsorten</a></li>
+            <li><a class="dropdown-item" href="{% url 'lager:list_weine' %}">Weine</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="d-flex navbar-nav">
+            <a class="nav-link" href="/accounts/logout/">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>

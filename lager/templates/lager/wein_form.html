@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Wein erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="" id="weinForm" data-regions-url="{% url 'lager:ajax_load_regions' %}">
+        <p></p>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h4>Wein ändern oder Neuen anlegen:</h4>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.name.id_for_label }}" class="col-sm-2 control-label">Name:</label>
+            <div class="col-sm-6">
+                 {{ form.name }}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.weinland.id_for_label }}" class="col-sm-2 control-label">Weinland:</label>
+            <div class="col-sm-6">
+                 {{ form.weinland }}
+                <div class="text-danger">{{ form.weinland.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.region.id_for_label }}" class="col-sm-2 control-label">Region:</label>
+            <div class="col-sm-6">
+                 {{ form.region }}
+                <div class="text-danger">{{ form.region.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.rebsorte.id_for_label }}" class="col-sm-2 control-label">Rebsorte:</label>
+            <div class="col-sm-6">
+                 {{ form.rebsorte }}
+                <div class="text-danger">{{ form.rebsorte.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.weinart.id_for_label }}" class="col-sm-2 control-label">Weinart:</label>
+            <div class="col-sm-6">
+                 {{ form.weinart }}
+                <div class="text-danger">{{ form.weinart.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.jahrgang.id_for_label }}" class="col-sm-2 control-label">jahrgang:</label>
+            <div class="col-sm-6">
+                 {{ form.jahrgang }}
+                <div class="text-danger">{{ form.jahrgang.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.geschmacksrichtung.id_for_label }}" class="col-sm-2 control-label">geschmacksrichtung:</label>
+            <div class="col-sm-6">
+                 {{ form.geschmacksrichtung }}
+                <div class="text-danger">{{ form.geschmacksrichtung.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.erzeuger.id_for_label }}" class="col-sm-2 control-label">erzeuger:</label>
+            <div class="col-sm-6">
+                 {{ form.erzeuger }}
+                <div class="text-danger">{{ form.erzeuger.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.bemerkung.id_for_label }}" class="col-sm-2 control-label">bemerkung:</label>
+            <div class="col-sm-6">
+                 {{ form.bemerkung }}
+                <div class="text-danger">{{ form.bemerkung.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+    $("#id_weinland").change(function () {
+        const url = $("#weinForm").attr("data-regions-url");  // get the url of the `load_cities` view
+        const weinlandId = $(this).val();  // get the selected country ID from the HTML input
+        console.log(url)
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'weinland_id': weinlandId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_region").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (region) {
+                    html_data += `<option value="${region.id}">${region.region}</option>`
+                });
+                console.log(html_data);
+                $("#id_region").html(html_data);
+                */
+            }
+        });
+
+    });
+    </script>
+</content>
+{% endblock %}
+
+

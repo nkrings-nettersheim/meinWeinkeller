@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Weinland {{ rebsorte.rebsorte }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container container_extend">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="{% url 'lager:list_rebsorten' %}" class="btn btn-secondary">Liste Rebsorten</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="btn btn-secondary">Rebsorte ändern</a>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm">
+            <h4>Rebsorte</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Rebsorte:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ rebsorte.rebsorte }}</strong>
+          </div>
+    </div>
+
+</div>
+{% endblock %}

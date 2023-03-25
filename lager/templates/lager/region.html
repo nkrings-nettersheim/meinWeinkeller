@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Region {{ region.region }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container container_extend">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="{% url 'lager:list_regionen' %}" class="btn btn-secondary">Liste Regionen</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:edit_region' region.id %}" class="btn btn-secondary">Region ändern</a>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm">
+            <h4>Region</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Weinland:</div>
+        </div>
+        <div class="col-sm-6">
+            <strong>{{ region.weinland }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Region:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ region.region }}</strong>
+          </div>
+    </div>
+
+</div>
+{% endblock %}

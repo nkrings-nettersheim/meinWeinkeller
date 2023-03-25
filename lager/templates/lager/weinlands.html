@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Weinländer
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-extended">
+    <p></p>
+        <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+                <a href="{% url 'lager:add_weinland' %}" class="btn btn-secondary">Neues Land anlegen</a>
+            </div>
+        </div>
+    <p></p>
+    <h2>Liste der Weinländer</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Kontinent</th>
+        <th>Land</th>
+      </tr>
+    </thead>
+          <tbody>
+            {% for weinland in weinlands_list %}
+              <tr>
+                <td>{{weinland.kontinent}}</td>
+                  <td><a href="{% url 'lager:edit_weinland' weinland.id %}" class="link-secondary">{{weinland.land}}</a></td>
+              </tr>
+            {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

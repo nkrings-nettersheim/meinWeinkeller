@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Rebsorten
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-extended">
+    <p></p>
+        <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+                <a href="{% url 'lager:add_rebsorte' %}" class="btn btn-secondary">Neue Rebsorte anlegen</a>
+            </div>
+        </div>
+    <p></p>
+    <h2>Liste der Rebsorten</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Rebsorte</th>
+      </tr>
+    </thead>
+          <tbody>
+            {% for rebsorte in rebsorten_list %}
+              <tr>
+                  <td><a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="link-secondary">{{rebsorte.rebsorte}}</a></td>
+              </tr>
+            {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

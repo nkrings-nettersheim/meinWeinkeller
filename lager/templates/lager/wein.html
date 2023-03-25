@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Wein {{ wein.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container container_extend">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="{% url 'lager:list_weine' %}" class="btn btn-secondary">Liste Weine</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:edit_wein' wein.id %}" class="btn btn-secondary">Wein ändern</a>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm">
+            <h4>Wein</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Name:</div>
+        </div>
+        <div class="col-sm-6">
+            <strong>{{ wein.name }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Weinland:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ wein.weinland }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Region:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ wein.region }}</strong>
+          </div>
+    </div>
+</div>
+{% endblock %}
