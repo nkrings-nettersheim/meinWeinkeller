@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Erzeuger {{ erzeuger.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container container_extend">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="{% url 'lager:list_erzeugers' %}" class="btn btn-secondary">Liste Erzeuger</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="btn btn-secondary">Erzeuger ändern</a>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm">
+            <h4>Erzeuger</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Erzeuger:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.name }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Inhaber:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.inhaber }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Adresse:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.strasse }}, {{ erzeuger.plz }} {{ erzeuger.ort }}, {{ erzeuger.land }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Telefon:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.telefon }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">E-Mail:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.email }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Ansprechpartner:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.ansprechpartner }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Telefon des Asp:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.asp_telefon }}</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">E-Mail des Asp:</div>
+        </div>
+        <div class="col-sm-6">
+             <strong>{{ erzeuger.asp_email }}</strong>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

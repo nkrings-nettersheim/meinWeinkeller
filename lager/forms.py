@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Weinland, Region, Rebsorte, Wein, Jahrgang
+from .models import Weinland, Region, Rebsorte, Wein, Jahrgang, Erzeuger, Geschmacksrichtung, Weinart
 
 
 class WeinlandForm(forms.ModelForm):
@@ -38,17 +38,23 @@ class WeinlandForm(forms.ModelForm):
 
 class RegionForm(forms.ModelForm):
     region = forms.CharField(required=True,
-                           max_length=50,
-                           widget=forms.TextInput(
-                               attrs={
-                                   'class': 'form-control',
-                                   'autofocus': 'autofocus',
-                                   'placeholder': 'Region eingeben ...'
-                               }
-                           )
-                           )
+                             max_length=50,
+                             widget=forms.TextInput(
+                                 attrs={
+                                     'class': 'form-control',
+                                     'autofocus': 'autofocus',
+                                     'placeholder': 'Region eingeben ...'
+                                 }
+                             )
+                             )
 
-    weinland = forms.ModelChoiceField(queryset=Weinland.objects.all().order_by('land'))
+    weinland = forms.ModelChoiceField(queryset=Weinland.objects.all().order_by('land'),
+                                      widget=forms.Select(
+                                          attrs={
+                                              'class': 'form-control',
+                                          }
+                                      ),
+                                      empty_label='Wähle das Weinland aus')
 
     class Meta:
         model = Region
@@ -60,15 +66,15 @@ class RegionForm(forms.ModelForm):
 
 class RebsorteForm(forms.ModelForm):
     rebsorte = forms.CharField(required=True,
-                           max_length=50,
-                           widget=forms.TextInput(
-                               attrs={
-                                   'class': 'form-control',
-                                   'autofocus': 'autofocus',
-                                   'placeholder': 'Rebsorte eingeben ...'
-                               }
-                           )
-                           )
+                               max_length=50,
+                               widget=forms.TextInput(
+                                   attrs={
+                                       'class': 'form-control',
+                                       'autofocus': 'autofocus',
+                                       'placeholder': 'Rebsorte eingeben ...'
+                                   }
+                               )
+                               )
 
     class Meta:
         model = Rebsorte
@@ -78,8 +84,89 @@ class RebsorteForm(forms.ModelForm):
 
 
 class WeinForm(forms.ModelForm):
+    name = forms.CharField(required=True,
+                           max_length=50,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'autofocus': 'autofocus',
+                                   'placeholder': 'Name des Weins eingeben ...'
+                               }
+                           )
+                           )
 
-    jahrgang = forms.ModelChoiceField(queryset=Jahrgang.objects.all().order_by('-jahrgang'))
+    weinland = forms.ModelChoiceField(queryset=Weinland.objects.all().order_by('kontinent', 'land'),
+                                      widget=forms.Select(
+                                          attrs={
+                                              'class': 'form-control',
+                                          }
+                                      ),
+                                      empty_label='Wähle das Herkunftsland aus'
+                                      )
+
+    region = forms.ModelChoiceField(queryset=Region.objects.all().order_by('region'),
+                                    widget=forms.Select(
+                                        attrs={
+                                            'class': 'form-control',
+                                        }
+                                    ),
+                                    empty_label='Wähle die Region aus'
+                                    )
+
+    rebsorte = forms.ModelChoiceField(queryset=Rebsorte.objects.all().order_by('rebsorte'),
+                                      widget=forms.Select(
+                                          attrs={
+                                              'class': 'form-control',
+                                          }
+                                      ),
+                                      empty_label='Wähle die Reborte aus'
+                                      )
+
+    weinart = forms.ModelChoiceField(queryset=Weinart.objects.all().order_by('weinart'),
+                                     widget=forms.Select(
+                                         attrs={
+                                             'class': 'form-control',
+                                         }
+                                     ),
+                                     empty_label='Wähle die Weinart aus'
+                                     )
+
+    geschmacksrichtung = forms.ModelChoiceField(
+        queryset=Geschmacksrichtung.objects.all().order_by('geschmacksrichtung'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        empty_label='Wähle die Geschmacksrichtung aus'
+    )
+
+    erzeuger = forms.ModelChoiceField(queryset=Erzeuger.objects.all().order_by('name'),
+                                      widget=forms.Select(
+                                          attrs={
+                                              'class': 'form-control',
+                                          }
+                                      ),
+                                      empty_label='Wer ist der Erzeuger?'
+                                      )
+
+    jahrgang = forms.ModelChoiceField(queryset=Jahrgang.objects.all().order_by('-jahrgang'),
+                                      widget=forms.Select(
+                                          attrs={
+                                              'class': 'form-control',
+                                          }
+                                      ),
+                                      empty_label='Wähle den Jahrgang aus'
+                                      )
+
+    bemerkung = forms.CharField(required=False,
+                                widget=forms.Textarea(
+                                    attrs={
+                                        'class': 'form-control',
+                                        'placeholder': 'Bemerkungen ...'
+                                    }
+                                )
+                                )
 
     class Meta:
         model = Wein
@@ -98,4 +185,128 @@ class WeinForm(forms.ModelForm):
             elif self.instance.pk:
                 self.fields['region'].queryset = self.instance.weinland.region_set.order_by('region')
 
+
+class ErzeugerForm(forms.ModelForm):
+    name = forms.CharField(required=True,
+                           max_length=50,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'autofocus': 'autofocus',
+                                   'placeholder': 'Name des Erzeugers eingeben ...'
+                               }
+                           )
+                           )
+
+    inhaber = forms.CharField(required=False,
+                              max_length=50,
+                              widget=forms.TextInput(
+                                  attrs={
+                                      'class': 'form-control',
+                                      'autofocus': 'autofocus',
+                                      'placeholder': 'Name des Inhabers eingeben ...'
+                                  }
+                              )
+                              )
+
+    strasse = forms.CharField(required=False,
+                              max_length=50,
+                              widget=forms.TextInput(
+                                  attrs={
+                                      'class': 'form-control',
+                                      'autofocus': 'autofocus',
+                                      'placeholder': 'Strasse/Hausnummer eingeben ...'
+                                  }
+                              )
+                              )
+
+    plz = forms.CharField(required=False,
+                          max_length=10,
+                          widget=forms.TextInput(
+                              attrs={
+                                  'class': 'form-control',
+                                  'autofocus': 'autofocus',
+                                  'placeholder': 'PLZ eingeben ...'
+                              }
+                          )
+                          )
+
+    ort = forms.CharField(required=False,
+                          max_length=50,
+                          widget=forms.TextInput(
+                              attrs={
+                                  'class': 'form-control',
+                                  'autofocus': 'autofocus',
+                                  'placeholder': 'Ort eingeben ...'
+                              }
+                          )
+                          )
+
+    land = forms.CharField(required=False,
+                           max_length=50,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'autofocus': 'autofocus',
+                                   'placeholder': 'Land eingeben ...'
+                               }
+                           )
+                           )
+
+    telefon = forms.CharField(required=False,
+                              max_length=50,
+                              widget=forms.TextInput(
+                                  attrs={
+                                      'class': 'form-control',
+                                      'autofocus': 'autofocus',
+                                      'placeholder': 'Telefon eingeben ...'
+                                  }
+                              )
+                              )
+
+    email = forms.EmailField(required=False,
+                             max_length=254,
+                             widget=forms.EmailInput(
+                                 attrs={
+                                     'class': 'form-control',
+                                     'placeholder': 'E-Mail Adresse eingeben ...'
+                                 }
+                             )
+                             )
+
+    ansprechpartner = forms.CharField(required=False,
+                                      max_length=50,
+                                      widget=forms.TextInput(
+                                          attrs={
+                                              'class': 'form-control',
+                                              'autofocus': 'autofocus',
+                                              'placeholder': 'Ansprechpartner eingeben ...'
+                                          }
+                                      )
+                                      )
+
+    asp_telefon = forms.CharField(required=False,
+                                  max_length=20,
+                                  widget=forms.TextInput(
+                                      attrs={
+                                          'class': 'form-control',
+                                          'autofocus': 'autofocus',
+                                          'placeholder': 'Telefon des Ansprechpartners eingeben ...'
+                                      }
+                                  )
+                                  )
+
+    asp_email = forms.EmailField(required=False,
+                                 max_length=254,
+                                 widget=forms.EmailInput(
+                                     attrs={
+                                         'class': 'form-control',
+                                         'placeholder': 'E-Mail Adresse des Ansprechpartners eingeben ...'
+                                     }
+                                 )
+                                 )
+
+    class Meta:
+        model = Erzeuger
+        fields = '__all__'
 

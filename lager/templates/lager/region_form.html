@@ -16,14 +16,14 @@
                 <h4>Region ändern oder Neue anlegen:</h4>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.region.id_for_label }}" class="col-sm-2 control-label">Region:</label>
             <div class="col-sm-6">
                  {{ form.region }}
                 <div class="text-danger">{{ form.region.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.weinland.id_for_label }}" class="col-sm-2 control-label">Weinland:</label>
             <div class="col-sm-6">
                  {{ form.weinland }}
@@ -31,6 +31,9 @@
             </div>
         </div>
         <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_regionen' %}">zurück</a>
+            </div>
             <div class="col-sm-offset-2 col-sm-6">
                 <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
             </div>

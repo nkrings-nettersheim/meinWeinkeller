@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from django.views import generic
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Weinland, Region, Rebsorte, Wein
-from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm
+from .models import Weinland, Region, Rebsorte, Wein, Erzeuger
+from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm, ErzeugerForm
 
 logger = logging.getLogger(__name__)
 
@@ -201,6 +201,53 @@ def wein(request, id=id):
     try:
         wein_result = Wein.objects.get(id=id)
         return render(request, 'lager/wein.html', {'wein': wein_result})
+    except ObjectDoesNotExist:
+        return redirect('/lager/')
+
+
+##########################################################################
+# Area Erzeuger create and change
+##########################################################################
+def add_erzeuger(request):
+    if request.method == "POST":
+        form = ErzeugerForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.save()
+
+            return redirect('/lager/erzeuger/' + str(item.id) + '/')
+    else:
+        form = ErzeugerForm()
+    return render(request, 'lager/erzeuger_form.html', {'form': form})
+
+
+def edit_erzeuger(request, id=None):
+    item = get_object_or_404(Erzeuger, id=id)
+    form = ErzeugerForm(request.POST or None, instance=item)
+    #assert False
+    if form.is_valid():
+        form.save()
+        return redirect('/lager/erzeuger/' + str(item.id) + '/')
+
+    form.id = item.id
+    return render(request, 'lager/erzeuger_form.html', {'form': form})
+
+
+# Liste der Weine
+class ErzeugersView(generic.ListView):
+    model = Erzeuger
+    template_name = 'lager/erzeugers.html'
+    context_object_name = 'erzeugers_list'
+
+    def get_queryset(self):
+        return Erzeuger.objects.all().order_by('land', 'name')
+
+
+# Anzeige einzelne Region
+def erzeuger(request, id=id):
+    try:
+        erzeuger_result = Erzeuger.objects.get(id=id)
+        return render(request, 'lager/erzeuger.html', {'erzeuger': erzeuger_result})
     except ObjectDoesNotExist:
         return redirect('/lager/')
 

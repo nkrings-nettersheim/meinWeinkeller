@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Erzeuger erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <p></p>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h4>Erzeuger erfassen oder neu anlegen:</h4>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.name.id_for_label }}" class="col-sm-2 control-label">Name des Erzeugers:</label>
+            <div class="col-sm-6">
+                 {{ form.name }}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.inhaber.id_for_label }}" class="col-sm-2 control-label">Inhaber:</label>
+            <div class="col-sm-6">
+                 {{ form.inhaber }}
+                <div class="text-danger">{{ form.inhaber.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.strasse.id_for_label }}" class="col-sm-2 control-label">Strasse/HsNr:</label>
+            <div class="col-sm-6">
+                 {{ form.strasse }}
+                <div class="text-danger">{{ form.strasse.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.plz.id_for_label }}" class="col-sm-2 control-label">PLZ:</label>
+            <div class="col-sm-6">
+                 {{ form.plz }}
+                <div class="text-danger">{{ form.plz.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.ort.id_for_label }}" class="col-sm-2 control-label">Ort:</label>
+            <div class="col-sm-6">
+                 {{ form.ort }}
+                <div class="text-danger">{{ form.ort.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.land.id_for_label }}" class="col-sm-2 control-label">Land:</label>
+            <div class="col-sm-6">
+                 {{ form.land }}
+                <div class="text-danger">{{ form.land.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.telefon.id_for_label }}" class="col-sm-2 control-label">Telefon:</label>
+            <div class="col-sm-6">
+                 {{ form.telefon }}
+                <div class="text-danger">{{ form.telefon.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.email.id_for_label }}" class="col-sm-2 control-label">E-Mail:</label>
+            <div class="col-sm-6">
+                 {{ form.email }}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            </div>
+        </div>
+            <div class="form-group row margin-bottom">
+            <label for="{{ form.ansprechpartner.id_for_label }}" class="col-sm-2 control-label">Ansprechpartner:</label>
+            <div class="col-sm-6">
+                 {{ form.ansprechpartner }}
+                <div class="text-danger">{{ form.ansprechpartner.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.asp_telefon.id_for_label }}" class="col-sm-2 control-label">Telefon des Asp:</label>
+            <div class="col-sm-6">
+                 {{ form.asp_telefon }}
+                <div class="text-danger">{{ form.asp_telefon.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.asp_email.id_for_label }}" class="col-sm-2 control-label">E-Mail des Asp:</label>
+            <div class="col-sm-6">
+                 {{ form.asp_email }}
+                <div class="text-danger">{{ form.asp_email.errors }}</div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_erzeugers' %}">zurück</a>
+            </div>
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</content>
+{% endblock %}
+
+

@@ -6,87 +6,90 @@
 
 {% block content %}
 <content>
+    <div class="container mt-3">
     <form method="POST" enctype="multipart/form-data" action="" id="weinForm" data-regions-url="{% url 'lager:ajax_load_regions' %}">
         <p></p>
         {% csrf_token %}
         {{ form.non_field_errors }}
-    <div class="container">
+
         <div class="row">
             <div class="col-sm">
                 <h4>Wein ändern oder Neuen anlegen:</h4>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.name.id_for_label }}" class="col-sm-2 control-label">Name:</label>
             <div class="col-sm-6">
                  {{ form.name }}
                 <div class="text-danger">{{ form.name.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.weinland.id_for_label }}" class="col-sm-2 control-label">Weinland:</label>
             <div class="col-sm-6">
                  {{ form.weinland }}
                 <div class="text-danger">{{ form.weinland.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.region.id_for_label }}" class="col-sm-2 control-label">Region:</label>
             <div class="col-sm-6">
                  {{ form.region }}
                 <div class="text-danger">{{ form.region.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.rebsorte.id_for_label }}" class="col-sm-2 control-label">Rebsorte:</label>
             <div class="col-sm-6">
                  {{ form.rebsorte }}
                 <div class="text-danger">{{ form.rebsorte.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
             <label for="{{ form.weinart.id_for_label }}" class="col-sm-2 control-label">Weinart:</label>
             <div class="col-sm-6">
                  {{ form.weinart }}
                 <div class="text-danger">{{ form.weinart.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="{{ form.jahrgang.id_for_label }}" class="col-sm-2 control-label">jahrgang:</label>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.jahrgang.id_for_label }}" class="col-sm-2 control-label">Jahrgang:</label>
             <div class="col-sm-6">
                  {{ form.jahrgang }}
                 <div class="text-danger">{{ form.jahrgang.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="{{ form.geschmacksrichtung.id_for_label }}" class="col-sm-2 control-label">geschmacksrichtung:</label>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.geschmacksrichtung.id_for_label }}" class="col-sm-2 control-label">Geschmacksrichtung:</label>
             <div class="col-sm-6">
                  {{ form.geschmacksrichtung }}
                 <div class="text-danger">{{ form.geschmacksrichtung.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="{{ form.erzeuger.id_for_label }}" class="col-sm-2 control-label">erzeuger:</label>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.erzeuger.id_for_label }}" class="col-sm-2 control-label">Erzeuger:</label>
             <div class="col-sm-6">
                  {{ form.erzeuger }}
                 <div class="text-danger">{{ form.erzeuger.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="{{ form.bemerkung.id_for_label }}" class="col-sm-2 control-label">bemerkung:</label>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.bemerkung.id_for_label }}" class="col-sm-2 control-label">Bemerkung:</label>
             <div class="col-sm-6">
                  {{ form.bemerkung }}
                 <div class="text-danger">{{ form.bemerkung.errors }}</div>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row margin-bottom">
+            <div class="col-sm-offset-2 col-sm-6">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_weine' %}">zurück</a>
+            </div>
             <div class="col-sm-offset-2 col-sm-6">
                 <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
             </div>
         </div>
-    </div>
     </form>
-
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
     $("#id_weinland").change(function () {

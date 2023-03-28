@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Erzeuger
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-extended">
+    <p></p>
+        <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+                <a href="{% url 'lager:add_erzeuger' %}" class="btn btn-secondary">Neuen Erzeuger anlegen</a>
+            </div>
+        </div>
+    <p></p>
+    <h2>Liste der Erzeuger</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Erzeuger</th>
+      </tr>
+    </thead>
+          <tbody>
+            {% for erzeuger in erzeugers_list %}
+              <tr>
+                  <td><a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="link-secondary">{{erzeuger.name}}</a></td>
+              </tr>
+            {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

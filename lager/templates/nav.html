@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="javascript:void(0)">mein Weinkeller</a>
+    <a class="navbar-brand" href="{% url 'lager:index' %}">mein Weinkeller</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -13,6 +13,9 @@
           <a class="nav-link" href="javascript:void(0)">einlagern</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">umlagern</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="javascript:void(0)">auslagern</a>
         </li>
           <li class="nav-item dropdown">
@@ -21,6 +24,7 @@
             <li><a class="dropdown-item" href="{% url 'lager:list_weinlands' %}">Weinländer</a></li>
             <li><a class="dropdown-item" href="{% url 'lager:list_regionen' %}">Regionen</a></li>
             <li><a class="dropdown-item" href="{% url 'lager:list_rebsorten' %}">Rebsorten</a></li>
+            <li><a class="dropdown-item" href="{% url 'lager:list_erzeugers' %}">Erzeuger</a></li>
             <li><a class="dropdown-item" href="{% url 'lager:list_weine' %}">Weine</a></li>
           </ul>
         </li>
