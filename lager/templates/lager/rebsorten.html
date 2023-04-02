@@ -20,12 +20,17 @@
     <thead>
       <tr>
         <th>Rebsorte</th>
+          <th></th>
       </tr>
     </thead>
           <tbody>
             {% for rebsorte in rebsorten_list %}
               <tr>
-                  <td><a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="link-secondary">{{rebsorte.rebsorte}}</a></td>
+                  <td>{{rebsorte.rebsorte}}</td>
+                  <td class="col-sm-1">
+                      <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
+                      <a href="{% url 'lager:rebsorte' rebsorte.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                  </td>
               </tr>
             {% endfor %}
     </tbody>

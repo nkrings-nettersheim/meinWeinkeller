@@ -1,22 +1,25 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'lager:index' %}">mein Weinkeller</a>
+    <a class="navbar-brand" href="{% url 'lager:list_bestands' %}">mein Weinkeller</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="mynavbar">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">erfassen</a>
+          <a class="nav-link" href="{% url 'lager:list_bestands' %}">Bestand</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">einlagern</a>
+          <a class="nav-link" href="{% url 'lager:list_weine' %}">Weine</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'lager:add_wein' %}">Wein erfassen</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="javascript:void(0)">umlagern</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">auslagern</a>
+          <a class="nav-link" href="{% url 'lager:list_bestands' %}">auslagern</a>
         </li>
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Basisdaten</a>
@@ -26,6 +29,7 @@
             <li><a class="dropdown-item" href="{% url 'lager:list_rebsorten' %}">Rebsorten</a></li>
             <li><a class="dropdown-item" href="{% url 'lager:list_erzeugers' %}">Erzeuger</a></li>
             <li><a class="dropdown-item" href="{% url 'lager:list_weine' %}">Weine</a></li>
+            <li><a class="dropdown-item" href="{% url 'lager:list_lagers' %}">Lager managen</a></li>
           </ul>
         </li>
       </ul>

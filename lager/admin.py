@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Weinland, Region, Jahrgang, Geschmacksrichtung, Rebsorte, Weinart, Erzeuger, Wein, \
-    Qualitaetsstufe
+    Qualitaetsstufe, LagerTyp, Lager, Bestand
 
 
 admin.site.site_header = "Admin Bereich 'Mein Weinkeller'"
@@ -15,3 +15,6 @@ admin.site.register(Weinart)
 admin.site.register(Erzeuger)
 admin.site.register(Wein)
 admin.site.register(Qualitaetsstufe)
+admin.site.register(LagerTyp)
+admin.site.register(Lager)
+admin.site.register(Bestand)

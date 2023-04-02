@@ -10,6 +10,7 @@
         <p></p>
         {% csrf_token %}
         {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden }}
     <div class="container">
         <div class="row">
             <div class="col-sm">
@@ -24,12 +25,20 @@
             </div>
         </div>
         <div class="form-group row margin-bottom">
-            <label for="{{ form.kontinent.id_for_label }}" class="col-sm-2 control-label">Kontinant:</label>
+            <label for="{{ form.kontinent.id_for_label }}" class="col-sm-2 control-label">Kontinent:</label>
             <div class="col-sm-6">
                  {{ form.kontinent }}
                 <div class="text-danger">{{ form.kontinent.errors }}</div>
             </div>
         </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.bemerkung.id_for_label }}" class="col-sm-2 control-label">Bemerkung:</label>
+            <div class="col-sm-6">
+                 {{ form.bemerkung }}
+                <div class="text-danger">{{ form.bemerkung.errors }}</div>
+            </div>
+        </div>
+
         <div class="form-group row margin-bottom">
             <div class="col-sm-offset-2 col-sm-6">
                 <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_weinlands' %}">zurück</a>

@@ -4,7 +4,7 @@ from . import views
 app_name = 'lager'
 
 urlpatterns = [
-    path('', views.WeineView.as_view(), name='index'),
+    path('', views.index, name='index'),
     path('impressum/', views.impressum, name='impressum'),
     path('datenschutz/', views.datenschutz, name='datenschutz'),
 
@@ -32,6 +32,18 @@ urlpatterns = [
     path('edit/erzeuger/<id>/', views.edit_erzeuger, name='edit_erzeuger'),
     path('list/erzeuger/', views.ErzeugersView.as_view(), name='list_erzeugers'),
     path('erzeuger/<id>/', views.erzeuger, name='erzeuger'),
+
+    path('add/lager/', views.add_lager, name='add_lager'),
+    path('edit/lager/<id>/', views.edit_lager, name='edit_lager'),
+    path('list/lager/', views.LagersView.as_view(), name='list_lagers'),
+    path('lager/<id>/', views.lager, name='lager'),
+
+    path('add/bestand/', views.add_bestand, name='add_bestand'),
+    path('edit/bestand/<id>/', views.edit_bestand, name='edit_bestand'),
+    path('list/bestand/', views.BestandsView.as_view(), name='list_bestands'),
+    path('bestand/<id>/', views.bestand, name='bestand'),
+
+    path('add/weinkeller/', views.add_weinkeller, name='add_weinkeller'),
 
     path('ajax/load-regionen/', views.ajax_load_regions, name='ajax_load_regions'),  # AJAX
 ]

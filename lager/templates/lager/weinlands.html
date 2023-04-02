@@ -19,15 +19,20 @@
     <table class="table">
     <thead>
       <tr>
-        <th>Kontinent</th>
-        <th>Land</th>
+        <th class="col-sm-3">Kontinent</th>
+        <th class="col-sm-6">Land</th>
+        <th class="col-sm-1"></th>
       </tr>
     </thead>
           <tbody>
             {% for weinland in weinlands_list %}
               <tr>
-                <td>{{weinland.kontinent}}</td>
-                  <td><a href="{% url 'lager:edit_weinland' weinland.id %}" class="link-secondary">{{weinland.land}}</a></td>
+                  <td>{{weinland.kontinent}}</td>
+                  <td>{{weinland.land}}</td>
+                  <td class="col-sm-1">
+                      <a href="{% url 'lager:edit_weinland' weinland.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
+                      <a href="{% url 'lager:weinland' weinland.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                  </td>
               </tr>
             {% endfor %}
     </tbody>

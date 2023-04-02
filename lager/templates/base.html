@@ -7,7 +7,8 @@
 
     {% load bootstrap5 %}
     {% bootstrap_css %}
-
+    {% block extrahead%}{% endblock %}
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'lager/css/base.css' %}">
 
     {% if user.is_authenticated %}
@@ -20,6 +21,8 @@
     {% else %}
         <meta name="Entwicklung" content="Entwicklung">
     {% endif %}
+
+    <title>{% block title %}Mein Weinkeller{% endblock %}</title>
 </head>
 
 <body class="d-flex flex-column min-vh-100">

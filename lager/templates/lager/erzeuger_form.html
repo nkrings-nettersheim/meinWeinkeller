@@ -10,6 +10,7 @@
         <p></p>
         {% csrf_token %}
         {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden }}
     <div class="container">
         <div class="row">
             <div class="col-sm">
@@ -72,7 +73,14 @@
                 <div class="text-danger">{{ form.email.errors }}</div>
             </div>
         </div>
-            <div class="form-group row margin-bottom">
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.website.id_for_label }}" class="col-sm-2 control-label">Website:</label>
+            <div class="col-sm-6">
+                 {{ form.website }}
+                <div class="text-danger">{{ form.website.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
             <label for="{{ form.ansprechpartner.id_for_label }}" class="col-sm-2 control-label">Ansprechpartner:</label>
             <div class="col-sm-6">
                  {{ form.ansprechpartner }}

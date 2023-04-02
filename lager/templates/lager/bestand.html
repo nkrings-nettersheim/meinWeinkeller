@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Bestand
+{% endblock %}
+
+{% block content %}
+
+<div class="container container_extend">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="{% url 'lager:list_bestands' %}" class="btn btn-secondary">Bestand</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:edit_bestand' bestand.id %}" class="btn btn-secondary">Bestand ändern</a>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm">
+            <h4>Bestand</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Wein:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.wein }} </strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Lagerort:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.lager }} </strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Spalte:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.col_value }} </strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Reihe:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.row_value }} </strong>
+          </div>
+    </div>
+    {% if bestand.links %}
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Links:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.links }} </strong>
+          </div>
+    </div>
+    {% endif %}
+    {% if bestand.rechts %}
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Rechts:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.rechts }} </strong>
+          </div>
+    </div>
+    {% endif %}
+
+    {% if bestand.oben %}
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Oben:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.oben }} </strong>
+          </div>
+    </div>
+    {% endif %}
+
+    {% if bestand.unten %}
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Unten:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.unten }} </strong>
+          </div>
+    </div>
+    {% endif %}
+
+    {% if bestand.vorne %}
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Vorne:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.vorne }} </strong>
+          </div>
+    </div>
+    {% endif %}
+
+    {% if bestand.hinten %}
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Hinten:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.hinten }} </strong>
+          </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Menge:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ bestand.menge }}</strong>
+          </div>
+    </div>
+</div>
+{% endblock %}

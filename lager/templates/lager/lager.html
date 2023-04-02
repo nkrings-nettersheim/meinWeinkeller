@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Lager
+{% endblock %}
+
+{% block content %}
+
+<div class="container container_extend">
+    <p></p>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="{% url 'lager:list_lagers' %}" class="btn btn-secondary">Liste Lager</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:edit_lager' lager.id %}" class="btn btn-secondary">Lager ändern</a>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm">
+            <h4>Lager</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Lager:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ lager.name }}</strong>
+          </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Lager-Typ:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ lager.typ }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Spalten-Anzahl:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ lager.cols }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Reihen-Anzahl:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ lager.rows }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Max. Kapa je Zelle!:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ lager.max_kapa }} Flaschen</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Links/Rechts möglich:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{% if lager.links_rechts %}{{ lager.links_rechts }}{% endif %}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Oben/Unten möglich:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{% if lager.links_rechts %}{{ lager.oben_unten }}{% endif %}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Vorne/Hinten:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{% if lager.links_rechts %}{{ lager.vorne_hinten }}{% endif %}</strong>
+          </div>
+    </div>
+</div>
+{% endblock %}

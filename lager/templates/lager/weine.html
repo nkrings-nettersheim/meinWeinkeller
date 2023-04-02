@@ -31,7 +31,11 @@
                 <td>{{wein.weinland}}</td>
                 <td>{{wein.region}}</td>
                 <td>{{wein.jahrgang}}er</td>
-                <td><a href="{% url 'lager:edit_wein' wein.id %}" class="link-secondary">{{wein.name}}</a></td>
+                <td>{{wein.name}}</td>
+                <td>
+                    <a href="{% url 'lager:edit_wein' wein.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
+                    <a href="{% url 'lager:wein' wein.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                </td>
               </tr>
             {% endfor %}
     </tbody>

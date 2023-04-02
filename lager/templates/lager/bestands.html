@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Bestand
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-extended">
+    <p></p>
+        <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+                <a href="{% url 'lager:add_bestand' %}" class="btn btn-secondary">Neuen Bestand anlegen</a>
+            </div>
+        </div>
+    <p></p>
+    <h2>Liste der Bestände</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Wein</th>
+          <th>Lagerort</th>
+          <th>Spalte</th>
+          <th>Reihe</th>
+          <th>Menge</th>
+      </tr>
+    </thead>
+          <tbody>
+            {% for bestand in bestands_list %}
+              <tr>
+                  <td>{{bestand.wein}}</td>
+                  <td>{{bestand.lager}}</td>
+                  <td>{{bestand.col_value}}</td>
+                  <td>{{bestand.row_value}}</td>
+                  <td>{{bestand.menge}}</td>
+                 <td>
+                      <a href="{% url 'lager:edit_bestand' bestand.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
+                      <a href="{% url 'lager:bestand' bestand.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                  </td>
+              </tr>
+
+            {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

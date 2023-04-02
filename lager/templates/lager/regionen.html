@@ -27,7 +27,11 @@
             {% for region in regionen_list %}
               <tr>
                 <td>{{region.weinland}}</td>
-                  <td><a href="{% url 'lager:edit_region' region.id %}" class="link-secondary">{{region.region}}</a></td>
+                  <td>{{region.region}}</td>
+                  <td class="col-sm-1">
+                      <a href="{% url 'lager:edit_region' region.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
+                      <a href="{% url 'lager:region' region.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                  </td>
               </tr>
             {% endfor %}
     </tbody>

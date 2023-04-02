@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
+
+{% endblock %}
+
 {% block title %}
     Mein Weinkeller - Erzeuger
 {% endblock %}
@@ -20,12 +24,24 @@
     <thead>
       <tr>
         <th>Erzeuger</th>
+        <th>Inhaber</th>
+          <th>Ort</th>
+          <th>Land</th>
+          <th>Website</th>
       </tr>
     </thead>
           <tbody>
             {% for erzeuger in erzeugers_list %}
               <tr>
-                  <td><a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="link-secondary">{{erzeuger.name}}</a></td>
+                  <td>{{erzeuger.name}}</td>
+                  <td>{{erzeuger.inhaber}}</td>
+                  <td>{{erzeuger.ort}}</td>
+                  <td>{{erzeuger.land}}</td>
+                  <td><a class="links" href="{{erzeuger.website}}" target="_blank">{{erzeuger.website}}</a></td>
+                  <td>
+                      <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
+                      <a href="{% url 'lager:erzeuger' erzeuger.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                  </td>
               </tr>
             {% endfor %}
     </tbody>

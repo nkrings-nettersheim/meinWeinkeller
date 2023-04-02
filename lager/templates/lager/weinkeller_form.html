@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Weinkeller erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <p></p>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h4>{% if user.is_authenticated %} Hallo {{ user.first_name }}! {% endif %}</h4>
+                <p>Als erstes muss ein neuer Weinkeller angelegt werden:</p>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <div class="col-sm-6">
+                 {{ form.weinkeller }}
+                <div class="text-danger">{{ form.weinkeller.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</content>
+{% endblock %}
+
+

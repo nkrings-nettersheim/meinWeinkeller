@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Lager erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <p></p>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden}}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h4>Lager erfassen oder neu anlegen:</h4>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.lager.id_for_label }}" class="col-sm-2 control-label">Lager:</label>
+            <div class="col-sm-6">
+                 {{ form.name }}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.typ.id_for_label }}" class="col-sm-2 control-label">Regaltyp:</label>
+            <div class="col-sm-6">
+                 {{ form.typ }}
+                <div class="text-danger">{{ form.typ.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.cols.id_for_label }}" class="col-sm-2 control-label">Spalten:</label>
+            <div class="col-sm-6">
+                 {{ form.cols }}
+                <div class="text-danger">{{ form.cols.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.rows.id_for_label }}" class="col-sm-2 control-label">Zeilen:</label>
+            <div class="col-sm-6">
+                 {{ form.rows }}
+                <div class="text-danger">{{ form.rows.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.max_kapa.id_for_label }}" class="col-sm-2 control-label">Max. Kapazität (ca.) (je Zelle!):</label>
+            <div class="col-sm-6">
+                 {{ form.max_kapa }}
+                <div class="text-danger">{{ form.max_kapa.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.links_rechts.id_for_label }}" class="col-sm-2 control-label">Links/rechts Ablage möglich:</label>
+            <div class="col-sm-6">
+                 {{ form.links_rechts }}
+                <div class="text-danger">{{ form.links_rechts.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.oben_unten.id_for_label }}" class="col-sm-2 control-label">Oben/unten Ablage möglich:</label>
+            <div class="col-sm-6">
+                 {{ form.oben_unten }}
+                <div class="text-danger">{{ form.oben_unten.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.vorne_hinten.id_for_label }}" class="col-sm-2 control-label">Vorne/hinten Ablage möglich:</label>
+            <div class="col-sm-6">
+                 {{ form.vorne_hinten }}
+                <div class="text-danger">{{ form.vorne_hinten.errors }}</div>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_lagers' %}">zurück</a>
+            </div>
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</content>
+{% endblock %}
+
+

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'lager',
     'bootstrap5',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [

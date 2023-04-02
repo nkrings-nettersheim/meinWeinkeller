@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Bestand erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <p></p>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden}}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h4>Bestand erfassen oder neu anlegen:</h4>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.wein.id_for_label }}" class="col-sm-2 control-label">Wein:</label>
+            <div class="col-sm-6">
+                 {{ form.wein }}
+                <div class="text-danger">{{ form.wein.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.lager.id_for_label }}" class="col-sm-2 control-label">Lager:</label>
+            <div class="col-sm-6">
+                 {{ form.lager }}
+                <div class="text-danger">{{ form.lager.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.col_value.id_for_label }}" class="col-sm-2 control-label">Spalte:</label>
+            <div class="col-sm-6">
+                 {{ form.col_value}}
+                <div class="text-danger">{{ form.col_value.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.row_value.id_for_label }}" class="col-sm-2 control-label">Zeile:</label>
+            <div class="col-sm-6">
+                 {{ form.row_value }}
+                <div class="text-danger">{{ form.row_value.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.links.id_for_label }}" class="col-sm-2 control-label">Links:</label>
+            <div class="col-sm-6">
+                 {{ form.links }}
+                <div class="text-danger">{{ form.links.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.rechts.id_for_label }}" class="col-sm-2 control-label">Rechts:</label>
+            <div class="col-sm-6">
+                 {{ form.rechts }}
+                <div class="text-danger">{{ form.rechts.errors }}</div>
+            </div>
+        </div>        
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.oben.id_for_label }}" class="col-sm-2 control-label">Oben:</label>
+            <div class="col-sm-6">
+                 {{ form.oben }}
+                <div class="text-danger">{{ form.oben.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.unten.id_for_label }}" class="col-sm-2 control-label">Unten:</label>
+            <div class="col-sm-6">
+                 {{ form.unten }}
+                <div class="text-danger">{{ form.unten.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.hinten.id_for_label }}" class="col-sm-2 control-label">Hinten:</label>
+            <div class="col-sm-6">
+                 {{ form.hinten }}
+                <div class="text-danger">{{ form.hinten.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.vorne.id_for_label }}" class="col-sm-2 control-label">Vorne:</label>
+            <div class="col-sm-6">
+                 {{ form.vorne }}
+                <div class="text-danger">{{ form.vorne.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.menge.id_for_label }}" class="col-sm-2 control-label">Menge:</label>
+            <div class="col-sm-6">
+                 {{ form.menge }}
+                <div class="text-danger">{{ form.menge.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-6">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_bestands' %}">zurück</a>
+            </div>
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</content>
+{% endblock %}
+
+

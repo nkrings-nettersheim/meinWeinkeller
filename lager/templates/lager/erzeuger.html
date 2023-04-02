@@ -44,7 +44,7 @@
             <div class="small inline">Adresse:</div>
         </div>
         <div class="col-sm-6">
-             <strong>{{ erzeuger.strasse }}, {{ erzeuger.plz }} {{ erzeuger.ort }}, {{ erzeuger.land }}</strong>
+             <strong>{{ erzeuger.strasse }}{% if erzeuger.plz %},{% endif %} {{ erzeuger.plz }} {{ erzeuger.ort }}{% if erzeuger.land %},{% endif %} {{ erzeuger.land }}</strong>
         </div>
     </div>
     <div class="row">

@@ -1,17 +1,23 @@
 import logging
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import generic
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Weinland, Region, Rebsorte, Wein, Erzeuger
-from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm, ErzeugerForm
+from .models import Weinkeller, Weinland, Region, Rebsorte, Wein, Erzeuger, Lager, Bestand
+from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm, ErzeugerForm, LagerForm, BestandForm, \
+    WeinkellerForm
 
 logger = logging.getLogger(__name__)
 
 
 def index(request):
-    return render(request, 'lager/index.html', )
+    weinkeller_data = Weinkeller.objects.filter(weinkeller_admin_id=request.user.id)
+    if weinkeller_data:
+        return redirect('list/weine')
+    else:
+        return redirect('add/weinkeller')
 
 
 def impressum(request):
@@ -27,19 +33,21 @@ def datenschutz(request):
 ##########################################################################
 def add_weinland(request):
     if request.method == "POST":
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
         form = WeinlandForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
-
-            return redirect('/lager/weinland/' + str(item.id) + '/')
+            return redirect('/lager/list/weinland/')
     else:
         form = WeinlandForm()
     return render(request, 'lager/weinland_form.html', {'form': form})
 
 
 def edit_weinland(request, id=None):
-    item = get_object_or_404(Weinland, id=id)
+    item = get_object_or_404(Weinland, id=id, weinkeller=request.user.id)
     form = WeinlandForm(request.POST or None, instance=item)
     if form.is_valid():
         form.save()
@@ -55,7 +63,7 @@ class WeinlandsView(generic.ListView):
     context_object_name = 'weinlands_list'
 
     def get_queryset(self):
-        return Weinland.objects.all().order_by('kontinent', 'land')
+        return Weinland.objects.filter(weinkeller=str(self.request.user.id)).order_by('kontinent', 'land')
 
 
 # Anzeige einzelnes Weinland
@@ -72,20 +80,23 @@ def weinland(request, id=id):
 ##########################################################################
 def add_region(request):
     if request.method == "POST":
-        form = RegionForm(request.POST)
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
+        form = RegionForm(request.POST, user=request.user.id)
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
 
             return redirect('/lager/region/' + str(item.id) + '/')
     else:
-        form = RegionForm()
+        form = RegionForm(user=request.user.id)
     return render(request, 'lager/region_form.html', {'form': form})
 
 
 def edit_region(request, id=None):
-    item = get_object_or_404(Region, id=id)
-    form = RegionForm(request.POST or None, instance=item)
+    item = get_object_or_404(Region, id=id, weinkeller=request.user.id)
+    form = RegionForm(request.POST or None, instance=item, user=request.user.id)
     if form.is_valid():
         form.save()
         return redirect('/lager/region/' + str(item.id) + '/')
@@ -100,7 +111,7 @@ class RegionView(generic.ListView):
     context_object_name = 'regionen_list'
 
     def get_queryset(self):
-        return Region.objects.all().order_by('weinland', 'region')
+        return Region.objects.filter(weinkeller=str(self.request.user.id)).order_by('weinland', 'region')
 
 
 # Anzeige einzelne Region
@@ -117,6 +128,9 @@ def region(request, id=id):
 ##########################################################################
 def add_rebsorte(request):
     if request.method == "POST":
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
         form = RebsorteForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
@@ -129,7 +143,7 @@ def add_rebsorte(request):
 
 
 def edit_rebsorte(request, id=None):
-    item = get_object_or_404(Rebsorte, id=id)
+    item = get_object_or_404(Rebsorte, id=id, weinkeller=request.user.id)
     form = RebsorteForm(request.POST or None, instance=item)
     if form.is_valid():
         form.save()
@@ -145,7 +159,7 @@ class RebsortenView(generic.ListView):
     context_object_name = 'rebsorten_list'
 
     def get_queryset(self):
-        return Rebsorte.objects.all().order_by('rebsorte')
+        return Rebsorte.objects.filter(weinkeller=str(self.request.user.id)).order_by('rebsorte')
 
 
 # Anzeige einzelne Region
@@ -162,26 +176,28 @@ def rebsorte(request, id=id):
 ##########################################################################
 def add_wein(request):
     if request.method == "POST":
-        form = WeinForm(request.POST)
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
+        form = WeinForm(request.POST, user=request.user.id)
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
 
             return redirect('/lager/wein/' + str(item.id) + '/')
     else:
-        form = WeinForm()
+        form = WeinForm(user=request.user.id)
     return render(request, 'lager/wein_form.html', {'form': form})
 
 
 def edit_wein(request, id=None):
-    item = get_object_or_404(Wein, id=id)
-    form = WeinForm(request.POST or None, instance=item)
-    #assert False
+    item = get_object_or_404(Wein, id=id, weinkeller=request.user.id)
+    form = WeinForm(request.POST or None, instance=item, user=request.user.id)
+    # assert False
     if form.is_valid():
         form.save()
         return redirect('/lager/wein/' + str(item.id) + '/')
-    else:
-        print("Fehler")
+
     form.id = item.id
     return render(request, 'lager/wein_form.html', {'form': form})
 
@@ -193,7 +209,8 @@ class WeineView(generic.ListView):
     context_object_name = 'weine_list'
 
     def get_queryset(self):
-        return Wein.objects.all().order_by('weinland', 'region', 'erzeuger', 'jahrgang', 'name')
+        return Wein.objects.filter(weinkeller=str(self.request.user.id)).order_by('weinland', 'region', 'erzeuger',
+                                                                                  'jahrgang', 'name')
 
 
 # Anzeige einzelne Region
@@ -210,21 +227,24 @@ def wein(request, id=id):
 ##########################################################################
 def add_erzeuger(request):
     if request.method == "POST":
-        form = ErzeugerForm(request.POST)
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
+        form = ErzeugerForm(request.POST, user=request.user.id)
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
 
             return redirect('/lager/erzeuger/' + str(item.id) + '/')
     else:
-        form = ErzeugerForm()
+        form = ErzeugerForm(user=request.user.id)
     return render(request, 'lager/erzeuger_form.html', {'form': form})
 
 
 def edit_erzeuger(request, id=None):
-    item = get_object_or_404(Erzeuger, id=id)
-    form = ErzeugerForm(request.POST or None, instance=item)
-    #assert False
+    item = get_object_or_404(Erzeuger, id=id, weinkeller=request.user.id)
+    form = ErzeugerForm(request.POST or None, instance=item, user=request.user.id)
+    # assert False
     if form.is_valid():
         form.save()
         return redirect('/lager/erzeuger/' + str(item.id) + '/')
@@ -240,7 +260,7 @@ class ErzeugersView(generic.ListView):
     context_object_name = 'erzeugers_list'
 
     def get_queryset(self):
-        return Erzeuger.objects.all().order_by('land', 'name')
+        return Erzeuger.objects.filter(weinkeller=str(self.request.user.id)).order_by('land', 'name')
 
 
 # Anzeige einzelne Region
@@ -252,6 +272,130 @@ def erzeuger(request, id=id):
         return redirect('/lager/')
 
 
+##########################################################################
+# Area Lager create and change
+##########################################################################
+def add_lager(request):
+    if request.method == "POST":
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
+        form = LagerForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.save()
+
+            return redirect('/lager/lager/' + str(item.id) + '/')
+    else:
+        form = LagerForm()
+    return render(request, 'lager/lager_form.html', {'form': form})
+
+
+def edit_lager(request, id=None):
+    item = get_object_or_404(Lager, id=id, weinkeller=request.user.id)
+    form = LagerForm(request.POST or None, instance=item)
+    # assert False
+    if form.is_valid():
+        form.save()
+        return redirect('/lager/lager/' + str(item.id) + '/')
+
+    form.id = item.id
+    return render(request, 'lager/lager_form.html', {'form': form})
+
+
+# Liste der Weine
+class LagersView(generic.ListView):
+    model = Lager
+    template_name = 'lager/lagers.html'
+    context_object_name = 'lagers_list'
+
+    def get_queryset(self):
+        return Lager.objects.filter(weinkeller=str(self.request.user.id)).order_by('name')
+
+
+# Anzeige einzelne Region
+def lager(request, id=id):
+    try:
+        lager_result = Lager.objects.get(id=id)
+        return render(request, 'lager/lager.html', {'lager': lager_result})
+    except ObjectDoesNotExist:
+        return redirect('/lager/')
+
+
+##########################################################################
+# Area Bestand create and change
+##########################################################################
+def add_bestand(request):
+    if request.method == "POST":
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        request.POST._mutable = True
+        request.POST['weinkeller'] = mydata['weinkeller_admin_id']
+        form = BestandForm(request.POST, user=request.user.id)
+        # assert False
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.save()
+
+            return redirect('/lager/bestand/' + str(item.id) + '/')
+    else:
+        form = BestandForm(user=request.user.id)
+    return render(request, 'lager/bestand_form.html', {'form': form})
+
+
+def edit_bestand(request, id=None):
+    item = get_object_or_404(Bestand, id=id, weinkeller=request.user.id)
+    form = BestandForm(request.POST or None, instance=item, user=request.user.id)
+    # assert False
+    if form.is_valid():
+        form.save()
+        return redirect('/lager/bestand/' + str(item.id) + '/')
+
+    form.id = item.id
+    return render(request, 'lager/bestand_form.html', {'form': form})
+
+
+# Liste der Weine
+class BestandsView(generic.ListView):
+    model = Bestand
+    template_name = 'lager/bestands.html'
+    context_object_name = 'bestands_list'
+
+    def get_queryset(self):
+        return Bestand.objects.filter(weinkeller=str(self.request.user.id)).order_by('wein')
+
+
+# Anzeige einzelne Region
+def bestand(request, id=id):
+    try:
+        bestand_result = Bestand.objects.get(id=id)
+        return render(request, 'lager/bestand.html', {'bestand': bestand_result})
+    except ObjectDoesNotExist:
+        return redirect('/lager/')
+
+
+##########################################################################
+# Receiver Functions
+##########################################################################
+def add_weinkeller(request):
+    if request.method == "POST":
+        request.POST._mutable = True
+        request.POST['weinkeller_admin_id'] = request.user.id
+        request.POST['weinkeller_user_id'] = request.user.id
+        form = WeinkellerForm(request.POST)
+        # assert False
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.save()
+
+            return redirect('/lager/list/weine/')
+    else:
+        form = WeinkellerForm()
+    return render(request, 'lager/weinkeller_form.html', {'form': form})
+
+
+##########################################################################
+# AJAX Functions
+##########################################################################
 # AJAX
 def ajax_load_regions(request):
     weinland_id = request.GET.get('weinland_id')
