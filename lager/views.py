@@ -393,6 +393,37 @@ def add_weinkeller(request):
     return render(request, 'lager/weinkeller_form.html', {'form': form})
 
 
+def edit_weinkeller(request, id=None):
+    item = get_object_or_404(Weinkeller, id=id, weinkeller_user_id=request.user.id)
+    form = WeinkellerForm(request.POST or None, instance=item)
+    # assert False
+    if form.is_valid():
+        form.save()
+        return redirect('/lager/weinkeller/' + str(item.id) + '/')
+
+    form.id = item.id
+    return render(request, 'lager/weinkeller_form.html', {'form': form})
+
+
+# Liste der Weine
+class WeinkellersView(generic.ListView):
+    model = Weinkeller
+    template_name = 'lager/weinkellers.html'
+    context_object_name = 'weinkellers_list'
+
+    def get_queryset(self):
+        return Weinkeller.objects.filter(weinkeller_user_id=str(self.request.user.id))
+
+
+# Anzeige einzelner Weinkeller
+def weinkeller(request, id=id):
+    try:
+        weinkeller_result = Weinkeller.objects.get(id=id)
+        return render(request, 'lager/weinkeller.html', {'weinkeller': weinkeller_result})
+    except ObjectDoesNotExist:
+        return redirect('/lager/')
+
+
 ##########################################################################
 # AJAX Functions
 ##########################################################################
@@ -402,3 +433,9 @@ def ajax_load_regions(request):
     regionen = Region.objects.filter(weinland_id=weinland_id).all().order_by('region')
     return render(request, 'lager/region_dropdown_list_options.html', {'regionen': regionen})
     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
+
+
+def ajax_load_lagers(request):
+    lager_id = request.GET.get('lager_id')
+    lager_parameter = Lager.objects.filter(id=lager_id).values().first()
+    return render(request, 'lager/lager_parameter.html', {'lager_parameter': lager_parameter})

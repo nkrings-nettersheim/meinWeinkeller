@@ -45,6 +45,7 @@ class Region(models.Model):
 
 class Jahrgang(models.Model):
     jahrgang = models.CharField(max_length=4, blank=False, unique=True)
+    jahrgang_num = models.IntegerField(default=2000, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
@@ -63,6 +64,7 @@ class Geschmacksrichtung(models.Model):
 
 class Rebsorte(models.Model):
     rebsorte = models.CharField(max_length=50, blank=False)
+    rebsorte_alias = models.CharField(max_length=250, blank=False, default='')
     weinkeller = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)

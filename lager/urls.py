@@ -44,6 +44,10 @@ urlpatterns = [
     path('bestand/<id>/', views.bestand, name='bestand'),
 
     path('add/weinkeller/', views.add_weinkeller, name='add_weinkeller'),
+    path('edit/weinkeller/<id>/', views.edit_weinkeller, name='edit_weinkeller'),
+    path('list/weinkeller/', views.WeinkellersView.as_view(), name='list_weinkellers'),
+    path('weinkeller/<id>/', views.weinkeller, name='weinkeller'),
 
     path('ajax/load-regionen/', views.ajax_load_regions, name='ajax_load_regions'),  # AJAX
+    path('ajax/load-lagers/', views.ajax_load_lagers, name='ajax_load_lagers'),  # AJAX
 ]

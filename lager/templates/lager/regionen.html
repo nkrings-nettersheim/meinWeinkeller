@@ -16,7 +16,7 @@
         </div>
     <p></p>
     <h2>Liste der Regionen</h2>
-    <table class="table">
+    <table class="table table-hover">
     <thead>
       <tr>
         <th>Weinland</th>
@@ -29,8 +29,8 @@
                 <td>{{region.weinland}}</td>
                   <td>{{region.region}}</td>
                   <td class="col-sm-1">
-                      <a href="{% url 'lager:edit_region' region.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
-                      <a href="{% url 'lager:region' region.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:edit_region' region.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
+                      <a href="{% url 'lager:region' region.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
                   </td>
               </tr>
             {% endfor %}

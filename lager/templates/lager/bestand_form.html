@@ -6,7 +6,7 @@
 
 {% block content %}
 <content>
-    <form method="POST" enctype="multipart/form-data" action="">
+    <form method="POST" enctype="multipart/form-data" action="" id="bestandForm" data-lagers-url="{% url 'lager:ajax_load_lagers' %}">
         <p></p>
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -33,63 +33,69 @@
         </div>
         <div class="form-group row margin-bottom">
             <label for="{{ form.col_value.id_for_label }}" class="col-sm-2 control-label">Spalte:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.col_value}}
                 <div class="text-danger">{{ form.col_value.errors }}</div>
             </div>
         </div>
         <div class="form-group row margin-bottom">
             <label for="{{ form.row_value.id_for_label }}" class="col-sm-2 control-label">Zeile:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.row_value }}
                 <div class="text-danger">{{ form.row_value.errors }}</div>
             </div>
         </div>
-        <div class="form-group row margin-bottom">
-            <label for="{{ form.links.id_for_label }}" class="col-sm-2 control-label">Links:</label>
-            <div class="col-sm-6">
+        <div class="form-group row margin-bottom" id="id_links_div">
+                        <label for="{{ form.links.id_for_label }}" class="col-sm-2 control-label">Links:</label>
+            <div class="col-sm-2">
                  {{ form.links }}
-                <div class="text-danger">{{ form.links.errors }}</div>
+                 <div class="text-danger">{{ form.links.errors }}</div>
             </div>
+            <div class="col-sm-4" id="id_links_alternativ"></div>
         </div>
-        <div class="form-group row margin-bottom">
+        <div class="form-group row margin-bottom" id="id_rechts_div">
             <label for="{{ form.rechts.id_for_label }}" class="col-sm-2 control-label">Rechts:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.rechts }}
                 <div class="text-danger">{{ form.rechts.errors }}</div>
             </div>
+            <div class="col-sm-4" id="id_rechts_alternativ"></div>
         </div>        
         <div class="form-group row margin-bottom">
             <label for="{{ form.oben.id_for_label }}" class="col-sm-2 control-label">Oben:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.oben }}
                 <div class="text-danger">{{ form.oben.errors }}</div>
             </div>
+            <div class="col-sm-4" id="id_oben_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom">
             <label for="{{ form.unten.id_for_label }}" class="col-sm-2 control-label">Unten:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.unten }}
                 <div class="text-danger">{{ form.unten.errors }}</div>
             </div>
+            <div class="col-sm-4" id="id_unten_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom">
             <label for="{{ form.hinten.id_for_label }}" class="col-sm-2 control-label">Hinten:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.hinten }}
                 <div class="text-danger">{{ form.hinten.errors }}</div>
             </div>
+            <div class="col-sm-4" id="id_hinten_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom">
             <label for="{{ form.vorne.id_for_label }}" class="col-sm-2 control-label">Vorne:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.vorne }}
                 <div class="text-danger">{{ form.vorne.errors }}</div>
             </div>
+            <div class="col-sm-4" id="id_vorne_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom">
             <label for="{{ form.menge.id_for_label }}" class="col-sm-2 control-label">Menge:</label>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                  {{ form.menge }}
                 <div class="text-danger">{{ form.menge.errors }}</div>
             </div>
@@ -104,6 +110,62 @@
         </div>
     </div>
     </form>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+    $("#id_lager").change(function () {
+        const url = $("#bestandForm").attr("data-lagers-url");  // siehe form action
+        const lagerId = $(this).val();
+        /*console.log(url)*/
+        $.ajax({
+            url: url,
+            data: {
+                'lager_id': lagerId
+            },
+            success: function (data) {
+                console.log(data)
+                text_alternativ = "Option nicht konfiguriert"
+                result = data.split('|')
+                document.getElementById("id_col_value").max = result[0]
+                document.getElementById("id_row_value").max = result[1]
+                document.getElementById("id_menge").max = result[5]
+                if (result[2] == 'None') {
+                    document.getElementById("id_links").style.visibility = "hidden";
+                    $("#id_links_alternativ").html(text_alternativ);
+                    document.getElementById("id_rechts").style.visibility = "hidden";
+                    $("#id_rechts_alternativ").html(text_alternativ);
+                } else {
+                    document.getElementById("id_links").style.visibility = "visible"
+                    $("#id_links_alternativ").html("");
+                    document.getElementById("id_rechts").style.visibility = "visible"
+                    $("#id_rechts_alternativ").html("");
+                }
+                if (result[3] == 'None') {
+                    document.getElementById("id_oben").style.visibility = "hidden";
+                    $("#id_oben_alternativ").html(text_alternativ);
+                    document.getElementById("id_unten").style.visibility = "hidden";
+                    $("#id_unten_alternativ").html(text_alternativ);
+                } else {
+                    document.getElementById("id_oben").style.visibility = "visible"
+                    $("#id_oben_alternativ").html("");
+                    document.getElementById("id_unten").style.visibility = "visible"
+                    $("#id_unten_alternativ").html("");
+                }
+                if (result[4] == 'None') {
+                    document.getElementById("id_hinten").style.visibility = "hidden";
+                    $("#id_hinten_alternativ").html(text_alternativ);
+                    document.getElementById("id_vorne").style.visibility = "hidden";
+                    $("#id_vorne_alternativ").html(text_alternativ);
+                } else {
+                    document.getElementById("id_hinten").style.visibility = "visible"
+                    $("#id_hinten_alternativ").html("");
+                    document.getElementById("id_vorne").style.visibility = "visible"
+                    $("#id_vorne_alternativ").html("");
+                }
+            }
+        });
+
+    });
+    </script>
 </content>
 {% endblock %}
 

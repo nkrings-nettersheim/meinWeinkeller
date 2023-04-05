@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Weinkeller
+{% endblock %}
+
+{% block content %}
+
+<div class="container container-extended">
+    <p></p>
+        <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    <p></p>
+    <h2>Weinkeller</h2>
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Weinkeller</th>
+          <th></th>
+      </tr>
+    </thead>
+          <tbody>
+            {% for weinkeller in weinkellers_list %}
+              <tr>
+                  <td>{{weinkeller.weinkeller}}</td>
+                  <td class="col-sm-1">
+                      <a href="{% url 'lager:edit_weinkeller' weinkeller.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
+                      <a href="{% url 'lager:weinkeller' weinkeller.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                  </td>
+              </tr>
+            {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

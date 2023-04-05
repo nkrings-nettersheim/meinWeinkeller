@@ -9,8 +9,11 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <a href="{% url 'lager:list_erzeugers' %}" class="btn btn-secondary">Liste Erzeuger</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:add_erzeuger' %}" class="btn btn-secondary">Erzeuger anlegen</a>
         </div>
         <div class="col-sm-4">
             <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="btn btn-secondary">Erzeuger ändern</a>
@@ -60,7 +63,15 @@
             <div class="small inline">E-Mail:</div>
         </div>
         <div class="col-sm-6">
-             <strong>{{ erzeuger.email }}</strong>
+             <strong><a class="text-body" href="mailto:{{ erzeuger.email }}"> {{ erzeuger.email }}</a></strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Website:</div>
+        </div>
+        <div class="col-sm-6">
+            <strong><a class="text-body" href="{{ erzeuger.website }}" target="_blank">{{ erzeuger.website }}</a></strong>
         </div>
     </div>
     <div class="row">
@@ -84,7 +95,7 @@
             <div class="small inline">E-Mail des Asp:</div>
         </div>
         <div class="col-sm-6">
-             <strong>{{ erzeuger.asp_email }}</strong>
+            <strong><a class="text-body" href="mailto:{{ erzeuger.asp_email }}">{{ erzeuger.asp_email }}</a></strong>
         </div>
     </div>
 

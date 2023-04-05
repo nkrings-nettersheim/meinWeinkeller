@@ -9,8 +9,11 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <a href="{% url 'lager:list_rebsorten' %}" class="btn btn-secondary">Liste Rebsorten</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:add_rebsorte' %}" class="btn btn-secondary">Rebsorte anlegen</a>
         </div>
         <div class="col-sm-4">
             <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="btn btn-secondary">Rebsorte ändern</a>
@@ -29,6 +32,15 @@
         </div>
           <div class="col-sm-6">
              <strong>{{ rebsorte.rebsorte }}</strong>
+          </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="small inline">Alias Namen:</div>
+        </div>
+          <div class="col-sm-6">
+             <strong>{{ rebsorte.rebsorte_alias }}</strong>
           </div>
     </div>
 

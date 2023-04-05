@@ -9,8 +9,11 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <a href="{% url 'lager:list_regionen' %}" class="btn btn-secondary">Liste Regionen</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:add_region' %}" class="btn btn-secondary">Region anlegen</a>
         </div>
         <div class="col-sm-4">
             <a href="{% url 'lager:edit_region' region.id %}" class="btn btn-secondary">Region ändern</a>

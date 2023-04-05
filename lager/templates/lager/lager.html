@@ -9,8 +9,11 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <a href="{% url 'lager:list_lagers' %}" class="btn btn-secondary">Liste Lager</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:add_lager' %}" class="btn btn-secondary">Lager anlegen</a>
         </div>
         <div class="col-sm-4">
             <a href="{% url 'lager:edit_lager' lager.id %}" class="btn btn-secondary">Lager ändern</a>

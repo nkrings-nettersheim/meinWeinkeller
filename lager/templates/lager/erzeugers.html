@@ -20,7 +20,7 @@
         </div>
     <p></p>
     <h2>Liste der Erzeuger</h2>
-    <table class="table">
+    <table class="table table-hover">
     <thead>
       <tr>
         <th>Erzeuger</th>
@@ -37,10 +37,10 @@
                   <td>{{erzeuger.inhaber}}</td>
                   <td>{{erzeuger.ort}}</td>
                   <td>{{erzeuger.land}}</td>
-                  <td><a class="links" href="{{erzeuger.website}}" target="_blank">{{erzeuger.website}}</a></td>
+                  <td><a class="text-body" href="{{erzeuger.website}}" target="_blank">{{erzeuger.website}}</a></td>
                   <td>
-                      <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
-                      <a href="{% url 'lager:erzeuger' erzeuger.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
+                      <a href="{% url 'lager:erzeuger' erzeuger.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
                   </td>
               </tr>
             {% endfor %}

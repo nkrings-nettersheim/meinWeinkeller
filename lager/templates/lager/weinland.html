@@ -9,8 +9,11 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <a href="{% url 'lager:list_weinlands' %}" class="btn btn-secondary">Liste Weinländer</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'lager:add_weinland' %}" class="btn btn-secondary">Weinland anlegen</a>
         </div>
         <div class="col-sm-4">
             <a href="{% url 'lager:edit_weinland' weinland.id %}" class="btn btn-secondary">Weinland ändern</a>

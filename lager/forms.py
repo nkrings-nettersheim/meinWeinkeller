@@ -1,4 +1,6 @@
 from django import forms
+import datetime
+# from datetime import datetime, today, timedelta
 
 from .models import Weinland, Region, Rebsorte, Wein, Jahrgang, Erzeuger, Geschmacksrichtung, Weinart, \
     LagerTyp, Lager, Bestand, Weinkeller
@@ -84,21 +86,35 @@ class RegionForm(forms.ModelForm):
 
 
 class RebsorteForm(forms.ModelForm):
-    rebsorte = forms.CharField(required=True,
-                               max_length=50,
-                               widget=forms.TextInput(
-                                   attrs={
-                                       'class': 'form-control',
-                                       'autofocus': 'autofocus',
-                                       'placeholder': 'Rebsorte eingeben ...'
-                                   }
-                               )
-                               )
+    rebsorte = forms.CharField(
+        required=True,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'autofocus': 'autofocus',
+                'placeholder': 'Rebsorte eingeben ...'
+            }
+        )
+    )
+
+    rebsorte_alias = forms.CharField(
+        required=False,
+        max_length=250,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'autofocus': 'autofocus',
+                'placeholder': 'mögliche Alias-Namen eingeben ...'
+            }
+        )
+    )
 
     class Meta:
         model = Rebsorte
         fields = [
             'rebsorte',
+            'rebsorte_alias',
             'weinkeller'
         ]
 
@@ -134,14 +150,21 @@ class WeinForm(forms.ModelForm):
         empty_label='Wähle die Geschmacksrichtung aus'
     )
 
-    jahrgang = forms.ModelChoiceField(queryset=Jahrgang.objects.all().order_by('-jahrgang'),
-                                      widget=forms.Select(
-                                          attrs={
-                                              'class': 'form-control',
-                                          }
-                                      ),
-                                      empty_label='Wähle den Jahrgang aus'
-                                      )
+    date = datetime.date.today()
+    # last_year = date - datetime.timedelta(days=365)
+    start_year = date - datetime.timedelta(days=18250)
+    current_year = date.strftime("%Y")
+    start_year = start_year.strftime("%Y")
+
+    jahrgang = forms.ModelChoiceField(
+        queryset=Jahrgang.objects.filter(jahrgang_num__range=(start_year, current_year)).order_by('-jahrgang'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        empty_label='Wähle den Jahrgang aus'
+    )
 
     bemerkung = forms.CharField(required=False,
                                 widget=forms.Textarea(
@@ -202,7 +225,7 @@ class WeinForm(forms.ModelForm):
         if 'weinland' in self.data:
             try:
                 weinland_id = int(self.data.get('weinland'))
-                #self.fields['region'].queryset = Region.objects.filter(weinland_id=weinland_id, weinkeller=user_id).order_by('region')
+                # self.fields['region'].queryset = Region.objects.filter(weinland_id=weinland_id, weinkeller=user_id).order_by('region')
                 self.fields['region'] = forms.ModelChoiceField(
                     queryset=Region.objects.filter(weinland_id=weinland_id, weinkeller=user_id).order_by('region'),
                     required=False,
@@ -416,11 +439,11 @@ class LagerForm(forms.ModelForm):
                                           ))
 
     oben_unten = forms.NullBooleanField(required=False, initial='',
-                                          widget=forms.NullBooleanSelect(
-                                              attrs={
-                                                  'class': 'form-control',
-                                              }
-                                          ))
+                                        widget=forms.NullBooleanSelect(
+                                            attrs={
+                                                'class': 'form-control',
+                                            }
+                                        ))
 
     vorne_hinten = forms.NullBooleanField(required=False, initial='',
                                           widget=forms.NullBooleanSelect(
@@ -428,12 +451,91 @@ class LagerForm(forms.ModelForm):
                                                   'class': 'form-control',
                                               }
                                           ))
+
     class Meta:
         model = Lager
         fields = '__all__'
 
 
 class BestandForm(forms.ModelForm):
+    col_value = forms.IntegerField(
+        max_value=1,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    row_value = forms.IntegerField(
+        max_value=1,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    rechts = forms.NullBooleanField(
+        required=False,
+        initial='',
+        widget=forms.NullBooleanSelect(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    links = forms.NullBooleanField(
+        required=False,
+        initial='',
+        widget=forms.NullBooleanSelect(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    oben = forms.NullBooleanField(
+        required=False,
+        initial='',
+        widget=forms.NullBooleanSelect(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    unten = forms.NullBooleanField(
+        required=False,
+        initial='',
+        widget=forms.NullBooleanSelect(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    hinten = forms.NullBooleanField(
+        required=False,
+        initial='',
+        widget=forms.NullBooleanSelect(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    vorne = forms.NullBooleanField(
+        required=False,
+        initial='',
+        widget=forms.NullBooleanSelect(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
+
+    menge = forms.IntegerField(
+        max_value=1,
+        initial=1,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ))
 
     class Meta:
         model = Bestand
@@ -462,6 +564,7 @@ class BestandForm(forms.ModelForm):
             empty_label='Wähle den Lagerort aus ...'
         )
 
+
 class WeinkellerForm(forms.ModelForm):
     weinkeller = forms.CharField(required=True,
                                  max_length=100,
@@ -476,4 +579,4 @@ class WeinkellerForm(forms.ModelForm):
 
     class Meta:
         model = Weinkeller
-        fields = '__all__'
+        fields = ['weinkeller']

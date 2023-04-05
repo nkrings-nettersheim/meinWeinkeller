@@ -16,7 +16,7 @@
         </div>
     <p></p>
     <h2>Liste der Bestände</h2>
-    <table class="table">
+    <table class="table table-hover">
     <thead>
       <tr>
         <th>Wein</th>
@@ -35,8 +35,8 @@
                   <td>{{bestand.row_value}}</td>
                   <td>{{bestand.menge}}</td>
                  <td>
-                      <a href="{% url 'lager:edit_bestand' bestand.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
-                      <a href="{% url 'lager:bestand' bestand.id %}" class="link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:edit_bestand' bestand.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>&nbsp;
+                      <a href="{% url 'lager:bestand' bestand.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
                   </td>
               </tr>
 
