@@ -459,7 +459,7 @@ class LagerForm(forms.ModelForm):
 
 class BestandForm(forms.ModelForm):
     col_value = forms.IntegerField(
-        max_value=1,
+        initial=1,
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control',
@@ -467,7 +467,7 @@ class BestandForm(forms.ModelForm):
         ))
 
     row_value = forms.IntegerField(
-        max_value=1,
+        initial=1,
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control',
@@ -529,7 +529,6 @@ class BestandForm(forms.ModelForm):
         ))
 
     menge = forms.IntegerField(
-        max_value=1,
         initial=1,
         widget=forms.NumberInput(
             attrs={
@@ -545,7 +544,7 @@ class BestandForm(forms.ModelForm):
         user_id = kwargs.pop('user')
         super(BestandForm, self).__init__(*args, **kwargs)
         self.fields['wein'] = forms.ModelChoiceField(
-            queryset=Wein.objects.filter(weinkeller=user_id).order_by('name'), required=False,
+            queryset=Wein.objects.filter(weinkeller=user_id).order_by('name'), required=True,
             widget=forms.Select(
                 attrs={
                     'class': 'form-control',
@@ -555,7 +554,7 @@ class BestandForm(forms.ModelForm):
         )
 
         self.fields['lager'] = forms.ModelChoiceField(
-            queryset=Lager.objects.filter(weinkeller=user_id).order_by('name'), required=False,
+            queryset=Lager.objects.filter(weinkeller=user_id).order_by('name'), required=True,
             widget=forms.Select(
                 attrs={
                     'class': 'form-control',

@@ -9,14 +9,14 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-4">
-            <a href="{% url 'lager:list_rebsorten' %}" class="btn btn-secondary">Liste Rebsorten</a>
+        <div class="col">
+            <a href="{% url 'lager:list_rebsorten' %}" class="btn btn-secondary">Rebsorten</a>
         </div>
-        <div class="col-sm-4">
-            <a href="{% url 'lager:add_rebsorte' %}" class="btn btn-secondary">Rebsorte anlegen</a>
+        <div class="col">
+            <a href="{% url 'lager:add_rebsorte' %}" class="btn btn-secondary">anlegen</a>
         </div>
-        <div class="col-sm-4">
-            <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="btn btn-secondary">Rebsorte ändern</a>
+        <div class="col">
+            <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="btn btn-secondary">ändern</a>
         </div>
     </div>
     <p></p>
@@ -27,20 +27,20 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3">
             <div class="small inline">Rebsorte:</div>
         </div>
-          <div class="col-sm-6">
+          <div class="col-9">
              <strong>{{ rebsorte.rebsorte }}</strong>
           </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-2">
-            <div class="small inline">Alias Namen:</div>
+        <div class="col-3">
+            <div class="small inline">Alias:</div>
         </div>
-          <div class="col-sm-6">
-             <strong>{{ rebsorte.rebsorte_alias }}</strong>
+          <div class="col-9">
+             {{ rebsorte.rebsorte_alias }}
           </div>
     </div>
 

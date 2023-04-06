@@ -9,14 +9,14 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-4">
-            <a href="{% url 'lager:list_regionen' %}" class="btn btn-secondary">Liste Regionen</a>
+        <div class="col">
+            <a href="{% url 'lager:list_regionen' %}" class="btn btn-secondary">Regionen</a>
         </div>
-        <div class="col-sm-4">
-            <a href="{% url 'lager:add_region' %}" class="btn btn-secondary">Region anlegen</a>
+        <div class="col">
+            <a href="{% url 'lager:add_region' %}" class="btn btn-secondary">anlegen</a>
         </div>
-        <div class="col-sm-4">
-            <a href="{% url 'lager:edit_region' region.id %}" class="btn btn-secondary">Region ändern</a>
+        <div class="col">
+            <a href="{% url 'lager:edit_region' region.id %}" class="btn btn-secondary">ändern</a>
         </div>
     </div>
     <p></p>
@@ -25,19 +25,20 @@
             <h4>Region</h4>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3 col-sm-2">
             <div class="small inline">Weinland:</div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-9">
             <strong>{{ region.weinland }}</strong>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3 col-sm-2">
             <div class="small inline">Region:</div>
         </div>
-          <div class="col-sm-6">
+          <div class="col-9 col-sm-6">
              <strong>{{ region.region }}</strong>
           </div>
     </div>

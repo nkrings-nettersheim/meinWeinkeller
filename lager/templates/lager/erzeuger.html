@@ -9,13 +9,13 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col">
             <a href="{% url 'lager:list_erzeugers' %}" class="btn btn-secondary">Liste Erzeuger</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col">
             <a href="{% url 'lager:add_erzeuger' %}" class="btn btn-secondary">Erzeuger anlegen</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col">
             <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="btn btn-secondary">Erzeuger ändern</a>
         </div>
     </div>
@@ -27,18 +27,18 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col">
             <div class="small inline">Erzeuger:</div>
         </div>
-        <div class="col-sm-6">
+        <div class="col">
              <strong>{{ erzeuger.name }}</strong>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col">
             <div class="small inline">Inhaber:</div>
         </div>
-        <div class="col-sm-6">
+        <div class="col">
              <strong>{{ erzeuger.inhaber }}</strong>
         </div>
     </div>

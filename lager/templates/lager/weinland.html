@@ -9,13 +9,13 @@
 <div class="container container_extend">
     <p></p>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col">
             <a href="{% url 'lager:list_weinlands' %}" class="btn btn-secondary">Liste Weinländer</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col">
             <a href="{% url 'lager:add_weinland' %}" class="btn btn-secondary">Weinland anlegen</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col">
             <a href="{% url 'lager:edit_weinland' weinland.id %}" class="btn btn-secondary">Weinland ändern</a>
         </div>
     </div>
@@ -26,18 +26,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3 col-lg-2">
             <div class="small inline">Kontinent:</div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-9 col-lg-6">
             <strong>{{ weinland.kontinent }}</strong>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3 col-lg-2">
             <div class="small inline">Land:</div>
         </div>
-          <div class="col-sm-6">
+          <div class="col-9 col-lg-6">
              <strong>{{ weinland.land }}</strong>
           </div>
     </div>
