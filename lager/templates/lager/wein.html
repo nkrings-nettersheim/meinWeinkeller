@@ -10,13 +10,13 @@
     <p></p>
     <div class="row">
         <div class="col">
-            <a href="{% url 'lager:list_weine' %}" class="btn btn-secondary">Liste Weine</a>
+            <a href="{% url 'lager:list_weine' %}" class="btn btn-secondary">Weine</a>
         </div>
         <div class="col">
-            <a href="{% url 'lager:add_wein' %}" class="btn btn-secondary">Wein anlegen</a>
+            <a href="{% url 'lager:add_wein' %}" class="btn btn-secondary">anlegen</a>
         </div>
         <div class="col">
-            <a href="{% url 'lager:edit_wein' wein.id %}" class="btn btn-secondary">Wein ändern</a>
+            <a href="{% url 'lager:edit_wein' wein.id %}" class="btn btn-secondary">ändern</a>
         </div>
     </div>
     <p></p>
@@ -26,66 +26,66 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="small inline">Name:</div>
         </div>
-        <div class="col">
+        <div class="col-9">
             <strong>{{ wein.name }}</strong>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="small inline">Weinland:</div>
         </div>
-          <div class="col">
+          <div class="col-9">
              <strong>{{ wein.weinland }}</strong>
           </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="small inline">Region:</div>
         </div>
-          <div class="col">
+          <div class="col-9">
              <strong>{{ wein.region }}</strong>
           </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="small inline">Weinart:</div>
         </div>
-          <div class="col">
+          <div class="col-9">
              <strong>{{ wein.weinart }}</strong>
           </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="small inline">Jahrgang:</div>
         </div>
-          <div class="col">
+          <div class="col-9">
              <strong>{{ wein.jahrgang }}</strong>
           </div>
     </div>
     <div class="row">
-        <div class="col">
-            <div class="small inline">Geschmacksrichtung:</div>
+        <div class="col-3">
+            <div class="small inline">Ausbau:</div>
         </div>
-          <div class="col">
+          <div class="col-9">
              <strong>{{ wein.geschmacksrichtung }}</strong>
           </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-3">
             <div class="small inline">Erzeuger:</div>
         </div>
-          <div class="col">
+          <div class="col-9">
              <strong>{{ wein.erzeuger }}</strong>
           </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <div class="small inline">Bemerkung:</div>
         </div>
-          <div class="col-sm-6">
+          <div class="col-sm-9">
              <strong>{{ wein.bemerkung }}</strong>
           </div>
     </div>

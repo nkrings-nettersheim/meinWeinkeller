@@ -151,7 +151,6 @@ class WeinForm(forms.ModelForm):
     )
 
     date = datetime.date.today()
-    # last_year = date - datetime.timedelta(days=365)
     start_year = date - datetime.timedelta(days=18250)
     current_year = date.strftime("%Y")
     start_year = start_year.strftime("%Y")
@@ -578,4 +577,8 @@ class WeinkellerForm(forms.ModelForm):
 
     class Meta:
         model = Weinkeller
-        fields = ['weinkeller']
+        fields = [
+            'weinkeller',
+            'weinkeller_admin_id',
+            'weinkeller_user_id',
+            ]

@@ -25,7 +25,7 @@
     <title>{% block title %}Mein Weinkeller{% endblock %}</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100" onload="onloadFunction()">
     {% include "header.html" %}
 
     {% if user.is_authenticated %}

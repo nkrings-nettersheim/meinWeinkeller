@@ -14,3 +14,12 @@ footer {
 .margin-bottom {
     margin-bottom:15px;
 }
+
+.inline {
+    display: inline;
+}
+
+a {
+  color: rgb(60, 60, 60);
+}
+

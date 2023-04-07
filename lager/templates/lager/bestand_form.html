@@ -32,82 +32,82 @@
             </div>
         </div>
         <div class="form-group row margin-bottom">
-            <label for="{{ form.col_value.id_for_label }}" class="col control-label">Spalte:</label>
-            <div class="col">
+            <label for="{{ form.col_value.id_for_label }}" class="col-2 control-label">Spalte:</label>
+            <div class="col-6">
                  {{ form.col_value}}
                 <div class="text-danger">{{ form.col_value.errors }}</div>
             </div>
-            <div class="col" id="id_col_alternativ"></div>
+            <div class="col-4" id="id_col_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom">
-            <label for="{{ form.row_value.id_for_label }}" class="col control-label">Zeile:</label>
-            <div class="col">
+            <label for="{{ form.row_value.id_for_label }}" class="col-2 control-label">Zeile:</label>
+            <div class="col-6">
                  {{ form.row_value }}
                 <div class="text-danger">{{ form.row_value.errors }}</div>
             </div>
-        <div class="col" id="id_row_alternativ"></div>
+        <div class="col-4" id="id_row_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom" id="id_links_div">
-                        <label for="{{ form.links.id_for_label }}" class="col control-label">Links:</label>
-            <div class="col">
+                        <label for="{{ form.links.id_for_label }}" class="col-2 control-label">Links:</label>
+            <div class="col-6">
                  {{ form.links }}
                  <div class="text-danger">{{ form.links.errors }}</div>
             </div>
-            <div class="col" id="id_links_alternativ"></div>
+            <div class="col-4" id="id_links_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom" id="id_rechts_div">
-            <label for="{{ form.rechts.id_for_label }}" class="col control-label">Rechts:</label>
-            <div class="col">
+            <label for="{{ form.rechts.id_for_label }}" class="col-2 control-label">Rechts:</label>
+            <div class="col-6">
                  {{ form.rechts }}
                 <div class="text-danger">{{ form.rechts.errors }}</div>
             </div>
-            <div class="col" id="id_rechts_alternativ"></div>
+            <div class="col-4" id="id_rechts_alternativ"></div>
         </div>        
         <div class="form-group row margin-bottom" id="id_oben_div">
-            <label for="{{ form.oben.id_for_label }}" class="col control-label">Oben:</label>
-            <div class="col">
+            <label for="{{ form.oben.id_for_label }}" class="col-2 control-label">Oben:</label>
+            <div class="col-6">
                  {{ form.oben }}
                 <div class="text-danger">{{ form.oben.errors }}</div>
             </div>
-            <div class="col" id="id_oben_alternativ"></div>
+            <div class="col-4" id="id_oben_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom" id="id_unten_div">
-            <label for="{{ form.unten.id_for_label }}" class="col control-label">Unten:</label>
-            <div class="col">
+            <label for="{{ form.unten.id_for_label }}" class="col-2 control-label">Unten:</label>
+            <div class="col-6">
                  {{ form.unten }}
                 <div class="text-danger">{{ form.unten.errors }}</div>
             </div>
-            <div class="col" id="id_unten_alternativ"></div>
+            <div class="col-4" id="id_unten_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom" id="id_hinten_div">
-            <label for="{{ form.hinten.id_for_label }}" class="col control-label">Hinten:</label>
-            <div class="col">
+            <label for="{{ form.hinten.id_for_label }}" class="col-2 control-label">Hinten:</label>
+            <div class="col-6">
                  {{ form.hinten }}
                 <div class="text-danger">{{ form.hinten.errors }}</div>
             </div>
-            <div class="col" id="id_hinten_alternativ"></div>
+            <div class="col-4" id="id_hinten_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom" id="id_vorne_div">
-            <label for="{{ form.vorne.id_for_label }}" class="col control-label">Vorne:</label>
-            <div class="col">
+            <label for="{{ form.vorne.id_for_label }}" class="col-2 control-label">Vorne:</label>
+            <div class="col-6">
                  {{ form.vorne }}
                 <div class="text-danger">{{ form.vorne.errors }}</div>
             </div>
-            <div class="col" id="id_vorne_alternativ"></div>
+            <div class="col-4" id="id_vorne_alternativ"></div>
         </div>
         <div class="form-group row margin-bottom">
-            <label for="{{ form.menge.id_for_label }}" class="col control-label">Menge:</label>
-            <div class="col">
+            <label for="{{ form.menge.id_for_label }}" class="col-2 control-label">Menge:</label>
+            <div class="col-6">
                  {{ form.menge }}
                 <div class="text-danger">{{ form.menge.errors }}</div>
             </div>
-            <div class="col" id="id_menge_alternativ"></div>
+            <div class="col-4" id="id_menge_alternativ"></div>
         </div>
         <div class="form-group row">
-            <div class="col">
+            <div class="col-6">
                 <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_bestands' %}">zurück</a>
             </div>
-            <div class="col">
+            <div class="col-6">
                 <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
             </div>
         </div>
@@ -115,10 +115,19 @@
         <div>&nbsp;</div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+    function onloadFunction() {
+        loadLagerParameter()
+    }
+
     $("#id_lager").change(function () {
+        loadLagerParameter()
+    });
+
+    function loadLagerParameter() {
         const url = $("#bestandForm").attr("data-lagers-url");  // siehe form action
-        const lagerId = $(this).val();
-        /*console.log(url)*/
+        const lagerId = $("#id_lager").val();
+        console.log(url)
+        console.log(lagerId)
         $.ajax({
             url: url,
             data: {
@@ -163,15 +172,15 @@
                     document.getElementById("id_vorne_div").style.display = "none";
                     $("#id_vorne_alternativ").html(text_alternativ);
                 } else {
-                    document.getElementById("id_hinten_div").style.style.display = "flex";
+                    document.getElementById("id_hinten_div").style.display = "flex";
                     $("#id_hinten_alternativ").html("");
-                    document.getElementById("id_vorne_div").style.style.display = "flex";
+                    document.getElementById("id_vorne_div").style.display = "flex";
                     $("#id_vorne_alternativ").html("");
                 }
             }
         });
+    }
 
-    });
     </script>
 </content>
 {% endblock %}
