@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="container container-extended">
+<div class="container-fluid">
     <p></p>
         <div class="row">
             <div class="col-sm-8"></div>
@@ -19,7 +19,8 @@
     <table class="table table-hover" id="bestand_table">
     <thead>
       <tr>
-        <th>Wein</th>
+          <th>Wein</th>
+          <th>Jahrgang</th>
           <th>Lagerort</th>
           <th>Spalte</th>
           <th>Reihe</th>
@@ -30,6 +31,7 @@
             {% for bestand in bestands_list %}
               <tr>
                   <td>{{bestand.wein}}</td>
+                  <td>{{bestand.wein.jahrgang}}</td>
                   <td>{{bestand.lager}}</td>
                   <td>{{bestand.col_value}}</td>
                   <td>{{bestand.row_value}}</td>
@@ -37,6 +39,7 @@
                  <td>
                       <a href="{% url 'lager:edit_bestand' bestand.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>&nbsp;
                       <a href="{% url 'lager:bestand' bestand.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:delete_bestand_item' bestand.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-trash-can" title="löschen"></i></a>
                   </td>
               </tr>
 

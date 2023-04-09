@@ -137,7 +137,7 @@ class Wein(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['name', 'weinkeller'], name='unique name_wein_weinkeller'),
+            models.UniqueConstraint(fields=['name', 'jahrgang', 'weinkeller'], name='unique name_wein_weinkeller'),
         ]
 
 

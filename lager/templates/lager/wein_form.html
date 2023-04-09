@@ -6,7 +6,7 @@
 
 {% block content %}
 <content>
-    <div class="container mt-3">
+    <div class="container-fluid">
     <form method="POST" enctype="multipart/form-data" action="" id="weinForm" data-regions-url="{% url 'lager:ajax_load_regions' %}">
         <p></p>
         {% csrf_token %}

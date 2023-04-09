@@ -11,7 +11,7 @@
         {% csrf_token %}
         {{ form.non_field_errors }}
         {{ form.weinkeller.as_hidden}}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm">
                 <h4>Bestand erfassen oder neu anlegen:</h4>
@@ -126,59 +126,61 @@
     function loadLagerParameter() {
         const url = $("#bestandForm").attr("data-lagers-url");  // siehe form action
         const lagerId = $("#id_lager").val();
-        console.log(url)
-        console.log(lagerId)
-        $.ajax({
-            url: url,
-            data: {
-                'lager_id': lagerId
-            },
-            success: function (data) {
-                console.log(data)
-                text_alternativ = "nicht eingerichtet"
-                result = data.split('|')
-                document.getElementById("id_col_value").max = result[0]
-                $("#id_col_alternativ").html("max. " + result[0] + " Spalten");
+        //console.log(url)
+        //console.log(lagerId)
+        if (lagerId > 0) {
+            $.ajax({
+                url: url,
+                data: {
+                    'lager_id': lagerId
+                },
+                success: function (data) {
+                    //console.log(data)
+                    text_alternativ = "nicht eingerichtet"
+                    result = data.split('|')
+                    document.getElementById("id_col_value").max = result[0]
+                    $("#id_col_alternativ").html("max. " + result[0] + " Spalten");
 
-                document.getElementById("id_row_value").max = result[1]
-                $("#id_row_alternativ").html("max. " + result[1] + " Reihen");
+                    document.getElementById("id_row_value").max = result[1]
+                    $("#id_row_alternativ").html("max. " + result[1] + " Reihen");
 
-                document.getElementById("id_menge").max = result[5]
-                if (result[2] == 'None' || result[2] == 'False') {
-                    document.getElementById("id_links_div").style.display = "none";
-                    $("#id_links_alternativ").html(text_alternativ);
-                    document.getElementById("id_rechts_div").style.display = "none";
-                    $("#id_rechts_alternativ").html(text_alternativ);
-                } else {
-                    document.getElementById("id_links_div").style.display = "flex";
-                    $("#id_links_alternativ").html("");
-                    document.getElementById("id_rechts_div").style.display = "flex";
-                    $("#id_rechts_alternativ").html("");
+                    document.getElementById("id_menge").max = result[5]
+                    if (result[2] == 'None' || result[2] == 'False') {
+                        document.getElementById("id_links_div").style.display = "none";
+                        $("#id_links_alternativ").html(text_alternativ);
+                        document.getElementById("id_rechts_div").style.display = "none";
+                        $("#id_rechts_alternativ").html(text_alternativ);
+                    } else {
+                        document.getElementById("id_links_div").style.display = "flex";
+                        $("#id_links_alternativ").html("");
+                        document.getElementById("id_rechts_div").style.display = "flex";
+                        $("#id_rechts_alternativ").html("");
+                    }
+                    if (result[3] == 'None' || result[3] == 'False') {
+                        document.getElementById("id_oben_div").style.display = "none";
+                        $("#id_oben_alternativ").html(text_alternativ);
+                        document.getElementById("id_unten_div").style.display = "none";
+                        $("#id_unten_alternativ").html(text_alternativ);
+                    } else {
+                        document.getElementById("id_oben_div").style.style.display = "flex";
+                        $("#id_oben_alternativ").html("");
+                        document.getElementById("id_unten_div").style.style.display = "flex";
+                        $("#id_unten_alternativ").html("");
+                    }
+                    if (result[4] == 'None' || result[4] == 'False') {
+                        document.getElementById("id_hinten_div").style.display = "none";
+                        $("#id_hinten_alternativ").html(text_alternativ);
+                        document.getElementById("id_vorne_div").style.display = "none";
+                        $("#id_vorne_alternativ").html(text_alternativ);
+                    } else {
+                        document.getElementById("id_hinten_div").style.display = "flex";
+                        $("#id_hinten_alternativ").html("");
+                        document.getElementById("id_vorne_div").style.display = "flex";
+                        $("#id_vorne_alternativ").html("");
+                    }
                 }
-                if (result[3] == 'None' || result[3] == 'False') {
-                    document.getElementById("id_oben_div").style.display = "none";
-                    $("#id_oben_alternativ").html(text_alternativ);
-                    document.getElementById("id_unten_div").style.display = "none";
-                    $("#id_unten_alternativ").html(text_alternativ);
-                } else {
-                    document.getElementById("id_oben_div").style.style.display = "flex";
-                    $("#id_oben_alternativ").html("");
-                    document.getElementById("id_unten_div").style.style.display = "flex";
-                    $("#id_unten_alternativ").html("");
-                }
-                if (result[4] == 'None' || result[4] == 'False') {
-                    document.getElementById("id_hinten_div").style.display = "none";
-                    $("#id_hinten_alternativ").html(text_alternativ);
-                    document.getElementById("id_vorne_div").style.display = "none";
-                    $("#id_vorne_alternativ").html(text_alternativ);
-                } else {
-                    document.getElementById("id_hinten_div").style.display = "flex";
-                    $("#id_hinten_alternativ").html("");
-                    document.getElementById("id_vorne_div").style.display = "flex";
-                    $("#id_vorne_alternativ").html("");
-                }
-            }
-        });
+            });
+        }
     }
 
     </script>

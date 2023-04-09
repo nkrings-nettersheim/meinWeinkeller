@@ -1,9 +1,12 @@
 import logging
 
+from django.db.models import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from django.views import generic
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic.edit import DeleteView
+from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse_lazy
 
 from .models import Weinkeller, Weinland, Region, Rebsorte, Wein, Erzeuger, Lager, Bestand
 from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm, ErzeugerForm, LagerForm, BestandForm, \
@@ -57,13 +60,33 @@ def edit_weinland(request, id=None):
 
 
 # Liste der Weinländer
-class WeinlandsView(generic.ListView):
+class WeinlandsView(ListView):
     model = Weinland
     template_name = 'lager/weinlands.html'
     context_object_name = 'weinlands_list'
 
     def get_queryset(self):
         return Weinland.objects.filter(weinkeller=str(self.request.user.id)).order_by('kontinent', 'land')
+
+
+class DeleteWeinlandItem(DeleteView):
+    model = Weinland
+    template_name = 'lager/weinland_confirm_delete.html'
+    #success_url = "/lager/list/weinland/"
+
+    def form_valid(self, form):
+        success_url = "/lager/list/weinland/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
 
 
 # Anzeige einzelnes Weinland
@@ -105,13 +128,33 @@ def edit_region(request, id=None):
 
 
 # Liste der Region
-class RegionView(generic.ListView):
+class RegionView(ListView):
     model = Region
     template_name = 'lager/regionen.html'
     context_object_name = 'regionen_list'
 
     def get_queryset(self):
         return Region.objects.filter(weinkeller=str(self.request.user.id)).order_by('weinland', 'region')
+
+
+# Delete Region
+class DeleteRegionItem(DeleteView):
+    model = Region
+    template_name = 'lager/region_confirm_delete.html'
+
+    def form_valid(self, form):
+        success_url = "/lager/list/regionen/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
 
 
 # Anzeige einzelne Region
@@ -141,7 +184,7 @@ def add_rebsorte(request):
         form = RebsorteForm()
     return render(request, 'lager/rebsorte_form.html', {'form': form})
 
-
+# Edit Rebsorte
 def edit_rebsorte(request, id=None):
     item = get_object_or_404(Rebsorte, id=id, weinkeller=request.user.id)
     form = RebsorteForm(request.POST or None, instance=item)
@@ -153,13 +196,33 @@ def edit_rebsorte(request, id=None):
 
 
 # Liste der Rebsorten
-class RebsortenView(generic.ListView):
+class RebsortenView(ListView):
     model = Rebsorte
     template_name = 'lager/rebsorten.html'
     context_object_name = 'rebsorten_list'
 
     def get_queryset(self):
         return Rebsorte.objects.filter(weinkeller=str(self.request.user.id)).order_by('rebsorte')
+
+
+# Delete Rebsorte
+class DeleteRebsorteItem(DeleteView):
+    model = Rebsorte
+    template_name = 'lager/rebsorte_confirm_delete.html'
+
+    def form_valid(self, form):
+        success_url = "/lager/list/rebsorten/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
 
 
 # Anzeige einzelne Region
@@ -203,7 +266,7 @@ def edit_wein(request, id=None):
 
 
 # Liste der Weine
-class WeineView(generic.ListView):
+class WeineView(ListView):
     model = Wein
     template_name = 'lager/weine.html'
     context_object_name = 'weine_list'
@@ -211,6 +274,26 @@ class WeineView(generic.ListView):
     def get_queryset(self):
         return Wein.objects.filter(weinkeller=str(self.request.user.id)).order_by('weinland', 'region', 'erzeuger',
                                                                                   'jahrgang', 'name')
+
+
+# Delete Wein
+class DeleteWeinItem(DeleteView):
+    model = Wein
+    template_name = 'lager/wein_confirm_delete.html'
+
+    def form_valid(self, form):
+        success_url = "/lager/list/weine/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
 
 
 # Anzeige einzelne Region
@@ -254,13 +337,33 @@ def edit_erzeuger(request, id=None):
 
 
 # Liste der Weine
-class ErzeugersView(generic.ListView):
+class ErzeugersView(ListView):
     model = Erzeuger
     template_name = 'lager/erzeugers.html'
     context_object_name = 'erzeugers_list'
 
     def get_queryset(self):
         return Erzeuger.objects.filter(weinkeller=str(self.request.user.id)).order_by('land', 'name')
+
+
+# Delete Erzeuger
+class DeleteErzeugerItem(DeleteView):
+    model = Erzeuger
+    template_name = 'lager/erzeuger_confirm_delete.html'
+
+    def form_valid(self, form):
+        success_url = "/lager/list/erzeuger/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
 
 
 # Anzeige einzelne Region
@@ -303,14 +406,35 @@ def edit_lager(request, id=None):
     return render(request, 'lager/lager_form.html', {'form': form})
 
 
-# Liste der Weine
-class LagersView(generic.ListView):
+# Liste der Lager
+class LagersView(ListView):
     model = Lager
     template_name = 'lager/lagers.html'
     context_object_name = 'lagers_list'
 
     def get_queryset(self):
         return Lager.objects.filter(weinkeller=str(self.request.user.id)).order_by('name')
+
+
+# Delete Lager
+class DeleteLagerItem(DeleteView):
+    model = Lager
+    template_name = 'lager/lager_confirm_delete.html'
+
+    def form_valid(self, form):
+        success_url = "/lager/list/lager/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
+
 
 
 # Anzeige einzelne Region
@@ -355,13 +479,33 @@ def edit_bestand(request, id=None):
 
 
 # Liste der Weine
-class BestandsView(generic.ListView):
+class BestandsView(ListView):
     model = Bestand
     template_name = 'lager/bestands.html'
     context_object_name = 'bestands_list'
 
     def get_queryset(self):
         return Bestand.objects.filter(weinkeller=str(self.request.user.id)).order_by('wein')
+
+
+# Delete Wein
+class DeleteBestandItem(DeleteView):
+    model = Bestand
+    template_name = 'lager/bestand_confirm_delete.html'
+
+    def form_valid(self, form):
+        success_url = "/lager/list/bestand/"
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except ProtectedError:
+            self.object = self.get_object()
+            context = self.get_context_data(
+                object=self.object,
+                error="Der Datensatz kann nicht gelöscht werden, da es noch Verknüpfungen zu anderen Datensätzen gibt"
+            )
+            return self.render_to_response(context)
 
 
 # Anzeige einzelne Region
@@ -406,7 +550,7 @@ def edit_weinkeller(request, id=None):
 
 
 # Liste der Weine
-class WeinkellersView(generic.ListView):
+class WeinkellersView(ListView):
     model = Weinkeller
     template_name = 'lager/weinkellers.html'
     context_object_name = 'weinkellers_list'

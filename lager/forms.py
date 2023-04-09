@@ -27,11 +27,17 @@ class WeinlandForm(forms.ModelForm):
         ('Süd-Amerika', 'Süd-Amerika'),
         ('Ozeanien', 'Ozeanien')
     )
-    kontinent = forms.ChoiceField(choices=KONTINENTE, label="", initial=4, widget=forms.Select(
-        attrs={
-            'class': 'form-control'
-        }
-    ))
+    kontinent = forms.ChoiceField(
+        required=True,
+        choices=KONTINENTE,
+        label="",
+        initial=4,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
 
     bemerkung = forms.CharField(required=False,
                                 widget=forms.Textarea(
@@ -208,7 +214,7 @@ class WeinForm(forms.ModelForm):
                     'class': 'form-control',
                 }
             ),
-            empty_label='Wähle die Rebsorte aus ...'
+            empty_label='Wähle die Region aus ...'
         )
 
         self.fields['erzeuger'] = forms.ModelChoiceField(
@@ -581,4 +587,4 @@ class WeinkellerForm(forms.ModelForm):
             'weinkeller',
             'weinkeller_admin_id',
             'weinkeller_user_id',
-            ]
+        ]

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="container container-extended">
+<div class="container-fluid">
     <p></p>
         <div class="row">
             <div class="col-sm-8"></div>
@@ -32,6 +32,7 @@
                   <td class="col-sm-1">
                       <a href="{% url 'lager:edit_weinland' weinland.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
                       <a href="{% url 'lager:weinland' weinland.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:delete_weinland_item' weinland.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-trash-can" title="löschen"></i></a>
                   </td>
               </tr>
             {% endfor %}

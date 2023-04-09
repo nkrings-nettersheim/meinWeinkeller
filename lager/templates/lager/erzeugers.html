@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<div class="container container-extended">
+<div class="container-fluid">
     <p></p>
         <div class="row">
             <div class="col-sm-8"></div>
@@ -41,6 +41,7 @@
                   <td>
                       <a href="{% url 'lager:edit_erzeuger' erzeuger.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>
                       <a href="{% url 'lager:erzeuger' erzeuger.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:delete_erzeuger_item' erzeuger.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-trash-can" title="löschen"></i></a>
                   </td>
               </tr>
             {% endfor %}

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="container container-extended">
+<div class="container-fluid">
     <p></p>
         <div class="row">
             <div class="col-sm-8"></div>
@@ -19,8 +19,9 @@
     <table class="table table-hover">
     <thead>
       <tr>
-        <th>Weinland</th>
-        <th>Region</th>
+          <th class="col">Weinland</th>
+          <th class="col">Region</th>
+          <th class="col"></th>
       </tr>
     </thead>
           <tbody>
@@ -28,9 +29,10 @@
               <tr>
                 <td>{{region.weinland}}</td>
                   <td>{{region.region}}</td>
-                  <td class="col-sm-1">
+                  <td>
                       <a href="{% url 'lager:edit_region' region.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
                       <a href="{% url 'lager:region' region.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>
+                      <a href="{% url 'lager:delete_region_item' region.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-trash-can" title="löschen"></i></a>
                   </td>
               </tr>
             {% endfor %}

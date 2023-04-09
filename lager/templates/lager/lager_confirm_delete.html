@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Mein Weinkeller - Lager {{ lager }} löschen
+{% endblock %}
+
+{% block content %}
+<content>
+    <p></p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <h4 class="bg-danger text-center">Sicherheitsabfrage</h4>
+            </div>
+
+        </div>
+    <form method="post">{% csrf_token %}
+        {% if error %}
+            <div class="row">
+                <div class="col">{{ error }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ object }}</div>
+            </div>
+        <div class="row">
+                <div class="col"><a class="btn btn-secondary" href="{% url 'lager:list_lagers' %}" role="button">Zurück</a></div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-sm-4">Möchtest Du den Eintrag: <br><br><strong>"{{ lager }}"</strong> <br><br>wirklich löschen ?</div>
+
+                <div class="col-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"><a class="btn btn-secondary" href="{% url 'lager:list_lagers' %}" role="button">Besser nicht!</a></div>
+                <div class="col-sm"><button type="submit" class="btn btn-danger">&nbsp;Ja, wirklich!&nbsp;</button>
+                    </div>
+            </div>
+        {% endif %}
+    </form>
+    </div>
+
+</content>
+{% endblock %}

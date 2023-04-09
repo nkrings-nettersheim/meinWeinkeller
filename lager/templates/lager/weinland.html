@@ -6,17 +6,17 @@
 
 {% block content %}
 
-<div class="container container_extend">
+<div class="container-fluid">
     <p></p>
     <div class="row">
         <div class="col">
-            <a href="{% url 'lager:list_weinlands' %}" class="btn btn-secondary">Liste Weinländer</a>
+            <a href="{% url 'lager:list_weinlands' %}" class="btn btn-secondary">Weinländer</a>
         </div>
         <div class="col">
-            <a href="{% url 'lager:add_weinland' %}" class="btn btn-secondary">Weinland anlegen</a>
+            <a href="{% url 'lager:add_weinland' %}" class="btn btn-secondary">anlegen</a>
         </div>
         <div class="col">
-            <a href="{% url 'lager:edit_weinland' weinland.id %}" class="btn btn-secondary">Weinland ändern</a>
+            <a href="{% url 'lager:edit_weinland' weinland.id %}" class="btn btn-secondary">ändern</a>
         </div>
     </div>
     <p></p>
