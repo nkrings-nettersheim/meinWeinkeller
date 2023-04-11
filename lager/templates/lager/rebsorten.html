@@ -19,8 +19,9 @@
     <table class="table table-hover">
     <thead>
       <tr>
-          <th class="col-4">Rebsorte</th>
-          <th class="col-6">Alias-Namen</th>
+          <th class="col-3">Rebsorte</th>
+          <th class="col-5">Alias-Namen</th>
+          <th class="col-2">Art der Traube</th>
           <th class="col-2"></th>
       </tr>
     </thead>
@@ -29,6 +30,7 @@
               <tr>
                   <td>{{rebsorte.rebsorte}}</td>
                   <td>{{rebsorte.rebsorte_alias}}</td>
+                  <td>{{rebsorte.traubenart}}</td>
                   <td>
                       <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
                       <a href="{% url 'lager:rebsorte' rebsorte.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>

@@ -248,6 +248,8 @@ def add_wein(request):
             item.save()
 
             return redirect('/lager/wein/' + str(item.id) + '/')
+        else:
+            print("not valid")
     else:
         form = WeinForm(user=request.user.id)
     return render(request, 'lager/wein_form.html', {'form': form})
@@ -485,6 +487,7 @@ class BestandsView(ListView):
     context_object_name = 'bestands_list'
 
     def get_queryset(self):
+        #return Bestand.objects.filter(weinkeller=str(self.request.user.id), menge__gt=0).order_by('wein')
         return Bestand.objects.filter(weinkeller=str(self.request.user.id)).order_by('wein')
 
 

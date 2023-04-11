@@ -64,7 +64,8 @@ class Geschmacksrichtung(models.Model):
 
 class Rebsorte(models.Model):
     rebsorte = models.CharField(max_length=50, blank=False)
-    rebsorte_alias = models.CharField(max_length=250, blank=False, default='')
+    rebsorte_alias = models.CharField(max_length=250, blank=True, default='')
+    traubenart = models.CharField(max_length=10, blank=True, default='')
     weinkeller = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
@@ -125,12 +126,22 @@ class Wein(models.Model):
     weinland = models.ForeignKey(Weinland, on_delete=models.PROTECT, blank=True, null=True)
     region = models.ForeignKey(Region, on_delete=models.PROTECT, blank=True, null=True)
     rebsorte = models.ForeignKey(Rebsorte, on_delete=models.PROTECT, blank=True, null=True)
+    cuvee_rebsorten = models.CharField(max_length=250, blank=True, default='')
     weinart = models.ForeignKey(Weinart, on_delete=models.PROTECT, blank=True, null=True)
     jahrgang = models.ForeignKey(Jahrgang, on_delete=models.PROTECT, blank=True, null=True)
     geschmacksrichtung = models.ForeignKey(Geschmacksrichtung, on_delete=models.PROTECT, blank=True, null=True)
     erzeuger = models.ForeignKey(Erzeuger, on_delete=models.PROTECT, blank=True, null=True)
     bemerkung = models.TextField()
     weinkeller = models.IntegerField(default=0)
+    apnr = models.CharField(max_length=20, blank=True, default='')
+    flaschengroesse = models.CharField(max_length=10, blank=True, default='')
+    alkoholgehalt = models.CharField(max_length=10, blank=True, default='')
+    vegan = models.BooleanField(default=False, null=True)
+    restzucker = models.CharField(max_length=10, blank=True, default='')
+    literpreis = models.DecimalField(max_digits=6, decimal_places=2)
+    preis = models.DecimalField(max_digits=6, decimal_places=2)
+    bestellnummer = models.CharField(max_length=10, blank=True, default='')
+    trinkbar_ab = models.CharField(max_length=10, blank=True, default='')
 
     def __str__(self):
         return self.name

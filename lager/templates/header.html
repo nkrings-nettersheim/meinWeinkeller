@@ -2,13 +2,5 @@
 {% if user.is_authenticated %}
 <!-- no header-picture -->
 {% else %}
-<div class="container">
-    <div class="row">
-        <div class="col-1">&nbsp;</div>
-        <div class="col">
-            <img src="{% static 'lager/images/base.jpeg' %}" style="width:100%;">
-        </div>
-        <div class="col-1">&nbsp;</div>
-    </div>
-</div>
+<!-- no header-picture -->
 {% endif %}

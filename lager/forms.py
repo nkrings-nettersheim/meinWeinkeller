@@ -116,12 +116,30 @@ class RebsorteForm(forms.ModelForm):
         )
     )
 
+    TRAUBENART = (
+        ('WWT', 'Weißwein-Traube'),
+        ('RWT', 'Rotwein-Traube')
+    )
+
+    traubenart = forms.ChoiceField(
+        required=False,
+        choices=TRAUBENART,
+        label="",
+        initial=1,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
     class Meta:
         model = Rebsorte
         fields = [
             'rebsorte',
             'rebsorte_alias',
-            'weinkeller'
+            'weinkeller',
+            'traubenart'
         ]
 
 
@@ -155,6 +173,115 @@ class WeinForm(forms.ModelForm):
         ),
         empty_label='Wähle die Geschmacksrichtung aus'
     )
+
+    cuvee_rebsorten = forms.CharField(required=False,
+                                      max_length=250,
+                                      widget=forms.TextInput(
+                                          attrs={
+                                              'class': 'form-control',
+                                              'placeholder': 'Namen verschiedenen Rebsorten der Cuvée ...'
+                                          }
+                                      )
+                                      )
+
+    apnr = forms.CharField(required=False,
+                           max_length=20,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'placeholder': 'A.P.Nr. erfassen ...'
+                               }
+                           )
+                           )
+
+    FLASCHENGROESSE = (
+        ('0.250', '0.250 L'),
+        ('0.375', '0.375 L'),
+        ('0.750', '0.750 L'),
+        ('1.000', '1.000 L'),
+        ('1.500', '1.500 L'),
+        ('3.000', '3.000 L'),
+        ('5.000', '5.000 L')
+    )
+
+    flaschengroesse = forms.ChoiceField(
+        required=False,
+        choices=FLASCHENGROESSE,
+        label="",
+        initial=2,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    alkoholgehalt = forms.CharField(required=False,
+                                    max_length=10,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'class': 'form-control',
+                                            'placeholder': 'Alkoholgehalt in % Vol. erfassen ...'
+                                        }
+                                    )
+                                    )
+
+    vegan = forms.NullBooleanField(required=False, initial=False,
+                                   widget=forms.NullBooleanSelect(
+                                       attrs={
+                                           'class': 'form-control',
+                                       }
+                                   ))
+
+    restzucker = forms.CharField(required=False,
+                                 max_length=10,
+                                 widget=forms.TextInput(
+                                     attrs={
+                                         'class': 'form-control',
+                                         'placeholder': 'Restzucker in g/L erfassen ...'
+                                     }
+                                 )
+                                 )
+
+    literpreis = forms.DecimalField(required=False,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'class': 'form-control',
+                                            'placeholder': 'Literpreis erfassen ...'
+                                        }
+                                    ),
+                                    initial=0.00
+                                    )
+
+    preis = forms.DecimalField(required=False,
+                               widget=forms.TextInput(
+                                   attrs={
+                                       'class': 'form-control',
+                                       'placeholder': 'Preis erfassen ...'
+                                   }
+                               ),
+                               initial=0.00
+                               )
+
+    bestellnummer = forms.CharField(required=False,
+                                    max_length=10,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'class': 'form-control',
+                                            'placeholder': 'Bestellnummer erfassen ...'
+                                        }
+                                    )
+                                    )
+
+    trinkbar_ab = forms.CharField(required=False,
+                                  max_length=10,
+                                  widget=forms.TextInput(
+                                      attrs={
+                                          'class': 'form-control',
+                                          'placeholder': 'Trinkbar ab erfassen ...'
+                                      }
+                                  )
+                                  )
 
     date = datetime.date.today()
     start_year = date - datetime.timedelta(days=18250)

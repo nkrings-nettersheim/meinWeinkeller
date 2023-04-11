@@ -273,7 +273,7 @@ class WeinartModelTest(TestCase):
     # test max_length
         weinart = Weinart.objects.get(id=1)
         max_length = weinart._meta.get_field('weinart').max_length
-        self.assertEqual(max_length, 10)
+        self.assertEqual(max_length, 20)
 
     # test objects
     def test_weinland_str(self):
@@ -370,7 +370,9 @@ class WeinModelTest(TestCase):
             weinart_id='1',
             jahrgang_id='1',
             geschmacksrichtung_id='1',
-            erzeuger_id='1'
+            erzeuger_id='1',
+            literpreis='12.80',
+            preis='10.80'
         )
 
     # has information

@@ -2,7 +2,6 @@
 
 {% block extrahead %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'lager/base.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -22,31 +21,34 @@
 {% endif %}
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
-      <div class="container">
-        <div class="form-group row">
-          <div class="col-sm-4">&nbsp;</div>
-          <div class="col-sm-2">{{ form.username.label_tag }}</div>
-          <div class="col-sm-2">{{ form.username }}</div>
-          <div class="col-sm-4">&nbsp;</div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-4">&nbsp;</div>
-          <div class="col-sm-2">{{ form.password.label_tag }}</div>
-          <div class="col-sm-2">{{ form.password }}</div>
-          <div class="col-sm-4">&nbsp;</div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-4">&nbsp;</div>
-          <div class="col-sm-2">&nbsp;</div>
-          <div class="col-sm-2"><input type="submit" class="btn btn-primary" value="Einloggen" /></div>
-          <div class="col-sm-4"><input type="hidden" name="next" value="{{ next }}" /></div>
-        </div>
-</form>
-        <div class="form-group row">
-          <div class="col-sm-6">&nbsp;</div>
-          <div class="col-sm-2"><a href="{% url 'password_reset' %}">Passwort vergessen?</a></div>
-          <div class="col-sm-4">&nbsp;</div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-7">
+                <img src="{% static 'lager/images/wine_cellar.jpg' %}" style="width:100%;">
+          </div>
+          <div class="col-sm-5">
+            <div class="form-group row mb-3 mt-5 ">
+              <div class="col">
+                <h4>Willkommen auf der Login-Seite zu "Mein Weinkeller"</h4>
+              </div>
+            </div>
+            <div class="form-group row mb-3 mt-5 ">
+              <div class="col-lg-4"> {{ form.username.label_tag }}</div>
+              <div class="col-lg-8">{{ form.username }}</div>
+            </div>
+            <div class="form-group row mb-3 mt-5">
+              <div class="col-lg-4">{{ form.password.label_tag }}</div>
+              <div class="col-lg-4">{{ form.password }}</div>
+            </div>
+            <div class="form-group row mb-3 mt-5">
+              <div class="col-lg-4">&nbsp;</div>
+              <div class="col-lg-4"><input type="submit" class="btn btn-secondary" value="Einloggen" /></div>
+              <div class="col-lg-4"><input type="hidden" name="next" value="{{ next }}" /></div>
+            </div>
+          </div>
         </div>
       </div>
+</form>
+
 </content>
 {% endblock %}
