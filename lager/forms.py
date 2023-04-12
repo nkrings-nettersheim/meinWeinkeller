@@ -117,6 +117,7 @@ class RebsorteForm(forms.ModelForm):
     )
 
     TRAUBENART = (
+        ('', 'unbekannt'),
         ('WWT', 'Weißwein-Traube'),
         ('RWT', 'Rotwein-Traube')
     )
@@ -279,6 +280,26 @@ class WeinForm(forms.ModelForm):
                                       attrs={
                                           'class': 'form-control',
                                           'placeholder': 'Trinkbar ab erfassen ...'
+                                      }
+                                  )
+                                  )
+
+    lage = forms.CharField(required=False,
+                                  max_length=50,
+                                  widget=forms.TextInput(
+                                      attrs={
+                                          'class': 'form-control',
+                                          'placeholder': 'Weinlage erfassen ...'
+                                      }
+                                  )
+                                  )
+
+    restsaeure = forms.CharField(required=False,
+                                  max_length=50,
+                                  widget=forms.TextInput(
+                                      attrs={
+                                          'class': 'form-control',
+                                          'placeholder': 'Restsäure in g/L erfassen ...'
                                       }
                                   )
                                   )

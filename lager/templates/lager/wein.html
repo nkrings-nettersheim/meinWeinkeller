@@ -51,6 +51,14 @@
     </div>
     <div class="row">
         <div class="col-3">
+            <div class="small inline">Weinlage:</div>
+        </div>
+          <div class="col-9">
+             <strong>{{ wein.lage }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
             <div class="small inline">Rebsorte:</div>
         </div>
           <div class="col-9">
@@ -104,11 +112,15 @@
       <div class="tab-pane container active" id="erzeuger">
           <div class="row mt-2">
             <div class="col-2"><strong>Weingut:</strong></div>
-            <div class="col-4">{{ wein.erzeuger }}</div>
+              {% if wein.erzeuger %}
+                <div class="col-4">{{ wein.erzeuger }}</div>
+              {% endif %}
           </div>
           <div class="row">
             <div class="col-2"><strong>Inhaber:</strong></div>
-            <div class="col-4">{{ wein.erzeuger.inhaber }}</div>
+              {% if wein.erzeuger.inhaber %}
+                <div class="col-4">{{ wein.erzeuger.inhaber }}</div>
+              {% endif %}
           </div>
           <div class="row mt-3">
               <div class=""><strong>Adresse:</strong></div>
@@ -143,6 +155,10 @@
           <div class="row mt-2">
               <div class="col-2">Restzucker:</div>
               <div class="col-4">{{ wein.restzucker }} g/L</div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-2">Restsäure:</div>
+              <div class="col-4">{{ wein.restsaeure }} g/L</div>
           </div>
           <div class="row mt-2">
               <div class="col-2">Vegan:</div>

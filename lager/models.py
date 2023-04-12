@@ -142,9 +142,12 @@ class Wein(models.Model):
     preis = models.DecimalField(max_digits=6, decimal_places=2)
     bestellnummer = models.CharField(max_length=10, blank=True, default='')
     trinkbar_ab = models.CharField(max_length=10, blank=True, default='')
+    lage = models.CharField(max_length=50, blank=True, default='')
+    restsaeure = models.CharField(max_length=10, blank=True, default='')
+
 
     def __str__(self):
-        return self.name
+        return self.name + ', ' + str(self.jahrgang) + ', ' + str(self.erzeuger)
 
     class Meta:
         constraints = [

@@ -40,6 +40,13 @@
             </div>
         </div>
         <div class="form-group row margin-bottom">
+            <label for="{{ form.lage.id_for_label }}" class="col-sm-2 control-label">Weinlage:</label>
+            <div class="col-sm-6">
+                 {{ form.lage }}
+                <div class="text-danger">{{ form.lage.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
             <label for="{{ form.rebsorte.id_for_label }}" class="col-sm-2 control-label">Rebsorte:</label>
             <div class="col-sm-6">
                  {{ form.rebsorte }}
@@ -114,6 +121,13 @@
             <div class="col-sm-6">
                  {{ form.restzucker }}
                 <div class="text-danger">{{ form.restzucker.errors }}</div>
+            </div>
+        </div>
+         <div class="form-group row margin-bottom">
+            <label for="{{ form.restsaeure.id_for_label }}" class="col-sm-2 control-label">Restsäure g/L:</label>
+            <div class="col-sm-6">
+                 {{ form.restsaeure }}
+                <div class="text-danger">{{ form.restsaeure.errors }}</div>
             </div>
         </div>
         <div class="form-group row margin-bottom">
