@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+    {% load static %}
+{% endblock %}
+
+{% block title %}
+    Mein Weinkeller - Wein erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <div class="container-fluid">
+    <form method="POST" enctype="multipart/form-data" action="" >
+        <p></p>
+        {% csrf_token %}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden }}
+        <div class="row">
+            <div class="col-sm">
+                <h4>In Schritt 4 die Basisdaten erfassen:</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Weinland
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Rebsorte
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Erzeuger
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-4.png' %} style="width:30px"><br>Wein
+            </div>
+            <div class="col-1 text-center">
+                <img src={% static 'lager/images/circle-5.png' %} style="width:30px"><br>Zusatz
+            </div>
+        </div>
+        <div class="form-group row margin-bottom mt-5">
+            <label for="{{ form.name.id_for_label }}" class="col-sm-2 control-label">Name:</label>
+            <div class="col-sm-6">
+                 {{ form.name }}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.weinart.id_for_label }}" class="col-sm-2 control-label">Weinart:</label>
+            <div class="col-sm-6">
+                 {{ form.weinart }}
+                <div class="text-danger">{{ form.weinart.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.jahrgang.id_for_label }}" class="col-sm-2 control-label">Jahrgang:</label>
+            <div class="col-sm-6">
+                 {{ form.jahrgang }}
+                <div class="text-danger">{{ form.jahrgang.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.geschmacksrichtung.id_for_label }}" class="col-sm-2 control-label">Geschmacksrichtung:</label>
+            <div class="col-sm-6">
+                 {{ form.geschmacksrichtung }}
+                <div class="text-danger">{{ form.geschmacksrichtung.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.literpreis.id_for_label }}" class="col-sm-2 control-label">Literpreis in €:</label>
+            <div class="col-sm-6">
+                 {{ form.literpreis }}
+                <div class="text-danger">{{ form.literpreis.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.preis.id_for_label }}" class="col-sm-2 control-label">Preis in €:</label>
+            <div class="col-sm-6">
+                 {{ form.preis }}
+                <div class="text-danger">{{ form.preis.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.trinkbar_ab.id_for_label }}" class="col-sm-2 control-label">trinkbar ab:</label>
+            <div class="col-sm-6">
+                 {{ form.trinkbar_ab }}
+                <div class="text-danger">{{ form.trinkbar_ab.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.bestellnummer.id_for_label }}" class="col-sm-2 control-label">Bestellnummer:</label>
+            <div class="col-sm-6">
+                 {{ form.bestellnummer }}
+                <div class="text-danger">{{ form.bestellnummer.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.bemerkung.id_for_label }}" class="col-sm-2 control-label">Bemerkung:</label>
+            <div class="col-sm-6">
+                 {{ form.bemerkung }}
+                <div class="text-danger">{{ form.bemerkung.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <div class="col">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:wf_wein_erzeuger' %}">zurück</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-secondary btn-sm">weiter</button>
+            </div>
+        </div>
+    </form>
+    </div>
+</content>
+{% endblock %}
+
+

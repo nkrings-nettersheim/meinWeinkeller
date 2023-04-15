@@ -55,6 +55,13 @@ urlpatterns = [
     path('list/weinkeller/', views.WeinkellersView.as_view(), name='list_weinkellers'),
     path('weinkeller/<id>/', views.weinkeller, name='weinkeller'),
 
+    path('wf/wein/initial/', views.wf_wein_initial, name='wf_wein_initial'),
+    path('wf/wein/weinland/', views.wf_wein_weinland, name='wf_wein_weinland'),
+    path('wf/wein/rebsorte/', views.wf_wein_rebsorte, name='wf_wein_rebsorte'),
+    path('wf/wein/erzeuger/', views.wf_wein_erzeuger, name='wf_wein_erzeuger'),
+    path('wf/wein/weinbasis/', views.wf_wein_basis, name='wf_wein_basis'),
+    path('wf/wein/weinzusatz/', views.wf_wein_zusatz, name='wf_wein_zusatz'),
+
     path('ajax/load-regionen/', views.ajax_load_regions, name='ajax_load_regions'),  # AJAX
     path('ajax/load-lagers/', views.ajax_load_lagers, name='ajax_load_lagers'),  # AJAX
 ]

@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from .models import Weinkeller, Weinland, Region, Rebsorte, Wein, Erzeuger, Lager, Bestand
 from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm, ErzeugerForm, LagerForm, BestandForm, \
     WeinkellerForm
+from .forms import WFWeinWeinlandForm, WFWeinRebsorteForm, WFWeinErzeugerForm, WFWeinBasisForm, WFWeinZusatzForm
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ def datenschutz(request):
 # Area Weinland create and change
 ##########################################################################
 def add_weinland(request):
+    f = request.GET['f']
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
         request.POST._mutable = True
@@ -43,10 +45,14 @@ def add_weinland(request):
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
-            return redirect('/lager/list/weinland/')
+            request.session['weinland_id'] = item.id
+            if request.POST['parameter'] == "wf":
+                return redirect('/lager/wf/wein/weinland/')
+            else:
+                return redirect('/lager/list/weinland/')
     else:
         form = WeinlandForm()
-    return render(request, 'lager/weinland_form.html', {'form': form})
+    return render(request, 'lager/weinland_form.html', {'form': form, 'parameter': f})
 
 
 def edit_weinland(request, id=None):
@@ -72,7 +78,8 @@ class WeinlandsView(ListView):
 class DeleteWeinlandItem(DeleteView):
     model = Weinland
     template_name = 'lager/weinland_confirm_delete.html'
-    #success_url = "/lager/list/weinland/"
+
+    # success_url = "/lager/list/weinland/"
 
     def form_valid(self, form):
         success_url = "/lager/list/weinland/"
@@ -102,6 +109,7 @@ def weinland(request, id=id):
 # Area Region create and change
 ##########################################################################
 def add_region(request):
+    f = request.GET['f']
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
         request.POST._mutable = True
@@ -110,11 +118,17 @@ def add_region(request):
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
-
-            return redirect('/lager/region/' + str(item.id) + '/')
+            request.session['region_id'] = item.id
+            if request.POST['parameter'] == "wf":
+                return redirect('/lager/wf/wein/rebsorte/')
+            else:
+                return redirect('/lager/region/' + str(item.id) + '/')
     else:
-        form = RegionForm(user=request.user.id)
-    return render(request, 'lager/region_form.html', {'form': form})
+        if 'weinland_id' in request.session:
+            form = RegionForm(user=request.user.id, initial={'weinland': request.session['weinland_id']})
+        else:
+            form = RegionForm(user=request.user.id)
+    return render(request, 'lager/region_form.html', {'form': form, 'parameter': f})
 
 
 def edit_region(request, id=None):
@@ -170,6 +184,7 @@ def region(request, id=id):
 # Area Rebsorte create and change
 ##########################################################################
 def add_rebsorte(request):
+    f = request.GET['f']
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
         request.POST._mutable = True
@@ -178,11 +193,15 @@ def add_rebsorte(request):
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
-
-            return redirect('/lager/rebsorte/' + str(item.id) + '/')
+            request.session['rebsorte_id'] = item.id
+            if request.POST['parameter'] == "wf":
+                return redirect('/lager/wf/wein/rebsorte/')
+            else:
+                return redirect('/lager/rebsorte/' + str(item.id) + '/')
     else:
         form = RebsorteForm()
-    return render(request, 'lager/rebsorte_form.html', {'form': form})
+    return render(request, 'lager/rebsorte_form.html', {'form': form, 'parameter': f})
+
 
 # Edit Rebsorte
 def edit_rebsorte(request, id=None):
@@ -311,6 +330,7 @@ def wein(request, id=id):
 # Area Erzeuger create and change
 ##########################################################################
 def add_erzeuger(request):
+    f = request.GET['f']
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
         request.POST._mutable = True
@@ -319,11 +339,14 @@ def add_erzeuger(request):
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
-
-            return redirect('/lager/erzeuger/' + str(item.id) + '/')
+            request.session['erzeuger_id'] = item.id
+            if request.POST['parameter'] == "wf":
+                return redirect('/lager/wf/wein/erzeuger')
+            else:
+                return redirect('/lager/erzeuger/' + str(item.id) + '/')
     else:
         form = ErzeugerForm(user=request.user.id)
-    return render(request, 'lager/erzeuger_form.html', {'form': form})
+    return render(request, 'lager/erzeuger_form.html', {'form': form, 'parameter': f})
 
 
 def edit_erzeuger(request, id=None):
@@ -380,6 +403,7 @@ def erzeuger(request, id=id):
 ##########################################################################
 # Area Lager create and change
 ##########################################################################
+# Lager anlegen
 def add_lager(request):
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
@@ -395,7 +419,7 @@ def add_lager(request):
         form = LagerForm()
     return render(request, 'lager/lager_form.html', {'form': form})
 
-
+# Lager editieren
 def edit_lager(request, id=None):
     item = get_object_or_404(Lager, id=id, weinkeller=request.user.id)
     form = LagerForm(request.POST or None, instance=item)
@@ -438,7 +462,6 @@ class DeleteLagerItem(DeleteView):
             return self.render_to_response(context)
 
 
-
 # Anzeige einzelne Region
 def lager(request, id=id):
     try:
@@ -451,6 +474,7 @@ def lager(request, id=id):
 ##########################################################################
 # Area Bestand create and change
 ##########################################################################
+# Bestand anlegen
 def add_bestand(request):
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
@@ -467,7 +491,7 @@ def add_bestand(request):
         form = BestandForm(user=request.user.id)
     return render(request, 'lager/bestand_form.html', {'form': form})
 
-
+# Bestand editieren
 def edit_bestand(request, id=None):
     item = get_object_or_404(Bestand, id=id, weinkeller=request.user.id)
     form = BestandForm(request.POST or None, instance=item, user=request.user.id)
@@ -487,7 +511,7 @@ class BestandsView(ListView):
     context_object_name = 'bestands_list'
 
     def get_queryset(self):
-        #return Bestand.objects.filter(weinkeller=str(self.request.user.id), menge__gt=0).order_by('wein')
+        # return Bestand.objects.filter(weinkeller=str(self.request.user.id), menge__gt=0).order_by('wein')
         return Bestand.objects.filter(weinkeller=str(self.request.user.id)).order_by('wein')
 
 
@@ -521,7 +545,7 @@ def bestand(request, id=id):
 
 
 ##########################################################################
-# Receiver Functions
+# Area Weinkeller create and change
 ##########################################################################
 def add_weinkeller(request):
     if request.method == "POST":
@@ -539,7 +563,7 @@ def add_weinkeller(request):
         form = WeinkellerForm()
     return render(request, 'lager/weinkeller_form.html', {'form': form})
 
-
+# Weinkeller editieren
 def edit_weinkeller(request, id=None):
     item = get_object_or_404(Weinkeller, id=id, weinkeller_user_id=request.user.id)
     form = WeinkellerForm(request.POST or None, instance=item)
@@ -552,7 +576,7 @@ def edit_weinkeller(request, id=None):
     return render(request, 'lager/weinkeller_form.html', {'form': form})
 
 
-# Liste der Weine
+# Liste der Weinkeller
 class WeinkellersView(ListView):
     model = Weinkeller
     template_name = 'lager/weinkellers.html'
@@ -569,6 +593,207 @@ def weinkeller(request, id=id):
         return render(request, 'lager/weinkeller.html', {'weinkeller': weinkeller_result})
     except ObjectDoesNotExist:
         return redirect('/lager/')
+
+
+##########################################################################
+# Wein erfassen Workflow
+##########################################################################
+def wf_wein_initial(request):
+    if 'weinland_id' in request.session:
+        del request.session['weinland_id']
+    if 'region_id' in request.session:
+        del request.session['region_id']
+    if 'lage' in request.session:
+        del request.session['lage']
+    if 'rebsorte_id' in request.session:
+        del request.session['rebsorte_id']
+    if 'cuvee_rebsorten' in request.session:
+        del request.session['cuvee_rebsorten']
+    if 'name' in request.session:
+        del request.session['name']
+    if 'weinart_id' in request.session:
+        del request.session['weinart_id']
+    if 'jahrgang_id' in request.session:
+        del request.session['jahrgang_id']
+    if 'geschmacksrichtung_id' in request.session:
+        del request.session['geschmacksrichtung_id']
+    if 'erzeuger_id' in request.session:
+        del request.session['erzeuger_id']
+    if 'bemerkung' in request.session:
+        del request.session['bemerkung']
+    if 'apnr' in request.session:
+        del request.session['apnr']
+    if 'flaschengroesse' in request.session:
+        del request.session['flaschengroesse']
+    if 'alkoholgehalt' in request.session:
+        del request.session['alkoholgehalt']
+    if 'vegan' in request.session:
+        del request.session['vegan']
+    if 'restzucker' in request.session:
+        del request.session['restzucker']
+    if 'literpreis' in request.session:
+        del request.session['literpreis']
+    if 'preis' in request.session:
+        del request.session['preis']
+    if 'bestellnummer' in request.session:
+        del request.session['bestellnummer']
+    if 'trinkbar_ab' in request.session:
+        del request.session['trinkbar_ab']
+    if 'restsaeure' in request.session:
+        del request.session['restsaeure']
+
+    return redirect('/lager/wf/wein/weinland/')
+
+
+def wf_wein_weinland(request):
+    if request.method == "POST":
+        request.session['weinland_id'] = request.POST['weinland']
+        request.session['region_id'] = request.POST['region']
+        request.session['lage'] = request.POST['lage']
+        # print(request.session['weinland_id'] + "; " + request.session['region_id'] + "; " + request.session['lage'])
+        return redirect('/lager/wf/wein/rebsorte/')
+
+    if 'weinland_id' in request.session and 'region_id' in request.session and 'lage' in request.session:
+        print("v1")
+        form = WFWeinWeinlandForm(user_id=request.user.id, initial={
+            'weinland': request.session['weinland_id'],
+            'region': request.session['region_id'],
+            'lage': request.session['lage']
+        })
+    elif 'weinland_id' in request.session and 'region_id' in request.session:
+        print("v2")
+        form = WFWeinWeinlandForm(user_id=request.user.id, initial={
+            'weinland': request.session['weinland_id'],
+            'region': request.session['region_id']
+        })
+    elif 'weinland_id' in request.session and 'lage' in request.session:
+        form = WFWeinWeinlandForm(user_id=request.user.id, initial={
+            'weinland': request.session['weinland_id'],
+            'lage': request.session['lage']
+        })
+    elif 'weinland_id' in request.session:
+        form = WFWeinWeinlandForm(user_id=request.user.id, initial={
+            'weinland': request.session['weinland_id']
+        })
+    else:
+        form = WFWeinWeinlandForm(user_id=request.user.id)
+
+    return render(request, 'lager/wf_wein_weinland_form.html', {'form': form})
+
+
+def wf_wein_rebsorte(request):
+    if request.method == "POST":
+        request.session['rebsorte_id'] = request.POST['rebsorte']
+        request.session['cuvee_rebsorten'] = request.POST['cuvee_rebsorten']
+        return redirect('/lager/wf/wein/erzeuger/')
+
+    if 'rebsorte_id' in request.session and 'cuvee_rebsorten' in request.session:
+        form = WFWeinRebsorteForm(user_id=request.user.id, initial={
+            'rebsorte': request.session['rebsorte_id'],
+            'cuvee_rebsorten': request.session['cuvee_rebsorten']
+        })
+    elif 'rebsorte_id' in request.session:
+        form = WFWeinRebsorteForm(user_id=request.user.id, initial={
+            'rebsorte': request.session['rebsorte_id'],
+        })
+    else:
+        form = WFWeinRebsorteForm(user_id=request.user.id)
+
+    return render(request, 'lager/wf_wein_rebsorte_form.html', {'form': form})
+
+
+def wf_wein_erzeuger(request):
+    if request.method == "POST":
+        request.session['erzeuger_id'] = request.POST['erzeuger']
+        return redirect('/lager/wf/wein/weinbasis/')
+
+    if 'erzeuger_id' in request.session:
+        form = WFWeinErzeugerForm(user_id=request.user.id, initial={
+            'erzeuger': request.session['erzeuger_id']
+        })
+    else:
+        form = WFWeinErzeugerForm(user_id=request.user.id)
+
+    return render(request, 'lager/wf_wein_erzeuger_form.html', {'form': form})
+
+
+def wf_wein_basis(request):
+    if request.method == "POST":
+        request.session['name'] = request.POST['name']
+        request.session['weinart_id'] = request.POST['weinart']
+        request.session['jahrgang_id'] = request.POST['jahrgang']
+        request.session['geschmacksrichtung_id'] = request.POST['geschmacksrichtung']
+        request.session['bemerkung'] = request.POST['bemerkung']
+        request.session['literpreis'] = request.POST['literpreis']
+        request.session['preis'] = request.POST['preis']
+        request.session['bestellnummer'] = request.POST['bestellnummer']
+        request.session['trinkbar_ab'] = request.POST['trinkbar_ab']
+
+        return redirect('/lager/wf/wein/weinzusatz/')
+
+    if 'name' in request.session:
+        form = WFWeinBasisForm(initial={
+            'name': request.session['name'],
+            'weinart': request.session['weinart_id'],
+            'jahrgang': request.session['jahrgang_id'],
+            'geschmacksrichtung': request.session['geschmacksrichtung_id'],
+            'bemerkung': request.session['bemerkung'],
+            'literpreis': request.session['literpreis'],
+            'preis': request.session['preis'],
+            'bestellnummer': request.session['bestellnummer'],
+            'trinkbar_ab': request.session['trinkbar_ab']
+        })
+    else:
+        form = WFWeinBasisForm()
+
+    return render(request, 'lager/wf_wein_basis_form.html', {'form': form})
+
+
+def wf_wein_zusatz(request):
+    if request.method == "POST":
+        mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
+        form = WFWeinZusatzForm(request.POST)
+        if form.is_valid():
+            if request.POST['vegan'] == 'false':
+                vegan_value = False
+            elif request.POST['vegan'] == 'true':
+                vegan_value = True
+            else:
+                vegan_value = True
+            #assert False
+            wein2save = Wein(
+                name=request.session['name'],
+                region_id=request.session['region_id'],
+                weinland_id=request.session['weinland_id'],
+                rebsorte_id=request.session['rebsorte_id'],
+                cuvee_rebsorten=request.session['cuvee_rebsorten'],
+                weinart_id=request.session['weinart_id'],
+                jahrgang_id=request.session['jahrgang_id'],
+                geschmacksrichtung_id=request.session['geschmacksrichtung_id'],
+                erzeuger_id=request.session['erzeuger_id'],
+                bemerkung=request.session['bemerkung'],
+                weinkeller=mydata['weinkeller_admin_id'],
+                apnr=request.POST['apnr'],
+                flaschengroesse=request.POST['flaschengroesse'],
+                alkoholgehalt=request.POST['alkoholgehalt'],
+                vegan=vegan_value,
+                restzucker=request.POST['restzucker'],
+                literpreis=request.session['literpreis'],
+                preis=request.session['preis'],
+                bestellnummer=request.session['bestellnummer'],
+                trinkbar_ab=request.session['trinkbar_ab'],
+                lage=request.session['lage'],
+                restsaeure=request.POST['restsaeure']
+                )
+            wein2save.save()
+
+            return redirect('/lager/list/weine/')
+        else:
+            print('NotValid')
+
+    form = WFWeinZusatzForm()
+
+    return render(request, 'lager/wf_wein_zusatz_form.html', {'form': form})
 
 
 ##########################################################################

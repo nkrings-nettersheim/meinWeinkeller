@@ -13,7 +13,7 @@
             <a href="{% url 'lager:list_rebsorten' %}" class="btn btn-secondary">Rebsorten</a>
         </div>
         <div class="col">
-            <a href="{% url 'lager:add_rebsorte' %}" class="btn btn-secondary">anlegen</a>
+            <a href="{% url 'lager:add_rebsorte' %}?f=single" class="btn btn-secondary">anlegen</a>
         </div>
         <div class="col">
             <a href="{% url 'lager:edit_rebsorte' rebsorte.id %}" class="btn btn-secondary">ändern</a>

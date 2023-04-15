@@ -12,7 +12,6 @@ class WeinlandForm(forms.ModelForm):
                            widget=forms.TextInput(
                                attrs={
                                    'class': 'form-control',
-                                   'autofocus': 'autofocus',
                                    'placeholder': 'Land eingeben ...'
                                }
                            )
@@ -34,8 +33,9 @@ class WeinlandForm(forms.ModelForm):
         initial=4,
         widget=forms.Select(
             attrs={
-                'class': 'form-control'
-            }
+                'class': 'form-control',
+                'autofocus': 'autofocus'
+    }
         )
     )
 
@@ -63,7 +63,6 @@ class RegionForm(forms.ModelForm):
                              widget=forms.TextInput(
                                  attrs={
                                      'class': 'form-control',
-                                     'autofocus': 'autofocus',
                                      'placeholder': 'Region eingeben ...'
                                  }
                              )
@@ -85,6 +84,7 @@ class RegionForm(forms.ModelForm):
             widget=forms.Select(
                 attrs={
                     'class': 'form-control',
+                    'autofocus': 'autofocus',
                 }
             ),
             empty_label='Wähle das Land aus ...'
@@ -736,3 +736,251 @@ class WeinkellerForm(forms.ModelForm):
             'weinkeller_admin_id',
             'weinkeller_user_id',
         ]
+
+
+class WFWeinWeinlandForm(forms.Form):
+
+    lage = forms.CharField(required=False,
+                           max_length=50,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'placeholder': 'Weinlage erfassen ...'
+                               }
+                           )
+                           )
+
+    def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id')
+        super(WFWeinWeinlandForm, self).__init__(*args, **kwargs)
+        self.fields['weinland'] = forms.ModelChoiceField(
+            queryset=Weinland.objects.filter(weinkeller=user_id).order_by('land'), required=True,
+            widget=forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            empty_label='Wähle das Land aus ...'
+        )
+
+        self.fields['region'] = forms.ModelChoiceField(
+            queryset=Region.objects.filter(weinkeller=user_id).order_by('region'), required=False,
+            widget=forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            empty_label='Wähle die Region aus ...'
+        )
+
+
+class WFWeinRebsorteForm(forms.Form):
+
+    cuvee_rebsorten = forms.CharField(required=False,
+                                      max_length=250,
+                                      widget=forms.TextInput(
+                                          attrs={
+                                              'class': 'form-control',
+                                              'placeholder': 'Namen verschiedenen Rebsorten der Cuvée ...'
+                                          }
+                                      )
+                                      )
+
+    def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id')
+        super(WFWeinRebsorteForm, self).__init__(*args, **kwargs)
+        self.fields['rebsorte'] = forms.ModelChoiceField(
+            queryset=Rebsorte.objects.filter(weinkeller=user_id).order_by('rebsorte'), required=True,
+            widget=forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            empty_label='Wähle die Rebsorte aus ...'
+        )
+
+
+class WFWeinErzeugerForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id')
+        super(WFWeinErzeugerForm, self).__init__(*args, **kwargs)
+        self.fields['erzeuger'] = forms.ModelChoiceField(
+            queryset=Erzeuger.objects.filter(weinkeller=user_id).order_by('name'), required=False,
+            widget=forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            empty_label='Wähle den Erzeuger aus ...'
+        )
+
+
+class WFWeinBasisForm(forms.Form):
+
+    name = forms.CharField(required=True,
+                           max_length=50,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'autofocus': 'autofocus',
+                                   'placeholder': 'Name des Weins eingeben ...'
+                               }
+                           )
+                           )
+
+    weinart = forms.ModelChoiceField(queryset=Weinart.objects.all().order_by('weinart'),
+                                     widget=forms.Select(
+                                         attrs={
+                                             'class': 'form-control',
+                                         }
+                                     ),
+                                     empty_label='Wähle die Weinart aus'
+                                     )
+
+    geschmacksrichtung = forms.ModelChoiceField(
+        queryset=Geschmacksrichtung.objects.all().order_by('geschmacksrichtung'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        empty_label='Wähle die Geschmacksrichtung aus'
+    )
+
+
+    literpreis = forms.DecimalField(required=False,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'class': 'form-control',
+                                            'placeholder': 'Literpreis erfassen ...'
+                                        }
+                                    ),
+                                    initial=0.00
+                                    )
+
+    preis = forms.DecimalField(required=False,
+                               widget=forms.TextInput(
+                                   attrs={
+                                       'class': 'form-control',
+                                       'placeholder': 'Preis erfassen ...'
+                                   }
+                               ),
+                               initial=0.00
+                               )
+
+    bestellnummer = forms.CharField(required=False,
+                                    max_length=10,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'class': 'form-control',
+                                            'placeholder': 'Bestellnummer erfassen ...'
+                                        }
+                                    )
+                                    )
+
+    trinkbar_ab = forms.CharField(required=False,
+                                  max_length=10,
+                                  widget=forms.TextInput(
+                                      attrs={
+                                          'class': 'form-control',
+                                          'placeholder': 'Trinkbar ab erfassen ...'
+                                      }
+                                  )
+                                  )
+
+    date = datetime.date.today()
+    start_year = date - datetime.timedelta(days=18250)
+    current_year = date.strftime("%Y")
+    start_year = start_year.strftime("%Y")
+
+    jahrgang = forms.ModelChoiceField(
+        queryset=Jahrgang.objects.filter(jahrgang_num__range=(start_year, current_year)).order_by('-jahrgang'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        empty_label='Wähle den Jahrgang aus'
+    )
+
+    bemerkung = forms.CharField(required=False,
+                                widget=forms.Textarea(
+                                    attrs={
+                                        'class': 'form-control',
+                                        'placeholder': 'Bemerkungen ...'
+                                    }
+                                )
+                                )
+
+
+class WFWeinZusatzForm(forms.Form):
+    apnr = forms.CharField(required=False,
+                           max_length=20,
+                           widget=forms.TextInput(
+                               attrs={
+                                   'class': 'form-control',
+                                   'placeholder': 'A.P.Nr. erfassen ...'
+                               }
+                           )
+                           )
+
+    FLASCHENGROESSE = (
+        ('0.250', '0.250 L'),
+        ('0.375', '0.375 L'),
+        ('0.750', '0.750 L'),
+        ('1.000', '1.000 L'),
+        ('1.500', '1.500 L'),
+        ('3.000', '3.000 L'),
+        ('5.000', '5.000 L')
+    )
+
+    flaschengroesse = forms.ChoiceField(
+        required=False,
+        choices=FLASCHENGROESSE,
+        label="",
+        initial=2,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    alkoholgehalt = forms.CharField(required=False,
+                                    max_length=10,
+                                    widget=forms.TextInput(
+                                        attrs={
+                                            'class': 'form-control',
+                                            'placeholder': 'Alkoholgehalt in % Vol. erfassen ...'
+                                        }
+                                    )
+                                    )
+
+    vegan = forms.NullBooleanField(required=False, initial=False,
+                                   widget=forms.NullBooleanSelect(
+                                       attrs={
+                                           'class': 'form-control',
+                                       }
+                                   ))
+
+    restzucker = forms.CharField(required=False,
+                                 max_length=10,
+                                 widget=forms.TextInput(
+                                     attrs={
+                                         'class': 'form-control',
+                                         'placeholder': 'Restzucker in g/L erfassen ...'
+                                     }
+                                 )
+                                 )
+
+    restsaeure = forms.CharField(required=False,
+                                  max_length=50,
+                                  widget=forms.TextInput(
+                                      attrs={
+                                          'class': 'form-control',
+                                          'placeholder': 'Restsäure in g/L erfassen ...'
+                                      }
+                                  )
+                                  )
+

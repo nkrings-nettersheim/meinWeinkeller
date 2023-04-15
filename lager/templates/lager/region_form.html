@@ -14,7 +14,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm">
-                <h4>Region ändern oder Neue anlegen:</h4>
+                {% if parameter == 'wf' %}
+                    <h4>Region neu anlegen:</h4>
+                    <input type="hidden" name="parameter" value="{{ parameter }}">
+                {% else %}
+                    <h4>Region ändern oder Neue anlegen:</h4>
+                {% endif %}
             </div>
         </div>
         <div class="form-group row margin-bottom">

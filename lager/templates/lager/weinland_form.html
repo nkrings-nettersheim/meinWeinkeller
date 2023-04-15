@@ -14,14 +14,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm">
-                <h4>Weinland ändern oder Neues anlegen:</h4>
-            </div>
-        </div>
-        <div class="form-group row margin-bottom">
-            <label for="{{ form.land.id_for_label }}" class="col-sm-2 control-label">Name:</label>
-            <div class="col-sm-6">
-                 {{ form.land }}
-                <div class="text-danger">{{ form.land.errors }}</div>
+                {% if parameter == 'wf' %}
+                    <h4>Weinland neu anlegen:</h4>
+                    <input type="hidden" name="parameter" value="{{ parameter }}">
+                {% else %}
+                    <h4>Weinland ändern oder Neues anlegen:</h4>
+                {% endif %}
             </div>
         </div>
         <div class="form-group row margin-bottom">
@@ -29,6 +27,13 @@
             <div class="col-sm-6">
                  {{ form.kontinent }}
                 <div class="text-danger">{{ form.kontinent.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.land.id_for_label }}" class="col-sm-2 control-label">Name:</label>
+            <div class="col-sm-6">
+                 {{ form.land }}
+                <div class="text-danger">{{ form.land.errors }}</div>
             </div>
         </div>
         <div class="form-group row margin-bottom">

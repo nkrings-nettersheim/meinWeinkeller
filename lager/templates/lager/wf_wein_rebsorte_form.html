@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+    {% load static %}
+{% endblock %}
+
+{% block title %}
+    Mein Weinkeller - Wein erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="">
+        <p></p>
+        {% csrf_token %}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <h4>In Schritt 2 wähle die Rebsorte aus:</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Weinland
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-2.png' %} style="width:30px"><br>Rebsorte
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-3.png' %} style="width:30px"><br>Erzeuger
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-4.png' %} style="width:30px"><br>Wein
+            </div>
+            <div class="col-1 text-center">
+                <img src={% static 'lager/images/circle-5.png' %} style="width:30px"><br>Zusatz
+            </div>
+        </div>
+
+        <div class="form-group row margin-bottom mt-5">
+            <label for="{{ form.rebsorte.id_for_label }}" class="col-sm-2 control-label">Rebsorte:</label>
+            <div class="col-sm-6">
+                 {{ form.rebsorte }}
+                <div class="text-danger">{{ form.rebsorte.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.cuvee_rebsorten.id_for_label }}" class="col-sm-2 control-label">Rebsorten der Cuvee:</label>
+            <div class="col-sm-6">
+                 {{ form.cuvee_rebsorten }}
+                <div class="text-danger">{{ form.cuvee_rebsorten.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <div class="col-2">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:wf_wein_weinland' %}">zurück</a>
+            </div>
+            <div class="col-5">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:add_rebsorte' %}?f=wf">Neue Rebsorte anlegen</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-secondary btn-sm">weiter</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+</content>
+{% endblock %}
+
+

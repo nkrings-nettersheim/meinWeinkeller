@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+    {% load static %}
+{% endblock %}
+
+{% block title %}
+    Mein Weinkeller - Wein erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <form method="POST" enctype="multipart/form-data" action="" id="weinForm" data-regions-url="{% url 'lager:ajax_load_regions' %}">
+        <p></p>
+        {% csrf_token %}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <h4>In Schritt 1 wähle das Weinland aus:</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-1.png' %} style="width:30px"><br>Weinland
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-2.png' %} style="width:30px"><br>Rebsorte
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-3.png' %} style="width:30px"><br>Erzeuger
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/circle-4.png' %} style="width:30px"><br>Wein
+            </div>
+            <div class="col-1 text-center">
+                <img src={% static 'lager/images/circle-5.png' %} style="width:30px"><br>Zusatz
+            </div>
+        </div>
+        <div class="form-group row margin-bottom mt-5">
+            <label for="{{ form.weinland.id_for_label }}" class="col-sm-2 control-label">Weinland:</label>
+            <div class="col-sm-6 ">
+                 {{ form.weinland }}
+                <div class="text-danger">{{ form.weinland.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.region.id_for_label }}" class="col-sm-2 control-label">Region:</label>
+            <div class="col-sm-6">
+                 {{ form.region }}
+                <div class="text-danger">{{ form.region.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <label for="{{ form.lage.id_for_label }}" class="col-sm-2 control-label">Weinlage:</label>
+            <div class="col-sm-6">
+                 {{ form.lage }}
+                <div class="text-danger">{{ form.lage.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <div class="col-2">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:list_weinlands' %}">zurück</a>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:add_weinland' %}?f=wf">Neues Weinland</a>
+            </div>
+            <div class="col-3">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:add_region' %}?f=wf">Neue Region</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-secondary btn-sm">weiter</button>
+            </div>
+        </div>
+    </div>
+    </form>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+    function onloadFunction() {
+        if ($("#id_weinland").val() != "") {
+            loadRegion()
+        }
+    }
+
+    $("#id_weinland").change(function () {
+        loadRegion()
+    });
+
+    function loadRegion() {
+        const url = $("#weinForm").attr("data-regions-url");
+        const weinlandId = $("#id_weinland").val();
+        $.ajax({
+            url: url,
+            data: {
+                'weinland_id': weinlandId
+            },
+            success: function (data) {
+                $("#id_region").html(data);
+            }
+        });
+    }
+    </script>
+</content>
+{% endblock %}
+
+

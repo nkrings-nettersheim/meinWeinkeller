@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+    {% load static %}
+{% endblock %}
+
+{% block title %}
+    Mein Weinkeller - Wein erfassen
+{% endblock %}
+
+{% block content %}
+<content>
+    <div class="container-fluid">
+    <form method="POST" enctype="multipart/form-data" action="" >
+        <p></p>
+        {% csrf_token %}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+        {{ form.weinkeller.as_hidden }}
+        <div class="row">
+            <div class="col-sm">
+                <h4>Im letzten Schritt die Zusatz-Informationen erfassen:</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Weinland
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Rebsorte
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Erzeuger
+            </div>
+            <div class="col-2 text-center">
+                <img src={% static 'lager/images/checked.png' %} style="width:30px"><br>Wein
+            </div>
+            <div class="col-1 text-center">
+                <img src={% static 'lager/images/circle-5.png' %} style="width:30px"><br>Zusatz
+            </div>
+        </div>
+
+        <div class="form-group row margin-bottom mt-5">
+            <label for="{{ form.apnr.id_for_label }}" class="col-sm-2 control-label">A.P.Nr.:</label>
+            <div class="col-sm-6">
+                 {{ form.apnr }}
+                <div class="text-danger">{{ form.apnr.errors }}</div>
+            </div>
+        </div>
+         <div class="form-group row margin-bottom">
+            <label for="{{ form.flaschengroesse.id_for_label }}" class="col-sm-2 control-label">Flaschengröße:</label>
+            <div class="col-sm-6">
+                 {{ form.flaschengroesse }}
+                <div class="text-danger">{{ form.flaschengroesse.errors }}</div>
+            </div>
+        </div>
+         <div class="form-group row margin-bottom">
+            <label for="{{ form.alkoholgehalt.id_for_label }}" class="col-sm-2 control-label">Alkoholgehalt % Vol.:</label>
+            <div class="col-sm-6">
+                 {{ form.alkoholgehalt }}
+                <div class="text-danger">{{ form.alkoholgehalt.errors }}</div>
+            </div>
+        </div>
+         <div class="form-group row margin-bottom">
+            <label for="{{ form.vegan.id_for_label }}" class="col-sm-2 control-label">Vegan:</label>
+            <div class="col-sm-6">
+                 {{ form.vegan }}
+                <div class="text-danger">{{ form.vegan.errors }}</div>
+            </div>
+        </div>
+         <div class="form-group row margin-bottom">
+            <label for="{{ form.restzucker.id_for_label }}" class="col-sm-2 control-label">Restzucker g/L:</label>
+            <div class="col-sm-6">
+                 {{ form.restzucker }}
+                <div class="text-danger">{{ form.restzucker.errors }}</div>
+            </div>
+        </div>
+         <div class="form-group row margin-bottom">
+            <label for="{{ form.restsaeure.id_for_label }}" class="col-sm-2 control-label">Restsäure g/L:</label>
+            <div class="col-sm-6">
+                 {{ form.restsaeure }}
+                <div class="text-danger">{{ form.restsaeure.errors }}</div>
+            </div>
+        </div>
+        <div class="form-group row margin-bottom">
+            <div class="col">
+                <a class="btn btn-secondary btn-sm" href="{% url 'lager:wf_wein_basis' %}">zurück</a>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-secondary btn-sm">Speichern</button>
+            </div>
+        </div>
+    </form>
+    </div>
+</content>
+{% endblock %}
+
+

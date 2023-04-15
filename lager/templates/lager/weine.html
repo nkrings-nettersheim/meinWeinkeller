@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-sm-8"></div>
             <div class="col-sm-4">
-                <a href="{% url 'lager:add_wein' %}" class="btn btn-secondary">Neuen Wein anlegen</a>
+                <a href="{% url 'lager:wf_wein_initial' %}" class="btn btn-secondary">Neuen Wein anlegen</a>
             </div>
         </div>
     <p></p>
@@ -29,7 +29,11 @@
             {% for wein in weine_list %}
               <tr>
                 <td>{{wein.weinland}}</td>
-                <td>{{wein.region}}</td>
+                  {% if wein.region %}
+                    <td>{{wein.region}}</td>
+                  {% else %}
+                    <td>&nbsp;</td>
+                  {% endif %}
                 <td>{{wein.jahrgang}}er</td>
                 <td>{{wein.name}}</td>
                 <td>

@@ -13,7 +13,7 @@
             <a href="{% url 'lager:list_regionen' %}" class="btn btn-secondary">Regionen</a>
         </div>
         <div class="col">
-            <a href="{% url 'lager:add_region' %}" class="btn btn-secondary">anlegen</a>
+            <a href="{% url 'lager:add_region' %}?f=single" class="btn btn-secondary">anlegen</a>
         </div>
         <div class="col">
             <a href="{% url 'lager:edit_region' region.id %}" class="btn btn-secondary">ändern</a>
