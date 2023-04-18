@@ -31,7 +31,55 @@
             <div class="small inline">Wein:</div>
         </div>
           <div class="col-10">
-             <strong>{{ bestand.wein }} </strong>
+             <strong>{{ bestand.wein.name }} </strong>
+          </div>
+    </div>
+        <div class="row">
+        <div class="col-2">
+            <div class="small inline">Region:</div>
+        </div>
+          <div class="col-10">
+             <strong>{{ bestand.wein.region }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="small inline">Weinlage:</div>
+        </div>
+          <div class="col-10">
+             <strong>{{ bestand.wein.lage }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="small inline">Rebsorte:</div>
+        </div>
+          <div class="col-10">
+             <strong>{{ bestand.wein.rebsorte }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="small inline">Weinart:</div>
+        </div>
+          <div class="col-10">
+             <strong>{{ bestand.wein.weinart }}</strong>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="small inline">Jahrgang:</div>
+        </div>
+          <div class="col-10">
+             <strong>{{ bestand.wein.jahrgang }}</strong>
+          </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-2">
+            <div class="small inline">Ausbau:</div>
+        </div>
+          <div class="col-10">
+             <strong>{{ bestand.wein.geschmacksrichtung }}</strong>
           </div>
     </div>
     <div class="row">
@@ -123,7 +171,7 @@
     </div>
     {% endif %}
 
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-2">
             <div class="small inline">Menge:</div>
         </div>
@@ -131,5 +179,115 @@
              <strong>{{ bestand.menge }}</strong>
           </div>
     </div>
+
+            <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active link-secondary" data-bs-toggle="tab" href="#erzeuger">Erzeuger</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-secondary" data-bs-toggle="tab" href="#werte">Werte</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-secondary" data-bs-toggle="tab" href="#bestellinfo">Bestellinfo</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-secondary" data-bs-toggle="tab" href="#bemerkung">Bemerkung</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane container active" id="erzeuger">
+          <div class="row mt-2">
+            <div class="col-2"><strong>Weingut:</strong></div>
+              {% if bestand.wein.erzeuger %}
+                <div class="col-4">{{ bestand.wein.erzeuger }}</div>
+              {% endif %}
+          </div>
+          <div class="row">
+            <div class="col-2"><strong>Inhaber:</strong></div>
+              {% if bestand.wein.erzeuger.inhaber %}
+                <div class="col-4">{{ bestand.wein.erzeuger.inhaber }}</div>
+              {% endif %}
+          </div>
+          <div class="row mt-3">
+              <div class=""><strong>Adresse:</strong></div>
+          </div>
+          <div class="">{{ bestand.wein.erzeuger.strasse }}</div>
+          <div class="">{{ bestand.wein.erzeuger.plz }} {{ bestand.wein.erzeuger.ort }}</div>
+          <div class="">{{ bestand.wein.erzeuger.land }}</div>
+
+          <div class="row mt-3">
+              <div class=""><strong>Kontakt:</strong></div>
+          </div>
+          <div class="">{{ bestand.wein.erzeuger.telefon }}</div>
+          <div class=""><a href="mailto:{{ bestand.wein.erzeuger.email }}">{{ bestand.wein.erzeuger.email }}</a></div>
+          <div class=""><a href="{{ bestand.wein.erzeuger.website }}" target="_blank">{{ bestand.wein.erzeuger.website }}</a></div>
+
+          <div class="row mt-3">
+              <div class=""><strong>Ansprechpartner:</strong></div>
+          </div>
+
+          <div class="">Ansprechpartner:</div>
+          <div class="">{{ bestand.wein.erzeuger.ansprechpartner }}</div>
+          <div class="">{{ bestand.wein.erzeuger.asp_telefon }}</div>
+          <div class=""><a href="mailto:{{ bestand.wein.erzeuger.asp_email }}">{{ bestand.wein.erzeuger.asp_email }}</a></div>
+
+
+      </div>
+      <div class="tab-pane container fade" id="werte">
+          <div class="row mt-2">
+              <div class="col-2">Alkoholgehalt: </div>
+              <div class="col-4">{{ bestand.wein.alkoholgehalt }} % Vol.</div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-2">Restzucker:</div>
+              <div class="col-4">{{ bestand.wein.restzucker }} g/L</div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-2">Restsäure:</div>
+              <div class="col-4">{{ bestand.wein.restsaeure }} g/L</div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-2">Vegan:</div>
+              <div class="col-4">
+              {% if bestand.wein.vegan %}
+                  Ja
+              {% else %}
+                  Nein
+              {% endif %}
+              </div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-2">A.P.Nr:</div>
+              <div class="col-4">{{ bestand.wein.apnr }} </div>
+          </div>
+      </div>
+      <div class="tab-pane container fade" id="bestellinfo">
+          <div class="row mt-2">
+              <div class="col-2">Preis:</div>
+              <div class="col-4">{{ bestand.wein.preis }} €</div>
+          </div>
+          <div class="row">
+              <div class="col-2">Liter-Preis:</div>
+              <div class="col-4">{{ bestand.wein.literpreis }} €</div>
+          </div>
+          <div class="row">
+              <div class="col-2">Bestellnummer:</div>
+              <div class="col-4">{{ bestand.wein.bestellnummer }}</div>
+          </div>
+          <div class="row">
+              <div class="col-2">Flaschengröße:</div>
+              <div class="col-4">{{ bestand.wein.flaschengroesse }} L</div>
+          </div>
+      </div>
+      <div class="tab-pane container fade" id="bemerkung">
+          <div class="row mt-2">
+              <div class=""> {{ bestand.wein.bemerkung }} </div>
+          </div>
+      </div>
+    </div>
+
 </div>
 {% endblock %}

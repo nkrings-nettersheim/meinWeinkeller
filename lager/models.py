@@ -1,10 +1,15 @@
+#import datetime
 from django.db import models
+#from datetime import timezone
+from django.utils.timezone import now
 
 
 class Weinkeller(models.Model):
     weinkeller = models.CharField(max_length=100, blank=False)
     weinkeller_admin_id = models.IntegerField(default=0)
     weinkeller_user_id = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.weinkeller
@@ -111,6 +116,8 @@ class Erzeuger(models.Model):
     asp_email = models.EmailField(max_length=254, blank=True)
     weinkeller = models.IntegerField(default=0)
     website = models.URLField(default='', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -144,7 +151,8 @@ class Wein(models.Model):
     trinkbar_ab = models.CharField(max_length=10, blank=True, default='')
     lage = models.CharField(max_length=50, blank=True, default='')
     restsaeure = models.CharField(max_length=10, blank=True, default='')
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.name + ', ' + str(self.jahrgang) + ', ' + str(self.erzeuger)
@@ -157,6 +165,8 @@ class Wein(models.Model):
 
 class LagerTyp(models.Model):
     typ = models.CharField(max_length=20, blank=False, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.typ
@@ -172,6 +182,8 @@ class Lager(models.Model):
     oben_unten = models.BooleanField(default=False, null=True)
     vorne_hinten = models.BooleanField(default=False, null=True)
     weinkeller = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -195,10 +207,9 @@ class Bestand(models.Model):
     hinten = models.BooleanField(default=False, null=True)
     menge = models.IntegerField(default=0)
     weinkeller = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return self.wein
-
-
-
+        return str(self.wein)
 

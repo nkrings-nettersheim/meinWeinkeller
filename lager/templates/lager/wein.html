@@ -105,6 +105,9 @@
       <li class="nav-item">
         <a class="nav-link link-secondary" data-bs-toggle="tab" href="#bemerkung">Bemerkung</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link link-secondary" data-bs-toggle="tab" href="#bestand">Bestand</a>
+      </li>
     </ul>
 
     <!-- Tab panes -->
@@ -197,6 +200,18 @@
           <div class="row mt-2">
               <div class=""> {{wein.bemerkung}} </div>
           </div>
+      </div>
+      <div class="tab-pane container fade" id="bestand">
+         {% for bestand in bestands %}
+          <div class="row mt-2">
+              <div class="col-4">
+                   Lager  "{{ bestand.lager }}":
+              </div>
+              <div class="col-2">
+                  {{ bestand.menge }} Flasche(n)
+              </div>
+          </div>
+         {% endfor %}
       </div>
     </div>
 

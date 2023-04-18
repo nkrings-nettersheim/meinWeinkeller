@@ -1,11 +1,13 @@
 import logging
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import DeleteView
 from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 
 from .models import Weinkeller, Weinland, Region, Rebsorte, Wein, Erzeuger, Lager, Bestand
@@ -35,6 +37,7 @@ def datenschutz(request):
 ##########################################################################
 # Area Weinland create and change
 ##########################################################################
+@login_required
 def add_weinland(request):
     f = request.GET['f']
     if request.method == "POST":
@@ -54,7 +57,7 @@ def add_weinland(request):
         form = WeinlandForm()
     return render(request, 'lager/weinland_form.html', {'form': form, 'parameter': f})
 
-
+@login_required
 def edit_weinland(request, id=None):
     item = get_object_or_404(Weinland, id=id, weinkeller=request.user.id)
     form = WeinlandForm(request.POST or None, instance=item)
@@ -66,7 +69,7 @@ def edit_weinland(request, id=None):
 
 
 # Liste der Weinländer
-class WeinlandsView(ListView):
+class WeinlandsView(LoginRequiredMixin, ListView):
     model = Weinland
     template_name = 'lager/weinlands.html'
     context_object_name = 'weinlands_list'
@@ -75,7 +78,7 @@ class WeinlandsView(ListView):
         return Weinland.objects.filter(weinkeller=str(self.request.user.id)).order_by('kontinent', 'land')
 
 
-class DeleteWeinlandItem(DeleteView):
+class DeleteWeinlandItem(LoginRequiredMixin, DeleteView):
     model = Weinland
     template_name = 'lager/weinland_confirm_delete.html'
 
@@ -97,6 +100,7 @@ class DeleteWeinlandItem(DeleteView):
 
 
 # Anzeige einzelnes Weinland
+@login_required
 def weinland(request, id=id):
     try:
         weinland_result = Weinland.objects.get(id=id)
@@ -108,6 +112,7 @@ def weinland(request, id=id):
 ##########################################################################
 # Area Region create and change
 ##########################################################################
+@login_required
 def add_region(request):
     f = request.GET['f']
     if request.method == "POST":
@@ -131,6 +136,7 @@ def add_region(request):
     return render(request, 'lager/region_form.html', {'form': form, 'parameter': f})
 
 
+@login_required
 def edit_region(request, id=None):
     item = get_object_or_404(Region, id=id, weinkeller=request.user.id)
     form = RegionForm(request.POST or None, instance=item, user=request.user.id)
@@ -142,7 +148,7 @@ def edit_region(request, id=None):
 
 
 # Liste der Region
-class RegionView(ListView):
+class RegionView(LoginRequiredMixin, ListView):
     model = Region
     template_name = 'lager/regionen.html'
     context_object_name = 'regionen_list'
@@ -152,7 +158,7 @@ class RegionView(ListView):
 
 
 # Delete Region
-class DeleteRegionItem(DeleteView):
+class DeleteRegionItem(LoginRequiredMixin, DeleteView):
     model = Region
     template_name = 'lager/region_confirm_delete.html'
 
@@ -172,6 +178,7 @@ class DeleteRegionItem(DeleteView):
 
 
 # Anzeige einzelne Region
+@login_required
 def region(request, id=id):
     try:
         region_result = Region.objects.get(id=id)
@@ -183,6 +190,7 @@ def region(request, id=id):
 ##########################################################################
 # Area Rebsorte create and change
 ##########################################################################
+@login_required
 def add_rebsorte(request):
     f = request.GET['f']
     if request.method == "POST":
@@ -204,6 +212,7 @@ def add_rebsorte(request):
 
 
 # Edit Rebsorte
+@login_required
 def edit_rebsorte(request, id=None):
     item = get_object_or_404(Rebsorte, id=id, weinkeller=request.user.id)
     form = RebsorteForm(request.POST or None, instance=item)
@@ -215,7 +224,7 @@ def edit_rebsorte(request, id=None):
 
 
 # Liste der Rebsorten
-class RebsortenView(ListView):
+class RebsortenView(LoginRequiredMixin, ListView):
     model = Rebsorte
     template_name = 'lager/rebsorten.html'
     context_object_name = 'rebsorten_list'
@@ -225,7 +234,7 @@ class RebsortenView(ListView):
 
 
 # Delete Rebsorte
-class DeleteRebsorteItem(DeleteView):
+class DeleteRebsorteItem(LoginRequiredMixin, DeleteView):
     model = Rebsorte
     template_name = 'lager/rebsorte_confirm_delete.html'
 
@@ -245,6 +254,7 @@ class DeleteRebsorteItem(DeleteView):
 
 
 # Anzeige einzelne Region
+@login_required
 def rebsorte(request, id=id):
     try:
         rebsorte_result = Rebsorte.objects.get(id=id)
@@ -256,6 +266,7 @@ def rebsorte(request, id=id):
 ##########################################################################
 # Area Wein create and change
 ##########################################################################
+@login_required
 def add_wein(request):
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
@@ -274,6 +285,7 @@ def add_wein(request):
     return render(request, 'lager/wein_form.html', {'form': form})
 
 
+@login_required
 def edit_wein(request, id=None):
     item = get_object_or_404(Wein, id=id, weinkeller=request.user.id)
     form = WeinForm(request.POST or None, instance=item, user=request.user.id)
@@ -287,7 +299,7 @@ def edit_wein(request, id=None):
 
 
 # Liste der Weine
-class WeineView(ListView):
+class WeineView(LoginRequiredMixin, ListView):
     model = Wein
     template_name = 'lager/weine.html'
     context_object_name = 'weine_list'
@@ -298,7 +310,7 @@ class WeineView(ListView):
 
 
 # Delete Wein
-class DeleteWeinItem(DeleteView):
+class DeleteWeinItem(LoginRequiredMixin, DeleteView):
     model = Wein
     template_name = 'lager/wein_confirm_delete.html'
 
@@ -318,10 +330,12 @@ class DeleteWeinItem(DeleteView):
 
 
 # Anzeige einzelne Region
+@login_required
 def wein(request, id=id):
     try:
         wein_result = Wein.objects.get(id=id)
-        return render(request, 'lager/wein.html', {'wein': wein_result})
+        bestand_result = Bestand.objects.filter(wein=wein_result.id)
+        return render(request, 'lager/wein.html', {'wein': wein_result, 'bestands': bestand_result})
     except ObjectDoesNotExist:
         return redirect('/lager/')
 
@@ -329,6 +343,7 @@ def wein(request, id=id):
 ##########################################################################
 # Area Erzeuger create and change
 ##########################################################################
+@login_required
 def add_erzeuger(request):
     f = request.GET['f']
     if request.method == "POST":
@@ -349,6 +364,7 @@ def add_erzeuger(request):
     return render(request, 'lager/erzeuger_form.html', {'form': form, 'parameter': f})
 
 
+@login_required
 def edit_erzeuger(request, id=None):
     item = get_object_or_404(Erzeuger, id=id, weinkeller=request.user.id)
     form = ErzeugerForm(request.POST or None, instance=item, user=request.user.id)
@@ -362,7 +378,7 @@ def edit_erzeuger(request, id=None):
 
 
 # Liste der Weine
-class ErzeugersView(ListView):
+class ErzeugersView(LoginRequiredMixin, ListView):
     model = Erzeuger
     template_name = 'lager/erzeugers.html'
     context_object_name = 'erzeugers_list'
@@ -372,7 +388,7 @@ class ErzeugersView(ListView):
 
 
 # Delete Erzeuger
-class DeleteErzeugerItem(DeleteView):
+class DeleteErzeugerItem(LoginRequiredMixin, DeleteView):
     model = Erzeuger
     template_name = 'lager/erzeuger_confirm_delete.html'
 
@@ -392,6 +408,7 @@ class DeleteErzeugerItem(DeleteView):
 
 
 # Anzeige einzelne Region
+@login_required
 def erzeuger(request, id=id):
     try:
         erzeuger_result = Erzeuger.objects.get(id=id)
@@ -404,6 +421,7 @@ def erzeuger(request, id=id):
 # Area Lager create and change
 ##########################################################################
 # Lager anlegen
+@login_required
 def add_lager(request):
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
@@ -420,6 +438,7 @@ def add_lager(request):
     return render(request, 'lager/lager_form.html', {'form': form})
 
 # Lager editieren
+@login_required
 def edit_lager(request, id=None):
     item = get_object_or_404(Lager, id=id, weinkeller=request.user.id)
     form = LagerForm(request.POST or None, instance=item)
@@ -433,7 +452,7 @@ def edit_lager(request, id=None):
 
 
 # Liste der Lager
-class LagersView(ListView):
+class LagersView(LoginRequiredMixin, ListView):
     model = Lager
     template_name = 'lager/lagers.html'
     context_object_name = 'lagers_list'
@@ -443,7 +462,7 @@ class LagersView(ListView):
 
 
 # Delete Lager
-class DeleteLagerItem(DeleteView):
+class DeleteLagerItem(LoginRequiredMixin, DeleteView):
     model = Lager
     template_name = 'lager/lager_confirm_delete.html'
 
@@ -463,6 +482,7 @@ class DeleteLagerItem(DeleteView):
 
 
 # Anzeige einzelne Region
+@login_required
 def lager(request, id=id):
     try:
         lager_result = Lager.objects.get(id=id)
@@ -475,6 +495,7 @@ def lager(request, id=id):
 # Area Bestand create and change
 ##########################################################################
 # Bestand anlegen
+@login_required
 def add_bestand(request):
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
@@ -491,7 +512,9 @@ def add_bestand(request):
         form = BestandForm(user=request.user.id)
     return render(request, 'lager/bestand_form.html', {'form': form})
 
+
 # Bestand editieren
+@login_required
 def edit_bestand(request, id=None):
     item = get_object_or_404(Bestand, id=id, weinkeller=request.user.id)
     form = BestandForm(request.POST or None, instance=item, user=request.user.id)
@@ -505,7 +528,7 @@ def edit_bestand(request, id=None):
 
 
 # Liste der Weine
-class BestandsView(ListView):
+class BestandsView(LoginRequiredMixin, ListView):
     model = Bestand
     template_name = 'lager/bestands.html'
     context_object_name = 'bestands_list'
@@ -516,7 +539,7 @@ class BestandsView(ListView):
 
 
 # Delete Wein
-class DeleteBestandItem(DeleteView):
+class DeleteBestandItem(LoginRequiredMixin, DeleteView):
     model = Bestand
     template_name = 'lager/bestand_confirm_delete.html'
 
@@ -536,6 +559,7 @@ class DeleteBestandItem(DeleteView):
 
 
 # Anzeige einzelne Region
+@login_required
 def bestand(request, id=id):
     try:
         bestand_result = Bestand.objects.get(id=id)
@@ -547,7 +571,12 @@ def bestand(request, id=id):
 ##########################################################################
 # Area Weinkeller create and change
 ##########################################################################
+@login_required
 def add_weinkeller(request):
+    weinkeller_count = Weinkeller.objects.filter(weinkeller_admin_id=request.user.id).count()
+    if weinkeller_count >= 1:
+        return redirect('/lager/list/weine/')
+
     if request.method == "POST":
         request.POST._mutable = True
         request.POST['weinkeller_admin_id'] = request.user.id
@@ -563,7 +592,9 @@ def add_weinkeller(request):
         form = WeinkellerForm()
     return render(request, 'lager/weinkeller_form.html', {'form': form})
 
+
 # Weinkeller editieren
+@login_required
 def edit_weinkeller(request, id=None):
     item = get_object_or_404(Weinkeller, id=id, weinkeller_user_id=request.user.id)
     form = WeinkellerForm(request.POST or None, instance=item)
@@ -577,7 +608,7 @@ def edit_weinkeller(request, id=None):
 
 
 # Liste der Weinkeller
-class WeinkellersView(ListView):
+class WeinkellersView(LoginRequiredMixin, ListView):
     model = Weinkeller
     template_name = 'lager/weinkellers.html'
     context_object_name = 'weinkellers_list'
@@ -587,6 +618,7 @@ class WeinkellersView(ListView):
 
 
 # Anzeige einzelner Weinkeller
+@login_required
 def weinkeller(request, id=id):
     try:
         weinkeller_result = Weinkeller.objects.get(id=id)
@@ -598,6 +630,7 @@ def weinkeller(request, id=id):
 ##########################################################################
 # Wein erfassen Workflow
 ##########################################################################
+@login_required
 def wf_wein_initial(request):
     if 'weinland_id' in request.session:
         del request.session['weinland_id']
@@ -645,6 +678,7 @@ def wf_wein_initial(request):
     return redirect('/lager/wf/wein/weinland/')
 
 
+@login_required
 def wf_wein_weinland(request):
     if request.method == "POST":
         request.session['weinland_id'] = request.POST['weinland']
@@ -681,6 +715,7 @@ def wf_wein_weinland(request):
     return render(request, 'lager/wf_wein_weinland_form.html', {'form': form})
 
 
+@login_required
 def wf_wein_rebsorte(request):
     if request.method == "POST":
         request.session['rebsorte_id'] = request.POST['rebsorte']
@@ -702,6 +737,7 @@ def wf_wein_rebsorte(request):
     return render(request, 'lager/wf_wein_rebsorte_form.html', {'form': form})
 
 
+@login_required
 def wf_wein_erzeuger(request):
     if request.method == "POST":
         request.session['erzeuger_id'] = request.POST['erzeuger']
@@ -717,6 +753,7 @@ def wf_wein_erzeuger(request):
     return render(request, 'lager/wf_wein_erzeuger_form.html', {'form': form})
 
 
+@login_required
 def wf_wein_basis(request):
     if request.method == "POST":
         request.session['name'] = request.POST['name']
@@ -749,6 +786,7 @@ def wf_wein_basis(request):
     return render(request, 'lager/wf_wein_basis_form.html', {'form': form})
 
 
+@login_required
 def wf_wein_zusatz(request):
     if request.method == "POST":
         mydata = Weinkeller.objects.filter(weinkeller_user_id=request.user.id).values().first()
@@ -800,6 +838,7 @@ def wf_wein_zusatz(request):
 # AJAX Functions
 ##########################################################################
 # AJAX
+@login_required
 def ajax_load_regions(request):
     weinland_id = request.GET.get('weinland_id')
     regionen = Region.objects.filter(weinland_id=weinland_id).all().order_by('region')
@@ -807,6 +846,7 @@ def ajax_load_regions(request):
     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
+@login_required
 def ajax_load_lagers(request):
     lager_id = request.GET.get('lager_id')
     lager_parameter = Lager.objects.filter(id=lager_id).values().first()

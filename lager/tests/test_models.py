@@ -3,7 +3,50 @@ from datetime import date, datetime
 # from django.db.models import ImageFieldFile
 from django.db import models
 from django.test import TestCase
-from ..models import Weinland, Region, Jahrgang, Geschmacksrichtung, Weinart, Rebsorte, Qualitaetsstufe, Erzeuger, Wein
+from ..models import Weinkeller, Weinland, Region, Jahrgang, Geschmacksrichtung, Weinart, Rebsorte, Qualitaetsstufe, \
+    Erzeuger, Wein, LagerTyp, Lager, Bestand
+
+
+class WeinkellerModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.weinkeller = Weinkeller.objects.create(
+            weinkeller='Mein Weinkeller',
+            weinkeller_admin_id=1,
+            weinkeller_user_id=1
+        )
+
+    def test_model_content(self):
+        self.assertEqual(self.weinkeller.weinkeller, "Mein Weinkeller")
+
+    # has information
+    def test_it_has_information_fields(self):
+        self.assertIsInstance(self.weinkeller.weinkeller, str)
+        self.assertIsInstance(self.weinkeller.weinkeller_admin_id, int)
+        self.assertIsInstance(self.weinkeller.weinkeller_user_id, int)
+
+    # test label
+    def test_weinkeller_label(self):
+        field_label = self.weinkeller._meta.get_field('weinkeller').verbose_name
+        self.assertEqual(field_label, 'weinkeller')
+
+    def test_weinkeller_admin_id_label(self):
+        field_label = self.weinkeller._meta.get_field('weinkeller_admin_id').verbose_name
+        self.assertEqual(field_label, 'weinkeller admin id')
+
+    def test_weinkeller_user_id_label(self):
+        field_label = self.weinkeller._meta.get_field('weinkeller_user_id').verbose_name
+        self.assertEqual(field_label, 'weinkeller user id')
+
+    # test max_length
+    def test_weinkeller_max_length(self):
+        max_length = self.weinkeller._meta.get_field('weinkeller').max_length
+        self.assertEqual(max_length, 100)
+
+    # test objects
+    def test_weinkeller_str(self):
+        expected_object_name = f'{self.weinkeller.weinkeller}'
+        self.assertEqual(expected_object_name, str(self.weinkeller))
 
 
 class WeinlandModelTest(TestCase):
@@ -188,7 +231,7 @@ class GeschmacksrichtungModelTest(TestCase):
         field_label = geschmacksrichtung._meta.get_field('updated_at').verbose_name
         self.assertEqual(field_label, 'updated at')
 
-    # test max_length
+        # test max_length
         geschmacksrichtung = Geschmacksrichtung.objects.get(id=1)
         max_length = geschmacksrichtung._meta.get_field('geschmacksrichtung').max_length
         self.assertEqual(max_length, 20)
@@ -230,7 +273,7 @@ class RebsorteModelTest(TestCase):
         field_label = rebsorte._meta.get_field('updated_at').verbose_name
         self.assertEqual(field_label, 'updated at')
 
-    # test max_length
+        # test max_length
         rebsorte = Rebsorte.objects.get(id=1)
         max_length = rebsorte._meta.get_field('rebsorte').max_length
         self.assertEqual(max_length, 50)
@@ -270,7 +313,7 @@ class WeinartModelTest(TestCase):
         field_label = weinart._meta.get_field('updated_at').verbose_name
         self.assertEqual(field_label, 'updated at')
 
-    # test max_length
+        # test max_length
         weinart = Weinart.objects.get(id=1)
         max_length = weinart._meta.get_field('weinart').max_length
         self.assertEqual(max_length, 20)
@@ -310,7 +353,7 @@ class QualitaetsstufeModelTest(TestCase):
         field_label = qualitaetsstufe._meta.get_field('updated_at').verbose_name
         self.assertEqual(field_label, 'updated at')
 
-    # test max_length
+        # test max_length
         qualitaetsstufe = Qualitaetsstufe.objects.get(id=1)
         max_length = qualitaetsstufe._meta.get_field('qualitaetsstufe').max_length
         self.assertEqual(max_length, 50)
@@ -325,6 +368,10 @@ class QualitaetsstufeModelTest(TestCase):
 class ErzeugerModelTest(TestCase):
     @classmethod
     def setUp(cls):
+        Weinland.objects.create(
+            kontinent='Europa',
+            land='Deutschland'
+        )
         Erzeuger.objects.create(
             name='Franz Keller',
             inhaber='Fritz Keller'
@@ -337,6 +384,10 @@ class ErzeugerModelTest(TestCase):
     # test max_length
 
     # test objects
+    def test_erzeuger_str(self):
+        erzeuger = Erzeuger.objects.get(id=1)
+        expected_object_name = f'{erzeuger.name}'
+        self.assertEqual(expected_object_name, str('Franz Keller'))
 
 
 class WeinModelTest(TestCase):
@@ -358,7 +409,6 @@ class WeinModelTest(TestCase):
         Jahrgang.objects.create(
             jahrgang='2001'
         )
-
         Erzeuger.objects.create(
             name='Franz Keller',
             inhaber='Fritz Keller'
@@ -380,9 +430,99 @@ class WeinModelTest(TestCase):
         wein = Wein.objects.get(id=1)
         self.assertIsInstance(wein.name, str)
 
-
     # test label
 
     # test max_length
 
     # test objects
+    def test_wein_str(self):
+        wein = Wein.objects.get(id=1)
+        expected_object_name = f'{wein.name}, {wein.jahrgang}, {wein.erzeuger}'
+        self.assertEqual(expected_object_name, str(wein))
+
+
+class LagerTypModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        LagerTyp.objects.create(
+            typ="Matrix"
+        )
+
+    # test objects
+    def test_lagertyp_str(self):
+        lagertyp = LagerTyp.objects.get(id=1)
+        expected_object_name = f'{lagertyp.typ}'
+        self.assertEqual(expected_object_name, str(lagertyp))
+
+
+class LagerModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        LagerTyp.objects.create(
+            typ="Matrix"
+        )
+        Lager.objects.create(
+            name="Keller",
+            typ_id='1'
+        )
+
+    # test objects
+    def test_lager_str(self):
+        lager = Lager.objects.get(id=1)
+        expected_object_name = f'{lager.name}'
+        self.assertEqual(expected_object_name, str(lager))
+
+
+class BestandModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        Geschmacksrichtung.objects.create(
+            geschmacksrichtung='trocken'
+        )
+        Weinart.objects.create(
+            weinart='Weißwein'
+        )
+        Weinland.objects.create(
+            kontinent='Europa',
+            land='Deutschland'
+        )
+        Rebsorte.objects.create(
+            rebsorte='Riesling'
+        )
+        Jahrgang.objects.create(
+            jahrgang='2001'
+        )
+        Erzeuger.objects.create(
+            name='Franz Keller',
+            inhaber='Fritz Keller'
+        )
+        Wein.objects.create(
+            name='Oberbergener Baßgeige',
+            weinland_id='1',
+            rebsorte_id='1',
+            weinart_id='1',
+            jahrgang_id='1',
+            geschmacksrichtung_id='1',
+            erzeuger_id='1',
+            literpreis='12.80',
+            preis='10.80'
+        )
+        LagerTyp.objects.create(
+            typ="Matrix"
+        )
+        Lager.objects.create(
+            name="Keller",
+            typ_id='1'
+        )
+
+        Bestand.objects.create(
+            wein_id="1",
+            lager_id='1'
+        )
+
+    # test objects
+    def test_bestand_str(self):
+        bestand = Bestand.objects.get(id=1)
+        expected_object_name = f'{bestand.wein}'
+        self.assertEqual(expected_object_name, str(bestand))
+
