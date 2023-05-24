@@ -72,7 +72,7 @@ def edit_weinland(request, id=None):
 class WeinlandsView(LoginRequiredMixin, ListView):
     model = Weinland
     template_name = 'lager/weinlands.html'
-    context_object_name = 'weinlands_list'
+    #context_object_name = 'weinlands_list'
 
     def get_queryset(self):
         return Weinland.objects.filter(weinkeller=str(self.request.user.id)).order_by('kontinent', 'land')

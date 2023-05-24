@@ -1,16 +1,17 @@
 from django.urls import path
 from . import views
+from .views import index, WeinlandsView
 
 app_name = 'lager'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', index, name='index'),
     path('impressum/', views.impressum, name='impressum'),
     path('datenschutz/', views.datenschutz, name='datenschutz'),
 
     path('add/weinland/', views.add_weinland, name='add_weinland'),
     path('edit/weinland/<id>/', views.edit_weinland, name='edit_weinland'),
-    path('list/weinland/', views.WeinlandsView.as_view(), name='list_weinlands'),
+    path('list/weinland/', WeinlandsView.as_view(), name='list_weinlands'),
     path('delete/weinland/<pk>/', views.DeleteWeinlandItem.as_view(), name='delete_weinland_item'),
     path('weinland/<id>/', views.weinland, name='weinland'),
 
