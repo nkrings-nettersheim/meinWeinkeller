@@ -1,0 +1,49 @@
+@page {
+    size: A4 portrait;
+    margin-top: 0cm;
+    margin-left: 0cm;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+}
+
+body {
+    font-family: Helvetica;
+    font-size: 10pt;
+}
+
+#welt {
+    color: red;
+}
+
+#title {
+    text-align: center;
+}
+
+#subtitle {
+    text-align: center;
+}
+
+.table {
+  table-layout: auto;
+  width: 100%;
+  border: 0px;
+  border-collapse: collapse;
+}
+
+
+.table_row1 td{
+    background-color: lightgray;
+    padding: 10px;
+}
+
+.table_row2 td{
+    padding: 3px;
+}
+
+.mitte{
+    text-align: center;
+}
+
+.rechts{
+    text-align: right;
+}
