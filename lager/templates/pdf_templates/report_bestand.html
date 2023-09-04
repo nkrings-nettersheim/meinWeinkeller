@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>Therapiebericht</title>
+    <meta name="description" content="Mein Weinkeller">
+    <meta name="author" content="Norbert Krings">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<div id="title"><h1>{{weinkeller.weinkeller}}</h1></div>
+<div id="subtitle"><h2>Bestand am: {% now "d.m.Y" %}</h2></div>
+<hr>
+<div class="bestand">
+    {% if bestand %}
+          <table class="table">
+            <thead>
+              <tr>
+                  <th>Lager</th>
+                  <th>Wein</th>
+                  <th class="mitte">Spalte</th>
+                  <th class="mitte">Reihe</th>
+                  <th class="rechts">Menge</th>
+              </tr>
+            </thead>
+        {% for item in bestand %}
+            <tbody>
+            {% ifchanged item.lager %}
+                <tr>
+                  <td>&nbsp;</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr class="table_row1">
+                  <td class="links">
+                      {{ item.lager }}
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr class="table_row2">
+                    <td></td>
+                    <td class="links">{{ item.wein }}</td>
+                    <td class="mitte">{{ item.col_value }}</td>
+                    <td class="mitte">{{ item.row_value }}</td>
+                    <td class="rechts">{{ item.menge}}</td>
+                </tr>
+            {% else %}
+                <tr class="table_row2">
+                  <td>
+                  </td>
+                  <td class="links">{{ item.wein }}</td>
+                  <td class="mitte">{{ item.col_value }}</td>
+                  <td class="mitte">{{ item.row_value }}</td>
+                  <td class="rechts">{{ item.menge}}</td>
+                </tr>
+            {% endifchanged %}
+    {% endfor%}
+            </tbody>
+          </table>
+    {% else %}
+        <p>No reports are available.</p>
+    {% endif %}
+</div>
+</body>
+

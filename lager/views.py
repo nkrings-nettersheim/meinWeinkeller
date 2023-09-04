@@ -9,6 +9,10 @@ from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
+from weasyprint import HTML, CSS
+from django.template.loader import render_to_string
+from django.conf import settings
+
 
 from .models import Weinkeller, Weinland, Region, Rebsorte, Wein, Erzeuger, Lager, Bestand
 from .forms import WeinlandForm, RegionForm, RebsorteForm, WeinForm, ErzeugerForm, LagerForm, BestandForm, \
@@ -525,6 +529,27 @@ def edit_bestand(request, id=None):
 
     form.id = item.id
     return render(request, 'lager/bestand_form.html', {'form': form})
+
+# Bestand drucken
+@login_required
+def print_bestand(request):
+    item = Bestand.objects.filter(weinkeller=str(request.user.id)).order_by('lager', 'col_value', 'row_value')
+    weinkeller = Weinkeller.objects.get(weinkeller_admin_id=str(request.user.id))
+
+    html_file = 'pdf_templates/report_bestand.html'
+    css_file = '/lager/css/report_bestand.css'
+
+    filename = "report_bestand.pdf"
+
+    html_string = render_to_string(html_file, {'bestand': item, 'weinkeller': weinkeller})
+
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    logger.debug(f"User-ID: {request.user.id}; show_therapy_report CSS_File: {settings.STATIC_ROOT}{css_file}")
+    pdf = html.write_pdf(stylesheets=[CSS(settings.STATIC_ROOT + css_file)])
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+
+    return response
 
 
 # Liste der Weine

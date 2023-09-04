@@ -50,6 +50,7 @@ urlpatterns = [
     path('list/bestand/', views.BestandsView.as_view(), name='list_bestands'),
     path('delete/bestand/<pk>/', views.DeleteBestandItem.as_view(), name='delete_bestand_item'),
     path('bestand/<id>/', views.bestand, name='bestand'),
+    path('report/bestand', views.print_bestand, name='print_bestand'),
 
     path('add/weinkeller/', views.add_weinkeller, name='add_weinkeller'),
     path('edit/weinkeller/<id>/', views.edit_weinkeller, name='edit_weinkeller'),
