@@ -614,7 +614,6 @@ def print_bestand2(request):
     # Holen der Seitenabmessung
     breite, hoehe = A4
 
-    p.drawString(1 * cm, 1 * cm, 'Der Text steht links unten')
     p.setFont('Helvetica-Bold', 18)
     p.drawCentredString(breite / 2, hoehe - (1 * cm), weinkeller.weinkeller)
 
@@ -638,7 +637,7 @@ def print_bestand2(request):
         if lager_nr == item.lager_id:
             if spalte_nr == item.col_value:
                 if reihe_nr == item.row_value:
-                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein))
+                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein)[ : 80])
                     p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.col_value))
                     p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.row_value))
                     p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.menge))
@@ -653,7 +652,7 @@ def print_bestand2(request):
                         p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
                         sum_fach = 0
                         abstand = abstand + 0.5
-                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein))
+                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein)[ : 80])
                     p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)), str(item.col_value))
                     p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)), str(item.row_value))
                     p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.menge))
@@ -669,7 +668,7 @@ def print_bestand2(request):
                     p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
                     sum_fach = 0
                     abstand = abstand + 0.5
-                p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein))
+                p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein)[ : 80])
                 p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)), str(item.col_value))
                 p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)), str(item.row_value))
                 p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.menge))
@@ -709,7 +708,7 @@ def print_bestand2(request):
             lager_nr = item.lager_id
             abstand = abstand + 0.5
             p.setFont('Helvetica', 9)
-            p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein))
+            p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein)[ : 80])
             p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.col_value))
             p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.row_value))
             p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.menge))
@@ -740,7 +739,7 @@ def print_bestand2(request):
     # FileResponse setzt den Content-Disposition-Header so, dass Browser
     # präsentiert die Option zum Speichern der Datei.
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=False, filename='hello.pdf')
+    return FileResponse(buffer, as_attachment=False, filename='meinWeinkeller_Bestand.pdf')
 
 
 # Liste der Weine
