@@ -16,23 +16,24 @@
 <div id="subtitle"><h2>Bestand am: {% now "d.m.Y" %}</h2></div>
 <hr>
 <div class="bestand">
+
     {% if bestand %}
           <table class="table">
             <thead>
               <tr>
-                  <th>Lager</th>
                   <th>Wein</th>
                   <th class="mitte">Spalte</th>
                   <th class="mitte">Reihe</th>
                   <th class="rechts">Menge</th>
               </tr>
             </thead>
+
         {% for item in bestand %}
             <tbody>
             {% ifchanged item.lager %}
+
                 <tr>
                   <td>&nbsp;</td>
-                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -44,24 +45,23 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
+
                 </tr>
                 <tr class="table_row2">
-                    <td></td>
                     <td class="links">{{ item.wein }}</td>
                     <td class="mitte">{{ item.col_value }}</td>
                     <td class="mitte">{{ item.row_value }}</td>
-                    <td class="rechts">{{ item.menge}}</td>
+                    <td class="rechts">{{ item.menge}} , {{ name|add:"1" }}</td>
                 </tr>
             {% else %}
                 <tr class="table_row2">
-                  <td>
-                  </td>
                   <td class="links">{{ item.wein }}</td>
                   <td class="mitte">{{ item.col_value }}</td>
                   <td class="mitte">{{ item.row_value }}</td>
-                  <td class="rechts">{{ item.menge}}</td>
+                  <td class="rechts">{{ item.menge}}, {{ fachmenge.name|add:"1"|add:"_"|add:"1_2" }}</td>
+
                 </tr>
+
             {% endifchanged %}
     {% endfor%}
             </tbody>

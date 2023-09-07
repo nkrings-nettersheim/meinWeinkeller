@@ -51,6 +51,7 @@ urlpatterns = [
     path('delete/bestand/<pk>/', views.DeleteBestandItem.as_view(), name='delete_bestand_item'),
     path('bestand/<id>/', views.bestand, name='bestand'),
     path('report/bestand', views.print_bestand, name='print_bestand'),
+    path('report/bestand2', views.print_bestand2, name='print_bestand2'),
 
     path('add/weinkeller/', views.add_weinkeller, name='add_weinkeller'),
     path('edit/weinkeller/<id>/', views.edit_weinkeller, name='edit_weinkeller'),

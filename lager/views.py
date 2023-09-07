@@ -1,17 +1,25 @@
+import datetime
 import logging
+import io
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.views.generic.edit import DeleteView
 from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import PageBreak
 from weasyprint import HTML, CSS
 from django.template.loader import render_to_string
 from django.conf import settings
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
 
 
 from .models import Weinkeller, Weinland, Region, Rebsorte, Wein, Erzeuger, Lager, Bestand
@@ -536,12 +544,52 @@ def print_bestand(request):
     item = Bestand.objects.filter(weinkeller=str(request.user.id)).order_by('lager', 'col_value', 'row_value')
     weinkeller = Weinkeller.objects.get(weinkeller_admin_id=str(request.user.id))
 
+    fachmenge = {}
+    lager = item[0].lager_id
+    spalte = item[0].col_value
+    reihe = item[0].row_value
+    fachmenge2 = 0
+
+    for x in item:
+        #print("Lager: " + str(x.lager_id) + " Spalte: " + str(x.col_value) + "; Reihe: " + str(x.row_value) + " Menge: " + str(x.menge))
+        if lager == x.lager_id:
+            if spalte == x.col_value:
+                if reihe == x.row_value:
+                    fachmenge2 = fachmenge2 + x.menge
+                    fachmenge[f"{x.lager_id}_{x.col_value}_{x.row_value}"] = fachmenge2
+                else:
+                    fachmenge2 = 0
+                    fachmenge2 = fachmenge2 + x.menge
+                    fachmenge[f"{x.lager_id}_{x.col_value}_{x.row_value}"] = fachmenge2
+                    reihe = x.row_value
+            else:
+                fachmenge2 = 0
+                fachmenge2 = fachmenge2 + x.menge
+                fachmenge[f"{x.lager_id}_{x.col_value}_{x.row_value}"] = fachmenge2
+                reihe = x.row_value
+                spalte = x.col_value
+        else:
+            fachmenge2 = 0
+            fachmenge2 = fachmenge2 + x.menge
+            fachmenge[f"{x.lager_id}_{x.col_value}_{x.row_value}"] = fachmenge2
+            reihe = x.row_value
+            spalte = x.col_value
+            lager = x.lager_id
+
+        #print("Spalte: " + str(spalte))
+
+        #print(x.menge)
+        #print("Wert: " + str(fachmenge[f"{x.lager}_{x.col_value}_{x.row_value}"]))
+
+    print(fachmenge)
+
+
     html_file = 'pdf_templates/report_bestand.html'
     css_file = '/lager/css/report_bestand.css'
 
     filename = "report_bestand.pdf"
 
-    html_string = render_to_string(html_file, {'bestand': item, 'weinkeller': weinkeller})
+    html_string = render_to_string(html_file, {'bestand': item, 'weinkeller': weinkeller, 'fachmenge': fachmenge})
 
     html = HTML(string=html_string, base_url=request.build_absolute_uri())
     logger.debug(f"User-ID: {request.user.id}; show_therapy_report CSS_File: {settings.STATIC_ROOT}{css_file}")
@@ -550,6 +598,149 @@ def print_bestand(request):
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
     return response
+
+# Bestand drucken mit Reportlab
+@login_required
+def print_bestand2(request):
+    # Daten ermitteln
+    bestand = Bestand.objects.filter(weinkeller=str(request.user.id)).order_by('lager', 'col_value', 'row_value')
+    weinkeller = Weinkeller.objects.get(weinkeller_admin_id=str(request.user.id))
+
+    # Erstellen Sie einen dateiähnlichen Puffer, um PDF-Daten zu empfangen.
+    buffer = io.BytesIO()
+
+    # Erstellen Sie das PDF-Objekt, indem Sie den Puffer als "Datei" verwenden.
+    p = canvas.Canvas(buffer, pagesize=A4)
+    # Holen der Seitenabmessung
+    breite, hoehe = A4
+
+    p.drawString(1 * cm, 1 * cm, 'Der Text steht links unten')
+    p.setFont('Helvetica-Bold', 18)
+    p.drawCentredString(breite / 2, hoehe - (1 * cm), weinkeller.weinkeller)
+
+    p.setFont('Helvetica-Bold', 14)
+    p.drawCentredString(breite / 2, hoehe - (1.8 * cm), "Bestand am: " + str(datetime.date.today().strftime('%d.%m.%Y')))
+
+    p.line(0.5 * cm, hoehe - (2.3 * cm), 20 * cm, hoehe - (2.3 * cm))  # Zeichne die Linie
+
+    y = 750  # Starthöhe, kann angepasst werden
+    max_y = 50  # Maximale Höhe auf der Seite
+    p.setFont('Helvetica', 10)
+    abstand = 0
+    lager_nr = 0
+    spalte_nr = -1
+    reihe_nr = -1
+    sum_menge = 0
+    sum_gesamt = 0
+    sum_fach = 0
+
+    for item in bestand:
+        if lager_nr == item.lager_id:
+            if spalte_nr == item.col_value:
+                if reihe_nr == item.row_value:
+                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein))
+                    p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.col_value))
+                    p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.row_value))
+                    p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.menge))
+                    sum_menge = sum_menge + item.menge
+                    sum_gesamt = sum_gesamt + item.menge
+                    sum_fach = sum_fach + item.menge
+                    abstand = abstand + 0.5
+                else:
+                    if reihe_nr > -1:
+                        p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+                        p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Bestand im Fach:')
+                        p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
+                        sum_fach = 0
+                        abstand = abstand + 0.5
+                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein))
+                    p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)), str(item.col_value))
+                    p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)), str(item.row_value))
+                    p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.menge))
+                    sum_menge = sum_menge + item.menge
+                    sum_gesamt = sum_gesamt + item.menge
+                    sum_fach = sum_fach + item.menge
+                    abstand = abstand + 0.5
+                    reihe_nr = item.row_value
+            else:
+                if spalte_nr > -1:
+                    p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+                    p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Bestand im Fach:')
+                    p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
+                    sum_fach = 0
+                    abstand = abstand + 0.5
+                p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein))
+                p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)), str(item.col_value))
+                p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)), str(item.row_value))
+                p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.menge))
+                sum_menge = sum_menge + item.menge
+                sum_gesamt = sum_gesamt + item.menge
+                sum_fach = sum_fach + item.menge
+                abstand = abstand + 0.5
+                spalte_nr = item.col_value
+                reihe_nr = -1
+        else:
+            if lager_nr > 0:
+                p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+                p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Bestand im Fach:')
+                p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
+                abstand = abstand + 1.0
+                p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+                p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Bestand in Spalte:')
+                p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_menge))
+                sum_menge = 0
+                sum_fach = 0
+                abstand = abstand + 1.0
+
+            # Hintergrundfarbe für das Rechteck
+            background_color = colors.lightgrey
+
+            # Zeichne ein Rechteck als Hintergrund
+            p.setFillColor(background_color)
+            p.rect(0.5 * cm, (hoehe - ((3 + abstand + 0.15) * cm)), 19.5 * cm, 18, fill=True)
+
+            p.setFillColor(colors.black)  # Textfarbe
+            p.setFont('Helvetica', 13)
+            p.drawString(0.7 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.lager))
+            p.setFont('Helvetica', 10)
+            p.drawString(15.55 * cm, (hoehe - ((3 + abstand) * cm)),  'Spalte')
+            p.drawString(16.7 * cm, (hoehe - ((3 + abstand) * cm)),  'Reihe')
+            p.drawString(18.7 * cm, (hoehe - ((3 + abstand) * cm)),  'Menge')
+            lager_nr = item.lager_id
+            abstand = abstand + 0.5
+            p.setFont('Helvetica', 9)
+            p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein))
+            p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.col_value))
+            p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.row_value))
+            p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.menge))
+            sum_menge = sum_menge + item.menge
+            sum_gesamt = sum_gesamt + item.menge
+            sum_fach = sum_fach + item.menge
+            reihe_nr = item.row_value
+            spalte_nr = item.col_value
+            abstand = abstand + 0.5
+
+    p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+    p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Bestand im Fach:')
+    p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
+    abstand = abstand + 1.0
+    p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+    p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Bestand in Spalte:')
+    p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_menge))
+    abstand = abstand + 1.0
+    p.line(13 * cm, hoehe - ((2.63 + abstand) * cm), 20 * cm, hoehe - ((2.63 + abstand) * cm))
+    p.drawString(13 * cm, (hoehe - ((3 + abstand) * cm)), 'Gesamter Weinbestand:')
+    p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_gesamt))
+
+
+    # Schließen Sie das PDF-Objekt sauber, und wir sind fertig.
+    p.showPage()
+    p.save()
+
+    # FileResponse setzt den Content-Disposition-Header so, dass Browser
+    # präsentiert die Option zum Speichern der Datei.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=False, filename='hello.pdf')
 
 
 # Liste der Weine
