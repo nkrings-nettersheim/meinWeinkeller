@@ -581,7 +581,7 @@ def print_bestand(request):
         #print(x.menge)
         #print("Wert: " + str(fachmenge[f"{x.lager}_{x.col_value}_{x.row_value}"]))
 
-    print(fachmenge)
+    #print(fachmenge)
 
 
     html_file = 'pdf_templates/report_bestand.html'
@@ -637,7 +637,7 @@ def print_bestand2(request):
         if lager_nr == item.lager_id:
             if spalte_nr == item.col_value:
                 if reihe_nr == item.row_value:
-                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein)[ : 80])
+                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein)[ : 75])
                     p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.col_value))
                     p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.row_value))
                     p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.menge))
@@ -652,7 +652,7 @@ def print_bestand2(request):
                         p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
                         sum_fach = 0
                         abstand = abstand + 0.5
-                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein)[ : 80])
+                    p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein)[ : 75])
                     p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)), str(item.col_value))
                     p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)), str(item.row_value))
                     p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.menge))
@@ -668,7 +668,7 @@ def print_bestand2(request):
                     p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(sum_fach))
                     sum_fach = 0
                     abstand = abstand + 0.5
-                p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein)[ : 80])
+                p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.wein)[ : 75])
                 p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)), str(item.col_value))
                 p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)), str(item.row_value))
                 p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)), str(item.menge))
@@ -708,7 +708,7 @@ def print_bestand2(request):
             lager_nr = item.lager_id
             abstand = abstand + 0.5
             p.setFont('Helvetica', 9)
-            p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein)[ : 80])
+            p.drawString(0.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.wein)[ : 75])
             p.drawString(16 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.col_value))
             p.drawString(17 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.row_value))
             p.drawRightString(19.5 * cm, (hoehe - ((3 + abstand) * cm)),  str(item.menge))
@@ -903,14 +903,14 @@ def wf_wein_weinland(request):
         return redirect('/lager/wf/wein/rebsorte/')
 
     if 'weinland_id' in request.session and 'region_id' in request.session and 'lage' in request.session:
-        print("v1")
+        #print("v1")
         form = WFWeinWeinlandForm(user_id=request.user.id, initial={
             'weinland': request.session['weinland_id'],
             'region': request.session['region_id'],
             'lage': request.session['lage']
         })
     elif 'weinland_id' in request.session and 'region_id' in request.session:
-        print("v2")
+        #print("v2")
         form = WFWeinWeinlandForm(user_id=request.user.id, initial={
             'weinland': request.session['weinland_id'],
             'region': request.session['region_id']

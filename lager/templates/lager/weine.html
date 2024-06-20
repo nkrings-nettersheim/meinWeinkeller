@@ -23,6 +23,7 @@
         <th>Region</th>
         <th>Jahrgang</th>
         <th>Name</th>
+        <th>Erzeuger</th>
       </tr>
     </thead>
           <tbody>
@@ -36,6 +37,7 @@
                   {% endif %}
                 <td>{{wein.jahrgang}}er</td>
                 <td>{{wein.name}}</td>
+                <td>{{wein.erzeuger}}</td>
                 <td>
                     <a href="{% url 'lager:edit_wein' wein.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-pen-to-square" title="ändern"></i></a>
                     <a href="{% url 'lager:wein' wein.id %}" class="p-1 link-secondary"><i class="fa-sharp fa-solid fa-eye" title="anzeigen"></i></a>

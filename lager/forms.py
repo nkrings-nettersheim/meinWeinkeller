@@ -939,7 +939,7 @@ class WFWeinZusatzForm(forms.Form):
         required=False,
         choices=FLASCHENGROESSE,
         label="",
-        initial=2,
+        initial='0.750',
         widget=forms.Select(
             attrs={
                 'class': 'form-control'
