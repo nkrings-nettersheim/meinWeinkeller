@@ -245,23 +245,27 @@ class WeinForm(forms.ModelForm):
                                  )
 
     literpreis = forms.DecimalField(required=False,
+                                    max_digits=10,
+                                    decimal_places=2,
+                                    localize=True,
                                     widget=forms.TextInput(
                                         attrs={
                                             'class': 'form-control',
                                             'placeholder': 'Literpreis erfassen ...'
                                         }
                                     ),
-                                    initial=0.00
                                     )
 
     preis = forms.DecimalField(required=False,
+                               max_digits=10,
+                               decimal_places=2,
+                               localize=True,
                                widget=forms.TextInput(
                                    attrs={
                                        'class': 'form-control',
                                        'placeholder': 'Preis erfassen ...'
                                    }
                                ),
-                               initial=0.00
                                )
 
     bestellnummer = forms.CharField(required=False,

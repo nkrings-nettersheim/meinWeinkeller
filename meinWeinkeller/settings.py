@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lager',
-    #'bootstrap5',
     'django_bootstrap5',
     'fontawesomefree',
 ]
@@ -108,19 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'de'
-
+LANGUAGE_CODE = 'de-DE'
 TIME_ZONE = 'Europe/Berlin'
-
 DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
-
+#DECIMAL_SEPARATOR = ','
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
